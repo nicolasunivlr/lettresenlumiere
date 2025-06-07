@@ -6,11 +6,21 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 
+if (!Encore.isProduction()) {
+    // public path used by the web server to access the output path
+    Encore.setOutputPath('public/build/')
+        .setPublicPath('/build')
+} else {
+    Encore.setOutputPath('public/build/')
+        .setPublicPath('/lettresenlumiere/build')
+        .setManifestKeyPrefix('/')
+}
+
 Encore
     // directory where compiled assets will be stored
-    .setOutputPath('public/build/')
+    // .setOutputPath('public/build/')
     // public path used by the web server to access the output path
-    .setPublicPath('/build')
+    // .setPublicPath('/build')
     // only needed for CDN's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
     .enablePostCssLoader()
