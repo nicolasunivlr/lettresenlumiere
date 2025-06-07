@@ -3,7 +3,9 @@ import { useState } from 'react';
 
 const useConfig = () => {
   // pas besoin de defaultBaseUrl, car tout est imbriqué dans l'application
-  const defaultBaseUrl = '';
+  const defaultBaseUrl = process.env.NODE_ENV === 'production'
+            ? '/lettresenlumiere'
+            : '';
 
   // Chemins relatifs
   const paths = {
