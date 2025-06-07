@@ -1,0 +1,62 @@
+[
+  {
+    "etape_id": 1,
+    "nom": "Étape 1",
+    "sequences": [
+      {
+        "sequence_id": 1,
+        "nom": "A E I"
+      },
+      {
+        "sequence_id": 2,
+        "nom": "O U É"
+      },
+      {
+        "sequence_id": 3,
+        "nom": "L"
+      },
+      {
+        "sequence_id": 4,
+        "nom": "R"
+      },
+      {
+        "sequence_id": 5,
+        "nom": "IL OR"
+      },
+      {
+        "sequence_id": 6,
+        "nom": "LETTRE MUETTE"
+      },
+      {
+        "sequence_id": 7,
+        "nom": "BILAN 1"
+      }
+    ]
+  },
+  {
+    "etape_id": 2,
+    "nom": "Étape 2",
+    "sequences": [
+      {
+        "sequence_id": 8,
+        "nom": "F"
+      },
+      {
+        "sequence_id": 9,
+        "nom": "J"
+      },
+      {
+        "sequence_id": 10,
+        "nom": "IL FIL"
+      },
+      {
+        "sequence_id": 11,
+        "nom": "UN UNE"
+      },
+      {
+        "sequence_id": 12,
+        "nom": "BILAN 2"
+      }
+    ]
+  }
+]

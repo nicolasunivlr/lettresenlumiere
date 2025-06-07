@@ -1,0 +1,26 @@
+@use 'sass:color';
+@use '../base/variables' as v;
+.inputLabel {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: fit-content;
+  left: -3px;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  color: v.$noir-transparent;
+  animation: blink 1.3s steps(1, start) infinite;
+}

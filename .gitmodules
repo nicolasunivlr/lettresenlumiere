@@ -1,0 +1,3 @@
+[submodule "assets/react"]
+	path = assets/react
+	url = git@gitlab.univ-lr.fr:lpmiaw-2024-2025/light-one/lettre-en-lumiere/front.git

@@ -1,0 +1,78 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  GITHUB_REPO_URL: $GH_REPO_URL # URL du dépôt GitHub
+  GITHUB_TOKEN: $GH_TOKEN # Token GitHub
+  APP_BACKEND_URL: $APP_BACKEND_URL # URL du backend en ligne
+
+before_script:
+  - echo "Réglage de l'environnement de build..."
+
+build:
+  stage: build
+  image: node:20
+  script:
+    - echo "Installation des dépendances"
+    - npm install
+    - echo "Création du fichier d'environnement .env"
+    - |
+      cat > .env << EOF
+      VITE_APP_BACKEND_URL=${APP_BACKEND_URL}
+      VITE_APP_BACKEND_URL_API_ETAPES=${APP_BACKEND_URL}/api/custom/etapes
+      VITE_APP_BACKEND_URL_API_SEQUENCES=${APP_BACKEND_URL}/api/custom/sequences
+      VITE_APP_BACKEND_IMAGE_URL=${APP_BACKEND_URL}/images
+      VITE_APP_BACKEND_SEQUENCEVIDEOS_URL=${APP_BACKEND_URL}/sequencevideos
+      VITE_APP_BACKEND_AUDIO_URL=${APP_BACKEND_URL}/audios
+      EOF
+    - echo "Affichage du fichier .env créé (pour debug)"
+    - cat .env
+    - echo "Construire l'application avec la configuration de production"
+    - npm run build -- --mode production --base=/LettreEnLumiere/
+  artifacts:
+    paths:
+      - dist/ # Indique à GitLab de conserver le dossier dist
+  only:
+    - main # Ce job ne s'exécute que sur la branche `main` de GitLab
+
+deploy:
+  stage: deploy
+  image: node:20
+  script:
+    - echo "Déploiement sur GitHub Pages"
+    # Lister le contenu du répertoire pour vérification
+    - ls -la
+    # Vérifier le contenu de dist
+    - ls -la dist/ || echo "Le répertoire dist n'existe pas"
+    # Configuration git
+    - git config --global user.email "maxence.hipro@gmail.com"
+    - git config --global user.name "mhirault"
+    # Mise à jour ou création de la remote
+    - git remote set-url origin https://$GITHUB_TOKEN@github.com/$GITHUB_REPO_URL.git || git remote add origin https://$GITHUB_TOKEN@github.com/$GITHUB_REPO_URL.git
+
+    # Gestion de la branche gh-pages - Supprimer la branche locale si elle existe
+    - git branch -D gh-pages || echo "La branche gh-pages n'existait pas localement"
+    # Créer une nouvelle branche orpheline
+    - git checkout --orphan gh-pages
+
+    # Nettoyage du répertoire de travail
+    - git rm -rf . || true
+
+    # Copie des fichiers de build
+    - cp -r dist/* ./ || echo "Erreur lors de la copie depuis dist/"
+
+    - rm -rf dist/ || echo "Erreur lors de la suppression du répertoire dist/"
+
+    # Création d'un fichier vide pour éviter des erreurs git
+    - touch .nojekyll
+
+    # Commit et push
+    - git add -A
+    - git commit -m "Déploiement automatique de la version production" || echo "Aucun changement à committer"
+    - git push -f origin gh-pages
+  only:
+    - main
+  environment:
+    name: production
+    url: https://maxencedevweb.github.io/LettreEnLumiere/

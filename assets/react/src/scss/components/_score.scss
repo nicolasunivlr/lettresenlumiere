@@ -1,0 +1,21 @@
+@use '../base/variables' as v;
+@use '../base/fonts' as f;
+
+.score {
+  background-color: v.$vert;
+  border-radius: 50%;
+  color: v.$blanc;
+  font-size: f.$font-size-large;
+  padding: 2rem;
+  width: 6rem;
+  height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-score {
+  padding-top: 2rem;
+  display: flex;
+  justify-content: center;
+}

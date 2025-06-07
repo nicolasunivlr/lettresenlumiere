@@ -1,0 +1,25 @@
+{# templates/admin/my_dashboard.html.twig #}
+{% extends '@EasyAdmin/layout.html.twig' %}
+
+{% block content_title %}Backoffice{% endblock %}
+{% block page_actions %}
+    <a class="btn btn-primary" href="...">Some Action</a>
+{% endblock %}
+
+{% block main %}
+    <table class="datagrid">
+        <thead>
+        <tr>
+            <td>Some Column</td>
+            <td>Another Column</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

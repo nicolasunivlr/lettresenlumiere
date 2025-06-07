@@ -1,0 +1,50 @@
+/* Arrow Button -----------------------------------*/
+.container-arrow {
+  font-weight: bold;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  img {
+    width: 30px;
+    height: 30px;
+    animation: arrowBounce 1.5s infinite;
+  }
+}
+.container-arrow:hover,
+.container-arrow:focus {
+  text-decoration: none;
+}
+
+/* Arrow Bouncing */
+.container-arrow span {
+  display: inline-block;
+  font-size: 80px;
+  animation: 0.7s down infinite alternate;
+  -webkit-animation: 0.7s down infinite alternate;
+}
+/***Animation Arrow down***/
+@keyframes arrowBounce {
+  0%,
+  100% {
+    transform: rotate(-90deg) translateX(0);
+  }
+  50% {
+    transform: rotate(-90deg) translateX(-15px);
+  }
+}

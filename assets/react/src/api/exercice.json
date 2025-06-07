@@ -1,0 +1,169 @@
+{
+  "sequence_id": 1,
+  "nom": "Séquence 1",
+  "video_url": "../assets/videos/a-e-i.mp4",
+  "exercices": [
+    {
+      "exercice_id": 1,
+      "type_exercice": "A1",
+      "contenus": [
+        {
+          "contenu_id": 1,
+          "element": "a",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        },
+        {
+          "contenu_id": 2,
+          "element": "e",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        },
+        {
+          "contenu_id": 3,
+          "element": "i",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        }
+      ]
+    },
+    {
+      "exercice_id": 2,
+      "type_exercice": "B1",
+      "contenus": [
+        {
+          "contenu_id": 1,
+          "element": "a",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        },
+        {
+          "contenu_id": 2,
+          "element": "e",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        },
+        {
+          "contenu_id": 3,
+          "element": "i",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        }
+      ]
+    },
+    {
+      "exercice_id": 1,
+      "type_exercice": "C1",
+      "contenus": [
+        {
+          "contenu_id": 1,
+          "element": "a",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        },
+        {
+          "contenu_id": 2,
+          "element": "e",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        },
+        {
+          "contenu_id": 3,
+          "element": "i",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        }
+      ]
+    },
+    {
+      "exercice_id": 1,
+      "type_exercice": "D1",
+      "contenus": [
+        {
+          "contenu_id": 1,
+          "element": "a",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        },
+        {
+          "contenu_id": 2,
+          "element": "e",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        },
+        {
+          "contenu_id": 3,
+          "element": "i",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        }
+      ]
+    },
+    {
+      "exercice_id": 1,
+      "type_exercice": "E1",
+      "contenus": [
+        {
+          "contenu_id": 1,
+          "element": "a",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        },
+        {
+          "contenu_id": 2,
+          "element": "e",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        },
+        {
+          "contenu_id": 3,
+          "element": "i",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        }
+      ]
+    },
+    {
+      "exercice_id": 1,
+      "type_exercice": "G1",
+      "contenus": [
+        {
+          "contenu_id": 1,
+          "element": "a",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        },
+        {
+          "contenu_id": 2,
+          "element": "e",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        },
+        {
+          "contenu_id": 3,
+          "element": "i",
+          "image_url": null,
+          "video_url": null,
+          "sons_url": null
+        }
+      ]
+    }
+  ]
+}

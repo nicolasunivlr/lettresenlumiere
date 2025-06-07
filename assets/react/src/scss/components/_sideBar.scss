@@ -1,0 +1,57 @@
+@use '../base/variables' as v;
+@use '../base/fonts' as f;
+@use 'sass:color';
+
+// Définition des couleurs
+$exercise-colors: (
+  red: #ff5733,
+  green: #33ff57,
+  blue: #3357ff,
+  pink: #ff33a1,
+);
+
+.sidebar-container {
+  position: absolute;
+  height: 70vh;
+  padding-right: 10px;
+}
+
+.sidebar {
+  margin-top: 6vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  height: 100%;
+  margin-left: 4vw;
+  gap: 1rem;
+
+  @media (max-width: 1366px) {
+    margin-left: 2vw;
+    gap: 0.7rem;
+  }
+}
+
+.circle {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin: 8px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: color.scale(v.$gris, $lightness: 50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  @media (max-width: 1366px) {
+    width: 35px;
+    height: 35px;
+    margin: 6px 0;
+  }
+
+  &--active {
+    box-shadow: 0 0 0 3px v.$kepel;
+    background-color: v.$blanc-max;
+  }
+}

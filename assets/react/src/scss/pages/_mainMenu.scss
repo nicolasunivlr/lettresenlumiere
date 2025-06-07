@@ -1,0 +1,50 @@
+@use '../base/variables' as v;
+
+.contenuPrincipal {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 10rem;
+}
+
+.index {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // background-color: $blanc;
+    padding: 1rem 0;
+    max-height: 100vh;
+  }
+
+  &__logoBrain {
+    margin-top: 6vh;
+    margin-bottom: 10vh;
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    /* Assurez-vous que la position est définie comme relative */
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 90%;
+      height: 140%;
+      border-radius: 50%;
+      background-color: rgba(59, 155, 165, 0.5);
+      margin-top: 3rem;
+      z-index: -1;
+      -webkit-box-shadow: inset -10px -4px 28px 10px rgba(255, 255, 255, 0.5);
+      box-shadow: inset -10px -4px 28px 10px rgba(255, 255, 255, 0.5);
+    }
+
+    img {
+      max-width: 70%;
+      /* Assurez-vous que l'image ne dépasse pas la taille du conteneur */
+      /* Assurez-vous que l'image conserve son ratio hauteur/largeur */
+    }
+  }
+}

@@ -1,0 +1,23 @@
+.edit-icon .fa {
+  color: var(--edit-icon-color, #143ffd); /* Default to black */
+}
+.delete-icon .fa {
+  color: var(--delete-icon-color, red); /* Default to red */
+}
+
+.color-preview {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 8px;
+  border: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.choices__list--dropdown .color-preview {
+  margin-top: -2px;
+}
+
+.form-group.field-collection .accordion-item .form-group {
+  display: block;
+}

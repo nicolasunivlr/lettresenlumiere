@@ -1,0 +1,26 @@
+//Import des variables et des styles de base
+
+@use 'base/reset';
+@use 'base/base';
+@use 'base/fonts';
+@use 'base/variables';
+
+//Import des styles unitaires des composants
+
+@use 'components/header';
+@use 'components/accordion';
+@use 'components/buttons';
+@use 'components/sideBar';
+@use 'components/score';
+@use 'components/videomodal';
+@use 'components/inputLabel';
+@use 'components/_modalExercise';
+
+//Import des styles unitaires de pages
+@use 'pages/homePage';
+@use 'pages/mainMenu';
+@use 'pages/alphabetPage';
+@use 'pages/graphemesHome';
+@use 'pages/layoutExercice';
+@use 'pages/resultPage';
+@use 'pages/etapesPage';

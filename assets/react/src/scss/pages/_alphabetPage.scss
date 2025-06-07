@@ -1,0 +1,93 @@
+@use '../base/variables' as v;
+@use '../base/fonts' as f;
+.alphabet {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  margin: 10vh 2vw;
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+    font-size: 7rem;
+    min-width: 10vw;
+    font-weight: bold;
+    color: v.$noir;
+    width: fit-content;
+    border-radius: 15px;
+    margin: 0 auto; /* Assure un centrage horizontal */
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 7vh;
+    padding-top: 5vh;
+  }
+
+  &__list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    background-color: rgba($color: v.$kepel, $alpha: 0.56);
+
+    padding: 3.2rem 2rem;
+    max-width: 100%;
+  }
+
+  &__list:last-child {
+    margin-bottom: 10rem;
+  }
+
+  &__listItem {
+    color: v.$noir;
+    font-size: clamp(10px, 2.5vw, 57px);
+    height: fit-content;
+  }
+
+  &__1 {
+    padding: 15%;
+  }
+
+  .entrainement {
+    margin-left: auto;
+    background-color: white;
+    border-radius: 15px;
+    margin-top: 5%;
+    width: fit-content;
+    padding: 2vh 2vh 3vh 2vh;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+      rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+      rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.07);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    &__test {
+      display: flex;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    &__bouton {
+      font-size: 23px;
+      color: black;
+      margin-left: 7%;
+      margin-top: 5%;
+    }
+
+    &__logo {
+      width: 3rem;
+      height: 3rem;
+    }
+  }
+}

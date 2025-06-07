@@ -1,0 +1,75 @@
+* {
+  box-sizing: border-box;
+
+  &::after,
+  &::before {
+    box-sizing: border-box;
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+html {
+  font-size: 62.5%; // Reset à 10px pour faciliter les calculs en rem
+
+  @media (max-width: 1366px) {
+    font-size: 54%; // Légèrement réduit pour les écrans comme 1280x960
+  }
+}
+
+body {
+  font-family: Helvetica, sans-serif;
+  font-size: 1.6rem; // Taille de base correspondant à ~16px
+  background-color: rgba(78, 137, 143, 0.28);
+  max-width: 1920px; // Utilisez 100% au lieu d'une valeur fixe
+  width: 100%; /* Assurez-vous que body prend toute la largeur */
+  margin: 0 auto; /* Centre le body horizontalement */
+  overflow-x: hidden;
+}
+
+a,
+a:hover,
+a:visited {
+  text-decoration: none;
+}
+
+.active {
+  color: black;
+}
+
+// .hidden{
+//     display: none;
+// }
+
+// .translate-x-0{
+//     transform: translate(0, 0);
+// }
+
+// .border-t-2{
+//     border-color: pink;
+//     height: 3px;
+//     position: relative;
+//     width: 59px;
+//     z-index: 4000
+// }
+
+.close {
+  width: 4rem;
+  margin-left: auto;
+  fill: #d8dade;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    transform: scale(1.17);
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+.list {
+  min-height: 50px; /* Ou une hauteur appropriée */
+  min-width: 100px;
+}
+
+// Peut-etre ajouter une animation au drag

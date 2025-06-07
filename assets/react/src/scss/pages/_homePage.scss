@@ -1,0 +1,81 @@
+// code loane
+@use '../base/variables' as v;
+@use '../base/fonts' as f;
+
+//  fon code page accueil loane
+
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 25vh;
+  height: 100%;
+
+  &__link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+    img {
+      height: 3rem;
+      rect {
+        color: blue;
+        fill: blue;
+      }
+      .icon {
+        rect {
+          fill: blue;
+        }
+      }
+    }
+  }
+
+  &__logo {
+    width: clamp(150px, 25vw, 500px);
+    margin-bottom: 5vh;
+  }
+
+  &__selection {
+    // min-width: 50rem;
+    // padding: 1rem 0 1rem 1rem;
+    // border-radius: 5px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    text-align: center;
+    font-size: 3rem;
+    a {
+      background-color: v.$kepel;
+      color: v.$blanc;
+      padding: 1rem 12rem;
+      border-radius: 10px;
+      border: 2px solid v.$kepel;
+      transition: 0.5s;
+      &:hover {
+        background-color: #cddedf;
+        color: v.$kepel;
+      }
+    }
+  }
+
+  &__credits {
+    position: absolute;
+    right: 5rem;
+    padding: 1rem 1.8rem;
+    border-radius: 10px;
+    font-size: f.$font-size-medium;
+    background-color: #fffbfb;
+    transition: 0.2s all ease-out;
+    bottom: 5rem;
+    a {
+      color: v.$noir;
+    }
+    &:hover {
+      scale: 1.17;
+      transition: 0.2s all ease-out;
+    }
+  }
+}

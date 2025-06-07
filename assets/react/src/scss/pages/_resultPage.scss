@@ -1,0 +1,81 @@
+@use '../base/variables' as v;
+@use '../base/fonts' as f;
+@use 'sass:color';
+.results-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 90%;
+  border: 3px solid v.$kepel;
+  padding: 3rem;
+  border-radius: 10px;
+}
+.results {
+  display: flex;
+  flex-direction: column;
+  align-content: start;
+  margin-top: 80px;
+  gap: 10px;
+}
+
+.header-result {
+  display: grid;
+  grid-template-areas: 'empty medal watch';
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+}
+
+.medal-score {
+  grid-area: medal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(213 251 255 / 51%);
+  border: 1px solid v.$kepel;
+  font-size: f.$font-size-extralarge;
+  font-weight: bold;
+  padding: 2rem 3.48rem;
+  border-radius: 5px;
+  gap: 1rem;
+  img {
+    width: 65px;
+  }
+
+  &--bravo {
+    background-color: color.adjust(v.$vert, $lightness: 15%);
+    border: v.$vert solid 1px;
+    color: v.$blanc;
+  }
+
+  &--bien {
+    background-color: color.adjust(v.$jaune, $lightness: 15%);
+    border: v.$jaune solid 1px;
+  }
+
+  &--pasmal {
+    background-color: color.adjust(v.$orange, $lightness: 15%);
+    border: v.$orange solid 1px;
+  }
+
+  &--revoir {
+    background-color: color.adjust(v.$rouge, $lightness: 15%);
+    border: v.$rouge solid 1px;
+    color: v.$blanc;
+  }
+}
+
+.result {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 2rem;
+}
+
+.print-icon {
+  grid-area: watch;
+  justify-self: end;
+  width: 80px;
+  cursor: pointer;
+}

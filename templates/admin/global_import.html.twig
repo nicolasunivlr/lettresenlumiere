@@ -1,0 +1,42 @@
+{% block content %}
+    <div class="container py-5">
+        <div class="card shadow-lg p-4">
+            <h1 class="text-center text-primary mb-4">Import Global</h1>
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+            <div class="form-group">
+                {{ form_label(form.importFile, null, {'label_attr': {'class': 'font-weight-bold'}}) }}
+                {{ form_widget(form.importFile, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                <div class="invalid-feedback">Veuillez sélectionner un fichier.</div>
+                {{ form_errors(form.importFile) }}
+            </div>
+
+            <div class="text-center">
+                {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary px-4 py-2'}}) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <style>
+        .card {
+            max-width: 500px;
+            margin: auto;
+            border-radius: 10px;
+        }
+        .btn-primary {
+            border-radius: 50px;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,25 @@
+# config/packages/api_platform.yaml
+api_platform:
+    title: Hello API Platform
+    version: 1.0.0
+
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+        pagination_items_per_page: 10
+
+    collection:
+        pagination:
+            enabled: true
+            enabled_parameter_name: pagination
+            items_per_page_parameter_name: itemsPerPage
+            page_parameter_name: page
+            partial_parameter_name: partial
+
+    doctrine:
+        enabled: true
+
+    eager_loading:
+        max_joins: 30  # Augmenter la limite des jointures
+        force_eager: false  # Optionnel : désactiver le chargement forcé

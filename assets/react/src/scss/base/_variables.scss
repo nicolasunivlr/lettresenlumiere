@@ -1,0 +1,36 @@
+@use 'sass:color';
+$noir: #151414;
+$blanc: #f2f2f2;
+$blanc-max: #ffffff;
+$rouge: #b91c1c;
+$vert: #166534;
+$orange: #f18910;
+$jaune: #e4c210;
+$kepel: color.adjust(rgb(59, 155, 165), $lightness: 10%);
+$gris: #d8dade;
+$fond-exos: #eeeeee;
+$choix-mot: rgba(130, 210, 255, 0.4);
+$rep-correct: #166534;
+$fond-exos2: rgba(78, 137, 143, 0.28);
+$rubriques: #adcda5;
+$violet-clair: #be00be;
+$violet: #68449e;
+$violet-pale: #c084fc;
+$kepel-transparent: color.adjust(rgba(59, 154, 165, 0.311), $lightness: 10%);
+$noir-transparent: color.adjust(rgba(21, 20, 20, 0.8), $lightness: 10%);
+
+@keyframes responseFalse {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+}

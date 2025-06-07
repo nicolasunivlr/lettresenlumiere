@@ -1,0 +1,61 @@
+@use '../base/variables' as v;
+@use '../base/fonts' as f;
+
+.header {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  font-family: 'Satoshi', sans-serif;
+  padding: 4rem;
+
+  @media (max-width: 1366px) {
+    padding: 1rem 4rem 4rem 4rem;
+  }
+
+  &__infos {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__etape {
+    color: v.$noir;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    img {
+      min-width: 200px;
+      width: 15vw;
+      max-width: 300px;
+    }
+    p {
+      font-size: f.$font-size-large;
+      position: absolute;
+      @media (max-width: 1366px) {
+        font-size: f.$font-size-medium;
+      }
+    }
+  }
+
+  &__sequence {
+    margin: auto 0;
+    font-size: f.$font-size-large;
+    color: v.$noir;
+    text-transform: uppercase;
+    @media (max-width: 1366px) {
+      font-size: f.$font-size-medium;
+    }
+  }
+
+  &__img {
+    width: 5rem;
+    color: v.$kepel;
+  }
+
+  & .camera {
+    margin-right: auto;
+    margin-left: 2%;
+  }
+}
