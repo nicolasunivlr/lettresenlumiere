@@ -35,7 +35,7 @@ function ExerciseTypeE(props) {
       setContentExercise(shuffledContents);
       setIsFinished(shuffledContents.map(() => ({ isFinished: false })));
     }
-    if (content.type === 'C.3') {
+    if (content.type === 'E.3') {
       timeOutRef.current = 6000;
     }
   }, [content]);
