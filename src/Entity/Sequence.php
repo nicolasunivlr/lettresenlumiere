@@ -31,7 +31,7 @@ class Sequence
     private ?string $nom = null;
 
 
-    #[ORM\ManyToOne(targetEntity: Etape::class)]
+    #[ORM\ManyToOne(targetEntity: Etape::class, inversedBy: 'sequences')]
     #[ORM\JoinColumn(name: "etape_id", referencedColumnName: "id", nullable: false)]
     #[Groups(['sequence:write'])]
     private ?Etape $etape = null;

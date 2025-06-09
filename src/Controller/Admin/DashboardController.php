@@ -51,7 +51,7 @@ class DashboardController extends AbstractDashboardController
         // Dans la méthode configureMenuItems()
         yield MenuItem::linkToRoute('Import Global', 'fa fa-upload', 'admin_global_import');
 
-        yield MenuItem::linkToRoute('MAJ modèle', 'fa fa-up-long', 'admin_maj_site');
+        yield MenuItem::linkToRoute('MAJ modèle', 'fa fa-up-long', 'admin_maj_site_page');
 
         yield MenuItem::linkToRoute('Retour au site', 'fa fa-arrow-left', 'app_default');
     }

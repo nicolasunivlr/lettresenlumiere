@@ -1,0 +1,38 @@
+{# templates/admin/maj_page.html.twig #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    (béta) Sauvegarde de la Base de Données et Mise à jour du Site sur Gitlab
+{% endblock %}
+
+{% block main %}
+    <div class="content-body">
+        <p>
+            Cette page vous permet de déclencher manuellement une sauvegarde de la base de données de l'application.
+        </p>
+        <p>
+            <strong>Cela permet aux autres utilisateurs de l'application de bénéficier des derniers exercices saisis.</strong>
+        </p>
+        <p>
+            <strong>Important :</strong> L'opération de sauvegarde peut prendre un certain temps en fonction de la taille de la base de données.
+            Veuillez patienter et ne pas fermer cette fenêtre pendant le processus.
+        </p>
+
+        {# Affichage des messages flash #}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                    {{ message|raw }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <form method="POST" action="{{ path('admin_execute_maj_site') }}" onsubmit="return confirm('Êtes-vous sûr de vouloir lancer la sauvegarde de la base de données ?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('execute_db_backup') }}">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-database me-2"></i>Lancer la Sauvegarde de la Base de Données
+            </button>
+        </form>
+    </div>
+{% endblock %}
