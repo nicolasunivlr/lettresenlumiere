@@ -22,6 +22,7 @@ const ExerciseTypeF = (props) => {
   const [showLabel, setShowLabel] = useState(true);
 
   const draggableListRef = useRef();
+  const displayTimeRef = useRef(2000); // Temps d'affichage par défaut
   const { speak } = useSpeak();
 
   const shuffle = (array) => {
@@ -47,6 +48,13 @@ const ExerciseTypeF = (props) => {
       );
 
       setTabResponses(shuffle(finalResponses));
+      // Définir le temps d'affichage en fonction du type d'exercice
+      if (content.type === 'F.3') {
+        displayTimeRef.current = 4000; // 2x plus long pour F.3
+      } else {
+        displayTimeRef.current = 2000; // Temps par défaut
+      }
+
     }
   }, [content]);
 
@@ -64,7 +72,7 @@ const ExerciseTypeF = (props) => {
         setTimeout(() => {
           setShowLabel(false);
           speak(firstNonDone.element);
-        }, 2000);
+        }, displayTimeRef.current);
       }
     }
   }, [tabResponses]);
@@ -74,7 +82,7 @@ const ExerciseTypeF = (props) => {
       setShowLabel(true);
       const timer = setTimeout(() => {
         setShowLabel(false);
-      }, 2000);
+      }, displayTimeRef.current);
       return () => clearTimeout(timer);
     }
   }, [currentResponse]);
@@ -91,10 +99,10 @@ const ExerciseTypeF = (props) => {
     // Réaffiche la bonne réponse pendant le même temps qu'au départ
     setShowLabel(true);
 
-    // On remet un timer pour cacher à nouveau la réponse après 2 secondes (comme dans le useEffect)
+    // On remet un timer pour cacher à nouveau la réponse après le délai configuré
     setTimeout(() => {
       setShowLabel(false);
-    }, 2000);
+    }, displayTimeRef.current);
   };
 
   const checkAnswer = () => {
