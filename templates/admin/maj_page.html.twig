@@ -31,7 +31,7 @@
         <form method="POST" action="{{ path('admin_execute_maj_site') }}" onsubmit="return confirm('Êtes-vous sûr de vouloir lancer la sauvegarde de la base de données ?');">
             <input type="hidden" name="_token" value="{{ csrf_token('execute_db_backup') }}">
             <button type="submit" class="btn btn-primary">
-                <i class="fas fa-database me-2"></i>Lancer la Sauvegarde de la Base de Données
+                <i class="fas fa-database me-2"></i>Mettre à jour le modèle
             </button>
         </form>
     </div>

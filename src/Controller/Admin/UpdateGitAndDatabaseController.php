@@ -48,6 +48,9 @@ final class UpdateGitAndDatabaseController extends AbstractController
 
     private function executeBackupDbAction(): string
     {
+        //TODO: attention à ne pas sauvegarder les données utilisateur sinon, on ne pourra pas se connecter !!!
+        // Faire jouer les fixtures ????
+
         if (!$this->databaseUrl) {
             throw new \Exception("La variable d'environnement DATABASE_URL n'est pas configurée.");
         }
