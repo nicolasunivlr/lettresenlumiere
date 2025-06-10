@@ -1,4 +1,5 @@
-import BASE_ROUTE from './env.js';
+//import BASE_ROUTE from './env.js';
+const BASE_ROUTE = ''
 // Sélecteurs plus spécifiques pour le formulaire
 const color = document.querySelector('form .field-color');
 const fieldSelect = document.querySelector('form .field-select');

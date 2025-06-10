@@ -1,4 +1,5 @@
-import BASE_ROUTE from './env.js';
+//import BASE_ROUTE from './env.js';
+const BASE_ROUTE = ''
 const getContentIdFromUrl = () => {
   const urlPattern = /\/admin\/contenu\/(\d+)\/edit/;
   const match = window.location.pathname.match(urlPattern);

@@ -1,4 +1,5 @@
-import BASE_ROUTE from './env.js';
+//import BASE_ROUTE from './env.js';
+const BASE_ROUTE = ''
 document.addEventListener('DOMContentLoaded', () => {
   const sequenceField = document.querySelector(
     'select[name="Contenu[sequence]"]'
