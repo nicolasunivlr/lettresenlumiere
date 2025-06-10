@@ -56,36 +56,26 @@ function ExerciseTypeC(props) {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isLocked, contentExercise, userInput]);
+  }, [isLocked, contentExercise, userInput, currentIndex, isAnswerValidated, isFinished]);
 
   useEffect(() => {
-    if (isFinished.every((item) => item.isFinished === true)) {
+    if (isFinished.length > 0 && contentExercise.length > 0 && isFinished.length === contentExercise.length && isFinished.every((item) => item.isFinished === true)) {
       const score = Math.round((isFinished.length / attempt.current) * 100);
       onDone(score);
     }
-  }, [isFinished]);
+  }, [isFinished, onDone, contentExercise.length]);
 
   const handleClickOKButton = () => {
     if (isAnswerValidated === null) {
       handleAnswer();
-    }
-
-    if (isAnswerValidated) {
-      setIsFinished((prev) => {
-        const updated = [...prev];
-        updated[currentIndex] = { isFinished: true };
-        return updated;
-      });
-
-      const isAllFinished = contentExercise.every(
-        (_, index) => isFinished[index]?.isFinished
-      );
-
-      if (!isAllFinished) {
-        setCurrentIndex((prev) => prev + 1);
+    } else if (isAnswerValidated === true) {
+      const nextIndex = currentIndex + 1;
+      if (nextIndex < contentExercise.length) {
+        setCurrentIndex(nextIndex);
         setUserInput('');
         setIsLabelVisible(true);
         setIsAnswerValidated(null);
+        currentAttempt.current = 0;
       }
     }
   };
@@ -94,17 +84,18 @@ function ExerciseTypeC(props) {
     if (!isLabelVisible && contentExercise[currentIndex]) {
       speak(contentExercise[currentIndex].element);
     }
-  }, [isLabelVisible, contentExercise, currentIndex]);
+  }, [isLabelVisible, contentExercise, currentIndex, speak]);
 
   useEffect(() => {
-    if (isLabelVisible) {
-      const timer = setTimeout(() => {
+    let timer;
+    if (isLabelVisible && contentExercise.length > 0) { // S'assurer que contentExercise est chargé
+      timer = setTimeout(() => {
         setIsLabelVisible(false);
       }, timeOutRef.current);
 
       return () => clearTimeout(timer);
     }
-  }, [isLabelVisible]);
+  }, [isLabelVisible, currentIndex, contentExercise.length]);
 
   const handleAnswer = () => {
     attempt.current += 1;
@@ -144,7 +135,6 @@ function ExerciseTypeC(props) {
     if (isCorrect) {
       new Audio(urlSucces).play();
       setIsAnswerValidated(true);
-      currentAttempt.current = 0;
 
       setIsFinished((prev) => {
         const updated = [...prev];
@@ -156,7 +146,6 @@ function ExerciseTypeC(props) {
       new Audio(urlEchec).play();
       setIsAnswerValidated(false);
       setTimeout(() => {
-        setUserInput('');
         setIsLabelVisible(true);
         setIsAnswerValidated(null);
       }, 2000);
@@ -170,109 +159,116 @@ function ExerciseTypeC(props) {
     // Le timer existant dans useEffect se chargera de la cacher après le délai
   };
 
-  const displayLabels = (contentExercise, currentIndex) => {
-    if (!contentExercise[currentIndex]) return null;
-    const contenu = contentExercise[currentIndex];
+  const displayLabels = (currentContent) => {
+    if (!currentContent) return null;
+    const contenu = currentContent;
+
+    const revealAnswerCondition =
+        (currentAttempt.current > 1 && content.type === 'C.3') ||
+        (currentAttempt.current > 2 && content.type !== 'C.3');
+
+    // Le label initial est affiché si isLabelVisible est vrai ET que la réponse ne doit pas encore être révélée
+    const showInitialLabelElement = isLabelVisible && !revealAnswerCondition;
+
+    // InputLabel est visible si on n'est PAS dans la phase d'affichage du label initial (donc isLabelVisible = false)
+    // OU si la réponse est révélée (revealAnswerCondition = true)
+    const isInputActuallyVisible = !isLabelVisible || revealAnswerCondition;
 
     return (
-      <>
-        {isLabelVisible &&
-        !(
-          (!currentAttempt.current > 1 && content.type === 'C.3') ||
-          (!currentAttempt.current > 2 && content.type !== 'C.3')
-        ) ? (
-          <>
-            {content.type !== 'C.1' && contenu?.image_url ? (
-              <LabelImage
-                key={currentIndex}
-                text={contenu.element}
-                format={contenu.contenuFormats ?? null}
-                imageSrc={contenu.image_url}
-              />
+        <>
+          <div className='exercice__item mb-12'>
+            {showInitialLabelElement ? (
+                // Phase 1: Affichage initial du label/image avec la réponse
+                <>
+                  {content.type !== 'C.1' && contenu?.image_url ? (
+                      <LabelImage
+                          // key={`initial-${currentIndex}`} // Optionnel, si currentIndex ne suffit pas
+                          text={contenu.element}
+                          format={contenu.contenuFormats ?? null}
+                          imageSrc={contenu.image_url}
+                      />
+                  ) : (
+                      <Label
+                          // key={`initial-${currentIndex}`}
+                          text={contenu.element}
+                          format={contenu.contenuFormats ?? null}
+                      />
+                  )}
+                </>
             ) : (
-              <Label
-                key={currentIndex}
-                text={contenu.element}
-                format={contenu.contenuFormats ?? null}
-              />
+                // Phase 2: Affichage du '?' ou de la réponse après trop d'erreurs (ou après timeout de isLabelVisible)
+                <>
+                  {content.type !== 'C.1' && contenu.image_url ? (
+                      <LabelImage
+                          classe='label-sound'
+                          text={revealAnswerCondition ? contenu.element : '?'}
+                          voiceLine={contenu.element}
+                          sound={false}
+                          format={contenu.contenuFormats ?? null}
+                          imageSrc={contenu.image_url}
+                          audioUrl={contenu.audio_url ?? null}
+                          onClick={handleQuestionMarkClick}
+                      />
+                  ) : (
+                      <Label
+                          classe='label-sound'
+                          text={revealAnswerCondition ? contenu.element : '?'}
+                          voiceLine={contenu.element}
+                          sound={false}
+                          format={contenu.contenuFormats ?? null}
+                          audioUrl={contenu.audio_url ?? null}
+                          onClick={handleQuestionMarkClick}
+                      />
+                  )}
+                </>
             )}
-          </>
-        ) : (
-          <>
-            <div className='exercice__item mb-12'>
-              {content.type !== 'C.1' && contenu.image_url ? (
-                <LabelImage
-                  classe='label-sound'
-                  text={
-                    (currentAttempt.current > 1 && content.type === 'C.3') ||
-                    (currentAttempt.current > 2 && content.type !== 'C.3')
-                      ? contenu.element
-                      : '?'
-                  }
-                  voiceLine={contenu.element}
-                  sound={false}
-                  format={contenu.contenuFormats ?? null}
-                  imageSrc={contenu.image_url}
-                  audioUrl={contenu.audio_url ?? null}
-                  onClick={handleQuestionMarkClick}
-                />
-              ) : (
-                <Label
-                  classe='label-sound'
-                  text={
-                    (currentAttempt.current > 1 && content.type === 'C.3') ||
-                    (currentAttempt.current > 2 && content.type !== 'C.3')
-                      ? contenu.element
-                      : '?'
-                  }
-                  voiceLine={contenu.element}
-                  sound={false}
-                  format={contenu.contenuFormats ?? null}
-                  audioUrl={contenu.audio_url ?? null}
-                  onClick={handleQuestionMarkClick}
-                />
-              )}
-            </div>
+          </div>
+
+          {/* InputLabel est toujours rendu, sa visibilité est contrôlée par le style */}
+          <div style={{ display: isInputActuallyVisible ? 'block' : 'none' }}>
             {contenu.syllabes && content.type === 'C.2 bis' ? (
-              <InputLabel
-                correctAnswer={contenu.element}
-                setUserInput={setUserInput}
-                answer={isAnswerValidated}
-                syllabIndexes={contenu.syllabes}
-              />
+                <InputLabel
+                    correctAnswer={contenu.element}
+                    setUserInput={setUserInput}
+                    answer={isAnswerValidated}
+                    syllabIndexes={contenu.syllabes}
+                    value={userInput}
+                />
             ) : (
-              <InputLabel
-                correctAnswer={contenu.element}
-                setUserInput={setUserInput}
-                answer={isAnswerValidated}
-              />
+                <InputLabel
+                    correctAnswer={contenu.element}
+                    setUserInput={setUserInput}
+                    answer={isAnswerValidated}
+                    value={userInput}
+                />
             )}
-          </>
-        )}
-      </>
+          </div>
+        </>
     );
   };
 
-  return (
-    <>
-      {content ? (
-        <div className='exercices'>
-          <Instruction instruction={content.consigne} />
-          <div className='exercice__item pt-5'>
-            {displayLabels(contentExercise, currentIndex)}
-          </div>
-        </div>
-      ) : (
-        <div>Erreur dans le chargement du contenu de l&apos;exercice...</div>
-      )}
+  const currentExerciseContent = contentExercise[currentIndex];
 
-      <ProgressBar content={isFinished} />
-      <div>
-        {!isFinished.every((item) => item.isFinished) && (
-          <OKButton onClick={handleClickOKButton} />
+  return (
+      <>
+        {content && currentExerciseContent ? (
+            <div className='exercices'>
+              <Instruction instruction={content.consigne} />
+              <div className='exercice__item pt-5'>
+                {displayLabels(currentExerciseContent)}
+              </div>
+            </div>
+        ) : (
+            <div>Chargement de l&apos;exercice...</div>
         )}
-      </div>
-    </>
+
+        <ProgressBar content={isFinished} />
+        <div>
+          {contentExercise.length > 0 && !isFinished.every((item) => item.isFinished) && (
+              <OKButton onClick={handleClickOKButton} />
+          )}
+        </div>
+      </>
   );
 }
 
