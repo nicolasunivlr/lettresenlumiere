@@ -7,6 +7,7 @@
 /var/
 /vendor/
 /.idea
+/public/js/env.js
 ###< symfony/framework-bundle ###
 
 ###> symfony/webpack-encore-bundle ###
