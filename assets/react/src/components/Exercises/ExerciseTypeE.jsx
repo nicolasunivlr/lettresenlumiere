@@ -198,7 +198,7 @@ function ExerciseTypeE(props) {
               sound={true}
               format={contenu.contenuFormats ?? null}
               imageSrc={contenu.image_url}
-              audioUrl={contenu.audio_url ?? null}
+              audioUrl={contenu.sons_url ?? null}
             />
           ) : (
             <Label
@@ -213,7 +213,7 @@ function ExerciseTypeE(props) {
               voiceLine={contenu.element}
               sound={true}
               format={contenu.contenuFormats ?? null}
-              audioUrl={contenu.audio_url ?? null}
+              audioUrl={contenu.sons_url ?? null}
             />
           )}
         </div>

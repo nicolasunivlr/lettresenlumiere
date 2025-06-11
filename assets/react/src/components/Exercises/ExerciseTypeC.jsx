@@ -8,6 +8,7 @@ import OKButton from '../UI/OKButton';
 import useSpeak from '../../hooks/useSpeak';
 import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
+import useConfig from '../../hooks/useConfig';
 
 function ExerciseTypeC(props) {
   const { content, onDone } = props;
@@ -22,6 +23,7 @@ function ExerciseTypeC(props) {
   const attempt = useRef(0);
   const currentAttempt = useRef(0);
   const timeOutRef = useRef(4000);
+  const config = useConfig();
 
   useEffect(() => {
     if (content && content.contenus) {
@@ -82,7 +84,13 @@ function ExerciseTypeC(props) {
 
   useEffect(() => {
     if (!isLabelVisible && contentExercise[currentIndex]) {
-      speak(contentExercise[currentIndex].element);
+      if( contentExercise[currentIndex].sons_url) {
+        const url = `${config.audiosUrl}/${contentExercise[currentIndex].sons_url}`;
+        const audio = new Audio(url);
+        audio.play();
+      } else {
+        speak(contentExercise[currentIndex].element);
+      }
     }
   }, [isLabelVisible, contentExercise, currentIndex, speak]);
 
@@ -206,7 +214,7 @@ function ExerciseTypeC(props) {
                           sound={false}
                           format={contenu.contenuFormats ?? null}
                           imageSrc={contenu.image_url}
-                          audioUrl={contenu.audio_url ?? null}
+                          audioUrl={contenu.sons_url ?? null}
                           onClick={handleQuestionMarkClick}
                       />
                   ) : (
@@ -216,7 +224,7 @@ function ExerciseTypeC(props) {
                           voiceLine={contenu.element}
                           sound={false}
                           format={contenu.contenuFormats ?? null}
-                          audioUrl={contenu.audio_url ?? null}
+                          audioUrl={contenu.sons_url ?? null}
                           onClick={handleQuestionMarkClick}
                       />
                   )}

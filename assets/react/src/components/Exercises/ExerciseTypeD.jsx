@@ -7,6 +7,7 @@ import Instruction from '../Instruction';
 import useSpeak from '../../hooks/useSpeak';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
 import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
+import useConfig from '../../hooks/useConfig';
 
 const ExerciseTypeD = (props) => {
   const { content, onDone } = props;
@@ -20,6 +21,7 @@ const ExerciseTypeD = (props) => {
   const [isLocked, setisLocked] = useState(false);
   const [compteur, setCompteur] = useState(0);
   const [iterationCount, setIterationCount] = useState(0); // Nouveau compteur pour forcer la prononciation
+  const config = useConfig();
 
   // Ref pour suivre si l'initialisation a été effectuée
   const initializedRef = useRef(false);
@@ -179,7 +181,17 @@ const ExerciseTypeD = (props) => {
   // Nouvel effet pour toujours prononcer la réponse quand l'exercice change
   useEffect(() => {
     if (correctAnswer) {
-      speak(correctAnswer);
+      // recherche de l'élément dans contentExercise
+      const currentItem = contentExercise.find(
+        (item) => item.element === correctAnswer
+        );
+      if( currentItem.sons_url) {
+        const url = `${config.audiosUrl}/${currentItem.sons_url}`;
+        const audio = new Audio(url);
+        audio.play();
+      } else {
+        speak(correctAnswer);
+      }
     }
   }, [correctAnswer, iterationCount, speak]);
 
@@ -329,7 +341,7 @@ const ExerciseTypeD = (props) => {
           answer={contenu.answer}
           isSelected={contenu.isSelected}
           format={contenu.contenuFormats ?? null}
-          audioUrl={contenu.audio_url ?? null}
+          audioUrl={contenu.sons_url ?? null}
         />
       );
     });
@@ -346,7 +358,7 @@ const ExerciseTypeD = (props) => {
     const correctAnswerItem = contentExercise.find(
       (item) => item.element === correctAnswer
     );
-    return correctAnswerItem?.audio_url;
+    return correctAnswerItem?.sons_url;
   };
 
   // Effet pour gérer la touche Entrée

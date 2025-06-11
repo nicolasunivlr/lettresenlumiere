@@ -6,6 +6,7 @@ import useSpeak from '../../hooks/useSpeak';
 import Timer from '../UI/Timer';
 import Instruction from '../Instruction';
 import ModalExerciseG from '../UI/ModalExerciseG';
+import useConfig from '../../hooks/useConfig';
 
 const ExerciseTypeG = (props) => {
   const { content, onDone } = props;
@@ -22,6 +23,7 @@ const ExerciseTypeG = (props) => {
   const [availableContent, setAvailableContent] = useState([]); // Pour stocker les 6 éléments sélectionnés
   const [showModal, setShowModal] = useState(false);
   const [exerciseStarted, setExerciseStarted] = useState(false);
+  const config = useConfig();
 
   const { speak } = useSpeak();
 
@@ -105,7 +107,16 @@ const ExerciseTypeG = (props) => {
 
   useEffect(() => {
     if (response && exerciseStarted && timerKey > 0) {
-      speak(response);
+      const currentItem = contentExercise.find(
+          (item) => item.element === response
+      );
+      if( currentItem.sons_url) {
+        const url = `${config.audiosUrl}/${currentItem.sons_url}`;
+        const audio = new Audio(url);
+        audio.play();
+      } else {
+        speak(response);
+      }
     }
   }, [attempt, response, exerciseStarted]);
 
@@ -214,7 +225,7 @@ const ExerciseTypeG = (props) => {
         onClick={() => handleLabelClick(index, contenu.element)}
         answer={contenu.answer}
         format={contenu.contenuFormats ?? null}
-        audioUrl={contenu.audio_url ?? null}
+        audioUrl={contenu.sons_url ?? null}
       />
     ));
   };
@@ -250,7 +261,7 @@ const ExerciseTypeG = (props) => {
                   sound={true}
                   isClickable={true}
                   imageSrc={getCorrectAnswer(response).image_url}
-                  audioUrl={getCorrectAnswer(response)?.audio_url ?? null}
+                  audioUrl={getCorrectAnswer(response)?.sons_url ?? null}
                 />
               ) : (
                 <Label
@@ -259,7 +270,7 @@ const ExerciseTypeG = (props) => {
                   voiceLine={response}
                   sound={true}
                   isClickable={true}
-                  audioUrl={getCorrectAnswer(response)?.audio_url ?? null}
+                  audioUrl={getCorrectAnswer(response)?.sons_url ?? null}
                 />
               )
             ) : (

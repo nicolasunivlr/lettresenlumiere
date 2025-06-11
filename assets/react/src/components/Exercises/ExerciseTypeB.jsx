@@ -255,7 +255,7 @@ const ExerciseTypeB = ({ content, onDone }) => {
     const correctAnswerItem = contentExercise.find(
       (item) => item.element === correctAnswer
     );
-    return correctAnswerItem?.audio_url;
+    return correctAnswerItem?.sons_url;
   };
 
   return (
@@ -287,6 +287,9 @@ const ExerciseTypeB = ({ content, onDone }) => {
                 <Label
                   classe='label-sound'
                   text='?'
+                  audioUrl={getCorrectAnswerAudio(
+                      tabResponses.find((response) => !response.done)?.element
+                  )}
                   voiceLine={
                     tabResponses &&
                     tabResponses.find((response) => !response.done)?.element

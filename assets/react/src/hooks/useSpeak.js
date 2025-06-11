@@ -176,7 +176,6 @@ const useSpeak = () => {
 
     // Réagir aux changements de voix disponibles
     window.speechSynthesis.onvoiceschanged = loadVoices;
-    console.log(loadVoices)
 
     return () => {
       window.speechSynthesis.onvoiceschanged = null;
