@@ -1,5 +1,6 @@
 <?php
-// import-sql.php - Version pour MariaDB
+// Ce script est destiné à être exécuté dans un environnement WAMP pour nettoyer le cache, configurer la base de données et importer un fichier SQL.
+
 // Fonction pour supprimer récursivement un dossier et son contenu
 function rrmdir($dir) {
     if (is_dir($dir)) {
@@ -19,7 +20,7 @@ function rrmdir($dir) {
     return false;
 }
 
-// Chemin vers le dossier à nettoyer (imitation cache-clear)
+// Chemin vers le dossier à nettoyer (imitation cache:clear)
 $cachePath = __DIR__ . '\\var\\cache\\prod';
 
 // Vérifier si le dossier existe et le supprimer
@@ -217,6 +218,16 @@ if ($returnCode !== 0) {
     echo "Importation SQL réussie!\n";
 }
 
+// Ajouter fichier env.js dans le dossier public/js
+$envJsPath = __DIR__ . '\\public\\js\\env.js';
+$envJsContent = "const BASE_ROUTE = '/lettresenlumiere';\nexport default BASE_ROUTE;\n";
+if (file_put_contents($envJsPath, $envJsContent) === false) {
+    echo "ERREUR: Impossible de créer $envJsPath\n";
+    exit(1);
+} else {
+    echo "Fichier env.js créé avec succès dans $envJsPath\n";
+}
+
 // Get server's IP address
 function getServerIP() {
     // For Windows (WAMP is primarily on Windows)
@@ -224,7 +235,6 @@ function getServerIP() {
         $output = [];
         exec('ipconfig', $output);
         foreach ($output as $line) {
-            // Look for IPv4 addresses that are not loopback
             if (strpos($line, 'IPv4') !== false && strpos($line, '127.0.0.1') === false) {
                 preg_match('/\d+\.\d+\.\d+\.\d+/', $line, $matches);
                 if (!empty($matches)) {
@@ -233,8 +243,6 @@ function getServerIP() {
             }
         }
     }
-
-    // Fallback to PHP's function
     return gethostbyname(gethostname());
 }
 
