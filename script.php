@@ -228,6 +228,22 @@ if (file_put_contents($envJsPath, $envJsContent) === false) {
     echo "Fichier env.js créé avec succès dans $envJsPath\n";
 }
 
+// Lancer les fixtures de symfony
+$phpCommand = sprintf('"%s" "%s" bin/console doctrine:fixtures:load --no-interaction --append', $phpExecutable, __DIR__);
+echo "Création de l'utilisateur admin...\n";
+$output = [];
+$returnCode = 0;
+exec($phpCommand, $output, $returnCode);
+if ($returnCode !== 0) {
+    echo "Erreur lors de l'exécution de la création de l'utilisateur:\n";
+    foreach ($output as $line) {
+        echo $line . "\n";
+    }
+    exit(1);
+} else {
+    echo "L'utilisateur admin a été créé avec succès!\n";
+}
+
 // Get server's IP address
 function getServerIP() {
     // For Windows (WAMP is primarily on Windows)

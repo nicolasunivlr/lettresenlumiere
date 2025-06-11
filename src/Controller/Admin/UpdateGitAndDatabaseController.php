@@ -73,7 +73,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
 
         $projectDir = $this->params->get('kernel.project_dir');
 
-        $backupFile = '/backup_' . $dbName . '_' . date('Y-m-d_H-i-s') . '.sql';
+        $backupFile = $projectDir . '/backup_' . $dbName . '_' . date('Y-m-d_H-i-s') . '.sql';
 
         // Construction de la commande mysqldump
         // L'utilisation de --password= directement en ligne de commande peut être un risque de sécurité.
@@ -83,6 +83,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
             'mysqldump',
             '--host=' . $dbHost,
             '--user=' . $dbUser,
+            '--ignore-table=user'
         ];
 
         // Ajouter le mot de passe seulement s'il est défini
@@ -104,6 +105,14 @@ final class UpdateGitAndDatabaseController extends AbstractController
 
         // Écrire la sortie dans le fichier de sauvegarde
         $this->filesystem->dumpFile($backupFile, $process->getOutput());
+
+        // Gérer la mise à jour du dépôt Git
+        $gitProcess = new Process(['git', 'add', $backupFile]);
+        $gitProcess->setWorkingDirectory($projectDir);
+        $gitProcess->run();
+        if (!$gitProcess->isSuccessful()) {
+            throw new ProcessFailedException($gitProcess);
+        }
 
         return $backupFile;
     }
