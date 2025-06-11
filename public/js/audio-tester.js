@@ -1,3 +1,17 @@
+const allAudios = document.querySelectorAll('td[data-column="audioUrl"] img');
+// replace img by audio with controls
+allAudios.forEach( img => {
+    const audioUrl = img.getAttribute('src');
+    if (audioUrl) {
+        const audioElement = document.createElement('audio');
+        audioElement.src = audioUrl;
+        audioElement.controls = true;
+        img.parentNode.replaceChild(audioElement, img);
+    }
+});
+
+console.log('allAudios', allAudios);
+
 // Créez un nouveau bouton
 const newButton = document.createElement('button');
 newButton.id = 'speakButton';
