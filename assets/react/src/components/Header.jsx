@@ -2,6 +2,7 @@ import logoLettres from '../assets/images/Logolettresenlumiere.png';
 import QuitButton from './UI/QuitButton';
 import PageTitle from './UI/PageTitle';
 import Consigne from './Instruction';
+import Search from "./Search";
 import VideoModal from './UI/VideoModal';
 import BilanIcon from '../assets/images/bilan-icon.svg';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +17,7 @@ const Header = (props) => {
     openBilan,
     haveQuitButton,
     isVideoOpenOnMount,
+    onSearchTermChange,
   } = props;
   const navigate = useNavigate();
 
@@ -46,9 +48,11 @@ const Header = (props) => {
       {video && (
         <VideoModal sequence={video} isOpenOnMount={isVideoOpenOnMount} />
       )}
-
+      { pageName === "Progression" ? (
+        <Search onSearchChange={onSearchTermChange} />
+        ) : null }
       {haveQuitButton === undefined || haveQuitButton === true ? (
-        <QuitButton link={link} className='py-4 px-4 w-96 ml-auto' />
+        <QuitButton link={link} className='py-4 px-4 w-96' />
       ) : null}
     </header>
   );
