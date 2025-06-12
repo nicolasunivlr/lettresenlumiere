@@ -1,0 +1,146 @@
+name: Create GitHub Release
+
+on:
+  push:
+    tags:
+      - '*' # Se déclenche pour n'importe quel tag. Adaptez si vous avez un format spécifique (ex: 'v*.*.*')
+
+env:
+  RELEASE_BUILD_DIR: "release_payload"
+  # PHP_VERSION et NODE_VERSION peuvent être ajustés selon les besoins de votre projet
+  PHP_VERSION: '8.2'
+  NODE_VERSION: '20'
+
+jobs:
+  build_and_archive:
+    name: Build and Archive
+    runs-on: ubuntu-latest
+    outputs:
+      archive_name: ${{ steps.set_archive_vars.outputs.ARCHIVE_FILENAME }}
+      # Le chemin de l'archive sera simplement son nom, car elle est créée à la racine du workspace.
+      archive_path: ${{ steps.set_archive_vars.outputs.ARCHIVE_FILENAME }}
+
+    steps:
+      - name: Define Archive Filename and Tag
+        id: set_archive_vars
+        run: |
+          TAG_NAME="${{ github.ref_name }}"
+          ARCHIVE_FILENAME="${{ github.event.repository.name }}-${TAG_NAME}.zip"
+          echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "ARCHIVE_FILENAME=${ARCHIVE_FILENAME}" >> $GITHUB_OUTPUT
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        # fetch-depth: 0 # Décommentez si 'git archive' a besoin de l'historique complet (généralement pas nécessaire pour HEAD)
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: mbstring, xml, zip, ctype, json, phar # Extensions PHP courantes
+          tools: composer # Installe Composer
+
+      - name: Install OS dependencies (zip)
+        run: sudo apt-get update -y && sudo apt-get install -y zip
+
+      - name: Verify installations
+        run: |
+          echo "PHP version: $(php -v)"
+          echo "Composer version: $(composer --version)"
+          echo "Node version: $(node -v)"
+          echo "NPM version: $(npm -v)"
+          echo "Git version: $(git --version)"
+          echo "Zip version: $(zip --version)"
+          echo "Tag to process: ${{ steps.set_archive_vars.outputs.TAG_NAME }}"
+          echo "Archive will be: ${{ steps.set_archive_vars.outputs.ARCHIVE_FILENAME }}"
+
+      - name: Build and create archive
+        env:
+          # Rendre ARCHIVE_FILENAME disponible pour ce script multiligne
+          ARCHIVE_FILENAME_ENV: ${{ steps.set_archive_vars.outputs.ARCHIVE_FILENAME }}
+        run: |
+          echo "Starting build and archive process for tag ${{ steps.set_archive_vars.outputs.TAG_NAME }} on project ${{ github.repository }}"
+
+          # 1. Nettoyer et créer le répertoire de build temporaire
+          echo "[1/5] Preparing build directory..."
+          rm -rf "${{ env.RELEASE_BUILD_DIR }}"
+          mkdir -p "${{ env.RELEASE_BUILD_DIR }}"
+
+          # 2. Exporter les fichiers du projet (suivis par Git) dans le répertoire temporaire
+          echo "[2/5] Exporting project files..."
+          git archive HEAD | tar -x -C "${{ env.RELEASE_BUILD_DIR }}"
+
+          # 3. Installer les dépendances Composer (mode production)
+          if [ -f "${{ env.RELEASE_BUILD_DIR }}/composer.json" ]; then
+            echo "[3/5] Installing Composer dependencies..."
+            APP_ENV=prod composer install --no-dev --optimize-autoloader --working-dir="${{ env.RELEASE_BUILD_DIR }}"
+          else
+            echo "[3/5] composer.json not found. Skipping Composer dependencies."
+          fi
+
+          # 4. Installer les dépendances NPM et builder les assets front
+          if [ -f "${{ env.RELEASE_BUILD_DIR }}/package.json" ]; then
+            echo "[4/5] Installing NPM dependencies and building assets..."
+            CURRENT_JOB_DIR=$(pwd)
+            cd "${{ env.RELEASE_BUILD_DIR }}"
+            if [ -f "package-lock.json" ]; then
+              npm ci
+            else
+              npm install
+            fi
+            npm run build # Assurez-vous que ce script existe dans votre package.json
+            cd "$CURRENT_JOB_DIR"
+          else
+            echo "[4/5] package.json not found. Skipping NPM dependencies and asset build."
+          fi
+
+          # 5. Créer l'archive ZIP
+          echo "[5/5] Creating ZIP archive: $ARCHIVE_FILENAME_ENV"
+          cd "${{ env.RELEASE_BUILD_DIR }}"
+          # L'archive est créée dans le répertoire parent (racine du workspace)
+          zip -r "../$ARCHIVE_FILENAME_ENV" . -x ".git/*" ".github/*" "node_modules/.cache/*"
+          cd ..
+          echo "Archive created: $ARCHIVE_FILENAME_ENV"
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-archive # Nom de l'artefact (pour le téléchargement dans le job suivant)
+          path: ${{ steps.set_archive_vars.outputs.ARCHIVE_FILENAME }} # Chemin vers le fichier ZIP à téléverser
+          retention-days: 7 # Optionnel: durée de conservation de l'artefact
+
+  publish_release:
+    name: Publish GitHub Release
+    needs: build_and_archive # Dépend du job précédent
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Nécessaire pour créer une release et téléverser des assets
+
+    steps:
+      - name: Download release artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-archive # Doit correspondre au nom utilisé dans 'upload-artifact'
+          # Par défaut, télécharge à la racine du workspace.
+
+      - name: Display structure of downloaded files (for debugging)
+        run: ls -la
+
+      - name: Create GitHub Release and Upload Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ needs.build_and_archive.outputs.archive_name }} # Nom du fichier ZIP à attacher
+          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }} # Utilise le tag qui a déclenché le workflow
+          body: |
+            Automated release for ${{ github.repository }} version ${{ github.ref_name }}.
+            Includes application code, vendor dependencies, and built frontend assets.
+          # draft: false # Décommentez et mettez à true pour créer un brouillon de release
+          # prerelease: false # Décommentez et mettez à true si c'est une pré-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Fourni automatiquement par GitHub Actions
