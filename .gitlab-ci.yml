@@ -39,7 +39,7 @@ create_release_zip:
     - |
       if [ -f "$RELEASE_BUILD_DIR/composer.json" ]; then
         echo "[3/5] Installing Composer dependencies..."
-        composer install --no-dev --optimize-autoloader --working-dir="$RELEASE_BUILD_DIR"
+        APP_ENV=prod composer install --no-dev --optimize-autoloader --working-dir="$RELEASE_BUILD_DIR"
       else
         echo "[3/5] composer.json not found. Skipping Composer dependencies."
       fi
