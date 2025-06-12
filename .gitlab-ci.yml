@@ -66,7 +66,7 @@ create_release_zip:
     # 5. Créer l'archive ZIP
     # Se placer dans le répertoire de build pour que le ZIP contienne directement les fichiers
     # et non le dossier RELEASE_BUILD_DIR lui-même.
-    - echo "[5/5] Creating ZIP archive: $ARCHIVE_FILENAME..."
+    - echo "[5/5] Creating ZIP archive:"
     - cd "$RELEASE_BUILD_DIR"
     # Exclure les fichiers/dossiers non nécessaires à la release (ex: .git, .gitlab-ci.yml, etc.)
     # git archive ne devrait pas inclure .git, mais l'exclusion est une sécurité.
