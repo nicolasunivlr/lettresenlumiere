@@ -1,28 +1,22 @@
 stages:
   - release
 
-# L'image globale peut rester node:18 si d'autres jobs l'utilisent,
-# ou être supprimée si ce job est le seul.
-# Nous spécifierons l'image au niveau du job create_release_zip.
-image: node:18
-
 create_release_zip:
   stage: release
-  # Utiliser l'image officielle GitLab CLI qui contient glab
-  image: registry.gitlab.com/gitlab-org/cli:latest
+  image: registry.gitlab.com/gitlab-org/cli:latest # Image Alpine avec glab
   before_script:
+    - set -e # Arrêter le script en cas d'erreur
     - apk update
-    # Installer les dépendances pour la construction de l'application et de l'archive.
-    # git et glab sont déjà dans l'image de base.
-    - apk add --no-cache zip nodejs-current npm php82 php82-cli php82-zip php82-xml php82-mbstring
-    - COPY --from=composer /usr/bin/composer /usr/bin/composer
-    # Vérification des versions (optionnel, utile pour le débogage)
-    - php -v || echo 'PHP (php82) not found'
-    - composer --version || echo 'Composer not found'
-    - node -v || echo 'Node not found'
-    - npm -v || echo 'NPM not found'
-    - git --version || echo 'Git not found'
-    - glab --version || echo 'glab not found'
+    # Installer les dépendances : zip, nodejs, npm, PHP, extensions PHP et Composer.
+    # Le paquet 'composer' installera PHP comme dépendance si nécessaire.
+    # Ajoutez les extensions php82-* spécifiques requises par votre projet.
+    - apk add --no-cache zip nodejs-current npm php82 php82-cli php82-json php82-phar php82-ctype php82-xml php82-zip php82-mbstring composer
+    - echo "Vérification des installations..."
+    - php -v
+    - composer --version # Ceci devrait maintenant fonctionner
+    - node -v
+    - npm -v
+    - glab --version
   script:
     - echo "Starting release process for tag $CI_COMMIT_TAG on project $CI_PROJECT_NAME"
 
