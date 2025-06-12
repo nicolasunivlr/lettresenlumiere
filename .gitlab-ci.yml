@@ -14,7 +14,8 @@ create_release_zip:
     - apk update
     # Installer les dépendances pour la construction de l'application et de l'archive.
     # git et glab sont déjà dans l'image de base.
-    - apk add --no-cache zip nodejs-current npm php82 php82-cli php82-zip php82-xml php82-mbstring php82-composer
+    - apk add --no-cache zip nodejs-current npm php82 php82-cli php82-zip php82-xml php82-mbstring
+    - COPY --from=composer /usr/bin/composer /usr/bin/composer
     # Vérification des versions (optionnel, utile pour le débogage)
     - php -v || echo 'PHP (php82) not found'
     - composer --version || echo 'Composer not found'
