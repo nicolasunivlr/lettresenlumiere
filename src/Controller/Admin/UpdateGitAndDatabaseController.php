@@ -50,9 +50,6 @@ final class UpdateGitAndDatabaseController extends AbstractController
 
     private function executeBackupDbAction(): string
     {
-        //TODO: attention à ne pas sauvegarder les données utilisateur sinon, on ne pourra pas se connecter !!!
-        // Faire jouer les fixtures ????
-
         if (!$this->databaseUrl) {
             throw new \Exception("La variable d'environnement DATABASE_URL n'est pas configurée.");
         }
@@ -108,6 +105,15 @@ final class UpdateGitAndDatabaseController extends AbstractController
         // Écrire la sortie dans le fichier de sauvegarde
         $this->filesystem->dumpFile($backupFile, $process->getOutput());
 
+        $gitPullCommand = [
+            'sudo',
+            '-u', $this->user,
+            '/usr/bin/git',
+            '-C', $projectDir,
+            'pull'
+        ];
+        $this->executeGitCommands($gitPullCommand, $projectDir);
+
         $gitAddCommand = [
             'sudo',
             '-u', $this->user,
@@ -116,13 +122,37 @@ final class UpdateGitAndDatabaseController extends AbstractController
             'add', '.'
         ];
 
-        $gitProcess = new Process($gitAddCommand);
-        $gitProcess->setWorkingDirectory($projectDir);
-        $gitProcess->run();
-        if (!$gitProcess->isSuccessful()) {
-            throw new ProcessFailedException($gitProcess);
-        }
+        $this->executeGitCommands($gitAddCommand, $projectDir);
+
+        $gitCommitCommand = [
+            'sudo',
+            '-u', $this->user,
+            '/usr/bin/git',
+            '-C', $projectDir,
+            'commit', '-m', 'Mise à jour du site depuis le serveur de production.'
+        ];
+        $this->executeGitCommands($gitCommitCommand, $projectDir);
+
+        $gitPushCommand = [
+            'sudo',
+            '-u', $this->user,
+            '/usr/bin/git',
+            '-C', $projectDir,
+            'push'
+        ];
+        $this->executeGitCommands($gitPushCommand, $projectDir);
 
         return $backupFile;
+    }
+
+    private function executeGitCommands(array $command, string $projectDir): void
+    {
+        $process = new Process($command);
+        $process->setWorkingDirectory($projectDir);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
     }
 }
