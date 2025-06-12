@@ -43,6 +43,7 @@ if "!PHP_FOUND!"=="" (
 :execute
 echo Execution avec !PHP_EXE!...
 "!PHP_EXE!" ./script.php ./bdd.sql
+"!PHP_EXE!" bin/console doctrine:fixtures:load --no-interaction --append
 echo Termine.
 pause
 
