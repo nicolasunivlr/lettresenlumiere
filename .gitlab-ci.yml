@@ -1,52 +1,50 @@
 stages:
   - release
 
-create_release_zip:
+variables:
+  RELEASE_BUILD_DIR: "release_payload"
+  # Le nom de l'archive est défini ici pour être accessible par les deux jobs.
+  # CI_PROJECT_NAME et CI_COMMIT_TAG sont des variables prédéfinies par GitLab.
+  ARCHIVE_FILENAME: "${CI_PROJECT_NAME}-${CI_COMMIT_TAG}.zip"
+
+build_and_archive_job:
   stage: release
-  image: registry.gitlab.com/gitlab-org/cli:latest # Image Alpine avec glab
+  image: node:20
   before_script:
-    - set -e # Arrêter le script en cas d'erreur
-    - apk update
-    # Installer les dépendances : zip, nodejs, npm, PHP, extensions PHP et Composer.
-    # Le paquet 'composer' installera PHP comme dépendance si nécessaire.
-    # Ajoutez les extensions php82-* spécifiques requises par votre projet.
-    - apk add --no-cache zip nodejs-current npm php82 php82-cli php82-json php82-phar php82-ctype php82-xml php82-zip php82-mbstring composer
+    - apt-get update -yqq
+    - apt-get install -yqq --no-install-recommends zip php-cli php-zip php-xml php-mbstring composer git
     - echo "Vérification des installations..."
     - php -v
-    - composer --version # Ceci devrait maintenant fonctionner
+    - composer --version
     - node -v
     - npm -v
-    - glab --version
+    - git --version
+    - zip --version
   script:
-    - echo "Starting release process for tag $CI_COMMIT_TAG on project $CI_PROJECT_NAME"
-
-    # Définition des noms
-    - RELEASE_BUILD_DIR="release_payload"
-    - ARCHIVE_FILENAME="${CI_PROJECT_NAME}-${CI_COMMIT_TAG}.zip"
+    - echo "Starting build and archive process for tag $CI_COMMIT_TAG on project $CI_PROJECT_NAME"
 
     # 1. Nettoyer et créer le répertoire de build temporaire
-    - echo "[1/6] Preparing build directory..."
+    - echo "[1/5] Preparing build directory..."
     - rm -rf "$RELEASE_BUILD_DIR"
     - mkdir -p "$RELEASE_BUILD_DIR"
 
     # 2. Exporter les fichiers du projet (suivis par Git) dans le répertoire temporaire
-    - echo "[2/6] Exporting project files..."
+    - echo "[2/5] Exporting project files..."
     - git archive HEAD | tar -x -C "$RELEASE_BUILD_DIR"
 
     # 3. Installer les dépendances Composer (mode production)
     - |
       if [ -f "$RELEASE_BUILD_DIR/composer.json" ]; then
-        echo "[3/6] Installing Composer dependencies..."
-        # APP_ENV=prod est important pour les scripts post-install de Symfony, par exemple.
+        echo "[3/5] Installing Composer dependencies..."
         APP_ENV=prod composer install --no-dev --optimize-autoloader --working-dir="$RELEASE_BUILD_DIR"
       else
-        echo "[3/6] composer.json not found. Skipping Composer dependencies."
+        echo "[3/5] composer.json not found. Skipping Composer dependencies."
       fi
 
     # 4. Installer les dépendances NPM et builder les assets front
     - |
       if [ -f "$RELEASE_BUILD_DIR/package.json" ]; then
-        echo "[4/6] Installing NPM dependencies and building assets..."
+        echo "[4/5] Installing NPM dependencies and building assets..."
         CURRENT_JOB_DIR=$(pwd)
         cd "$RELEASE_BUILD_DIR"
         if [ -f "package-lock.json" ]; then
@@ -54,37 +52,49 @@ create_release_zip:
         else
           npm install
         fi
-        npm run build # Assurez-vous que ce script existe dans votre package.json
+        npm run build
         cd "$CURRENT_JOB_DIR"
       else
-        echo "[4/6] package.json not found. Skipping NPM dependencies and asset build."
+        echo "[4/5] package.json not found. Skipping NPM dependencies and asset build."
       fi
 
     # 5. Créer l'archive ZIP
-    - echo "[5/6] Creating ZIP archive"
+    - echo "[5/5] Creating ZIP archive"
     - cd "$RELEASE_BUILD_DIR"
     - zip -r "../$ARCHIVE_FILENAME" . -x ".git/*" ".github/*"
-    - cd .. # Revenir au répertoire racine du job
+    - cd ..
 
-    # 6. Créer la Release GitLab en utilisant glab et attacher l'archive
-    - echo "[6/6] Creating GitLab Release and uploading archive $ARCHIVE_FILENAME..."
+  artifacts:
+    paths:
+      - $ARCHIVE_FILENAME
+    expire_in: '1 hour' # L'artefact est nécessaire pour le job suivant, puis peut expirer.
+    # Ou 'never' si vous voulez le conserver plus longtemps pour ce job.
+  only:
+    - tags
+
+publish_release_job:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/cli:latest # Image Alpine avec glab
+  needs:
+    - job: build_and_archive_job # Dépend du job précédent et récupère ses artefacts
+      artifacts: true
+  before_script:
+    - glab --version # Vérifier que glab est disponible
+  script:
+    - echo "Starting GitLab Release creation process..."
+    # L'ARCHIVE_FILENAME est disponible car il a été créé par build_and_archive_job
+    # et son nom est défini dans les variables globales du pipeline.
+    # L'artefact lui-même est téléchargé grâce à 'needs:artifacts:true'.
+    - ls -la # Vérifier que l'archive est présente
+
     - RELEASE_NAME="Release $CI_COMMIT_TAG"
     - RELEASE_DESCRIPTION="Automated release for $CI_PROJECT_NAME version $CI_COMMIT_TAG. Includes application code, vendor dependencies, and built frontend assets."
-    # La commande glab va utiliser CI_JOB_TOKEN pour s'authentifier.
-    # Elle va créer une release pour le tag $CI_COMMIT_TAG et y attacher le fichier $ARCHIVE_FILENAME.
+
     - |
+      echo "Creating GitLab Release $RELEASE_NAME for tag $CI_COMMIT_TAG and uploading $ARCHIVE_FILENAME..."
       glab release create "$CI_COMMIT_TAG" "$ARCHIVE_FILENAME" \
         --name "$RELEASE_NAME" \
         --notes "$RELEASE_DESCRIPTION"
       echo "GitLab Release created successfully with glab."
-
-  artifacts:
-    name: "$CI_PROJECT_NAME-$CI_COMMIT_TAG-artifacts"
-    paths:
-      - $ARCHIVE_FILENAME # Conserver l'archive comme artefact du job
-    expire_in: 'never'
-
-  # La section 'release:' est supprimée car glab s'en charge.
-
   only:
-    - tags # Ce job ne s'exécute que pour les tags Git
+    - tags
