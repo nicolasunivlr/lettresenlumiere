@@ -75,10 +75,6 @@ create_release_zip:
     - zip -r "../$ARCHIVE_FILENAME" . -x ".git/*" ".github/*"
     - cd .. # Revenir au répertoire racine du job
 
-    # Afficher le contenu de l'archive (optionnel, pour débogage)
-    - echo "Contents of $ARCHIVE_FILENAME:"
-    - unzip -l "$ARCHIVE_FILENAME"
-
   artifacts:
     name: "$CI_PROJECT_NAME-$CI_COMMIT_TAG-artifacts" # Nom du package d'artefacts
     paths:
