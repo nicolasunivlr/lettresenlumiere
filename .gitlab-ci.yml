@@ -12,12 +12,15 @@ create_release_zip:
     # Installation de git (au cas où il ne serait pas dans l'image de base ou pour s'assurer d'une version récente)
     # et des outils pour PHP/Composer et la création de ZIP.
     - apt-get install -yqq --no-install-recommends git zip php-cli php-zip php-xml php-mbstring composer
+    - curl -sL "https://release-cli-downloads.s3.amazonaws.com/latest/release-cli-linux-amd64" -o /usr/local/bin/release-cli
+    - chmod +x /usr/local/bin/release-cli
     # Vérification des versions (optionnel)
     - php -v
     - composer --version
     - node -v
     - npm -v
     - git --version
+    - release-cli --version
   script:
     - echo "Starting release process for tag $CI_COMMIT_TAG on project $CI_PROJECT_NAME"
 
