@@ -19,7 +19,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
         private Filesystem $filesystem,
         #[Autowire('%env(DATABASE_URL)%')]
         private $databaseUrl,
-        #[Autowire('%env(USER)%')]
+        #[Autowire('%env(GITUSER)%')]
         private string $user
     )
     {}
