@@ -1,99 +1,95 @@
 stages:
   - release
 
-# Utiliser une image Docker qui contient Node.js. PHP, Composer et zip seront installés.
-# Vous pouvez remplacer par une image plus spécifique ou une image personnalisée pour gagner du temps.
-image: node:18 # Exemple avec Node.js 18 LTS
+# L'image globale peut rester node:18 si d'autres jobs l'utilisent,
+# ou être supprimée si ce job est le seul.
+# Nous spécifierons l'image au niveau du job create_release_zip.
+image: node:18
 
 create_release_zip:
   stage: release
+  # Utiliser l'image officielle GitLab CLI qui contient glab
+  image: registry.gitlab.com/gitlab-org/cli:latest
   before_script:
-    - apt-get update -yqq
-    # Installation de git (au cas où il ne serait pas dans l'image de base ou pour s'assurer d'une version récente)
-    # et des outils pour PHP/Composer et la création de ZIP.
-    - apt-get install -yqq --no-install-recommends git zip php-cli php-zip php-xml php-mbstring composer
-    - curl -sL "https://release-cli-downloads.s3.amazonaws.com/latest/release-cli-linux-amd64" -o /usr/local/bin/release-cli
-    - chmod +x /usr/local/bin/release-cli
-    # Vérification des versions (optionnel)
-    - php -v
-    - composer --version
-    - node -v
-    - npm -v
-    - git --version
-    - release-cli --version
+    - apk update
+    # Installer les dépendances pour la construction de l'application et de l'archive.
+    # git et glab sont déjà dans l'image de base.
+    - apk add --no-cache zip nodejs-current npm php82 php82-cli php82-zip php82-xml php82-mbstring php82-composer
+    # Vérification des versions (optionnel, utile pour le débogage)
+    - php -v || echo 'PHP (php82) not found'
+    - composer --version || echo 'Composer not found'
+    - node -v || echo 'Node not found'
+    - npm -v || echo 'NPM not found'
+    - git --version || echo 'Git not found'
+    - glab --version || echo 'glab not found'
   script:
     - echo "Starting release process for tag $CI_COMMIT_TAG on project $CI_PROJECT_NAME"
 
     # Définition des noms
-    - RELEASE_BUILD_DIR="release_payload" # Répertoire temporaire pour assembler les fichiers
+    - RELEASE_BUILD_DIR="release_payload"
     - ARCHIVE_FILENAME="${CI_PROJECT_NAME}-${CI_COMMIT_TAG}.zip"
 
     # 1. Nettoyer et créer le répertoire de build temporaire
-    - echo "[1/5] Preparing build directory..."
+    - echo "[1/6] Preparing build directory..."
     - rm -rf "$RELEASE_BUILD_DIR"
     - mkdir -p "$RELEASE_BUILD_DIR"
 
     # 2. Exporter les fichiers du projet (suivis par Git) dans le répertoire temporaire
-    # Utilise HEAD du commit taggué.
-    - echo "[2/5] Exporting project files..."
+    - echo "[2/6] Exporting project files..."
     - git archive HEAD | tar -x -C "$RELEASE_BUILD_DIR"
 
     # 3. Installer les dépendances Composer (mode production)
     - |
       if [ -f "$RELEASE_BUILD_DIR/composer.json" ]; then
-        echo "[3/5] Installing Composer dependencies..."
+        echo "[3/6] Installing Composer dependencies..."
+        # APP_ENV=prod est important pour les scripts post-install de Symfony, par exemple.
         APP_ENV=prod composer install --no-dev --optimize-autoloader --working-dir="$RELEASE_BUILD_DIR"
       else
-        echo "[3/5] composer.json not found. Skipping Composer dependencies."
+        echo "[3/6] composer.json not found. Skipping Composer dependencies."
       fi
 
     # 4. Installer les dépendances NPM et builder les assets front
     - |
       if [ -f "$RELEASE_BUILD_DIR/package.json" ]; then
-        echo "[4/5] Installing NPM dependencies and building assets..."
-        # Sauvegarder le répertoire courant du job CI
+        echo "[4/6] Installing NPM dependencies and building assets..."
         CURRENT_JOB_DIR=$(pwd)
         cd "$RELEASE_BUILD_DIR"
         if [ -f "package-lock.json" ]; then
-          npm ci # Utiliser package-lock.json pour des builds reproductibles
+          npm ci
         else
           npm install
         fi
         npm run build # Assurez-vous que ce script existe dans votre package.json
-        # Retourner au répertoire du job CI
         cd "$CURRENT_JOB_DIR"
       else
-        echo "[4/5] package.json not found. Skipping NPM dependencies and asset build."
+        echo "[4/6] package.json not found. Skipping NPM dependencies and asset build."
       fi
 
     # 5. Créer l'archive ZIP
-    # Se placer dans le répertoire de build pour que le ZIP contienne directement les fichiers
-    # et non le dossier RELEASE_BUILD_DIR lui-même.
-    - echo "[5/5] Creating ZIP archive:"
+    - echo "[5/6] Creating ZIP archive"
     - cd "$RELEASE_BUILD_DIR"
-    # Exclure les fichiers/dossiers non nécessaires à la release (ex: .git, .gitlab-ci.yml, etc.)
-    # git archive ne devrait pas inclure .git, mais l'exclusion est une sécurité.
-    # Le .gitlab-ci.yml est au niveau supérieur, donc pas inclus par "zip -r ./*" ici.
-    # Si vous avez d'autres fichiers à exclure, ajoutez-les avec -x
     - zip -r "../$ARCHIVE_FILENAME" . -x ".git/*" ".github/*"
     - cd .. # Revenir au répertoire racine du job
 
-  artifacts:
-    name: "$CI_PROJECT_NAME-$CI_COMMIT_TAG-artifacts" # Nom du package d'artefacts
-    paths:
-      - $CI_PROJECT_NAME-$CI_COMMIT_TAG.zip # Le nom doit correspondre à ARCHIVE_FILENAME
-    expire_in: 'never' # Conserver les artefacts de release indéfiniment (ou ajuster)
+    # 6. Créer la Release GitLab en utilisant glab et attacher l'archive
+    - echo "[6/6] Creating GitLab Release and uploading archive $ARCHIVE_FILENAME..."
+    - RELEASE_NAME="Release $CI_COMMIT_TAG"
+    - RELEASE_DESCRIPTION="Automated release for $CI_PROJECT_NAME version $CI_COMMIT_TAG. Includes application code, vendor dependencies, and built frontend assets."
+    # La commande glab va utiliser CI_JOB_TOKEN pour s'authentifier.
+    # Elle va créer une release pour le tag $CI_COMMIT_TAG et y attacher le fichier $ARCHIVE_FILENAME.
+    - |
+      glab release create "$CI_COMMIT_TAG" "$ARCHIVE_FILENAME" \
+        --name "$RELEASE_NAME" \
+        --notes "$RELEASE_DESCRIPTION"
+      echo "GitLab Release created successfully with glab."
 
-  release:
-    name: 'Release $CI_COMMIT_TAG'
-    description: 'Automated release for $CI_PROJECT_NAME version $CI_COMMIT_TAG. Includes application code, vendor dependencies, and built frontend assets.'
-    tag_name: '$CI_COMMIT_TAG' # Doit correspondre au tag qui a déclenché le pipeline
-    assets:
-      links:
-        - name: '$CI_PROJECT_NAME-$CI_COMMIT_TAG.zip'
-          # URL directe pour télécharger l'artefact du job courant
-          url: '${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/raw/${CI_PROJECT_NAME}-${CI_COMMIT_TAG}.zip'
-          # filepath: '/${CI_PROJECT_NAME}-${CI_COMMIT_TAG}.zip' # Alternative si l'artefact est publié dans le Generic Package Registry
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_COMMIT_TAG-artifacts"
+    paths:
+      - $ARCHIVE_FILENAME # Conserver l'archive comme artefact du job
+    expire_in: 'never'
+
+  # La section 'release:' est supprimée car glab s'en charge.
 
   only:
     - tags # Ce job ne s'exécute que pour les tags Git
