@@ -1,4 +1,3 @@
-/*M!999999\- enable the sandbox mode */ 
 -- MariaDB dump 10.19  Distrib 10.11.13-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: ntrugeon_lel
@@ -35,6 +34,154 @@ CREATE TABLE `contenu` (
   CONSTRAINT `FK_89C2003F98FB19AE` FOREIGN KEY (`sequence_id`) REFERENCES `sequence` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3548 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `contenu_exercice`
+--
+
+DROP TABLE IF EXISTS `contenu_exercice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contenu_exercice` (
+  `contenu_id` int(11) NOT NULL,
+  `exercice_id` int(11) NOT NULL,
+  PRIMARY KEY (`contenu_id`,`exercice_id`),
+  KEY `IDX_596D469C3C1CC488` (`contenu_id`),
+  KEY `IDX_596D469C89D40298` (`exercice_id`),
+  CONSTRAINT `FK_596D469C3C1CC488` FOREIGN KEY (`contenu_id`) REFERENCES `contenu` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_596D469C89D40298` FOREIGN KEY (`exercice_id`) REFERENCES `exercice` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `contenu_format`
+--
+
+DROP TABLE IF EXISTS `contenu_format`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contenu_format` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `couleur_id` int(11) DEFAULT NULL,
+  `contenu_id` int(11) DEFAULT NULL,
+  `lettres` varchar(255) NOT NULL,
+  `bold` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_7A2602EDC31BA576` (`couleur_id`),
+  KEY `IDX_7A2602ED3C1CC488` (`contenu_id`),
+  CONSTRAINT `FK_7A2602ED3C1CC488` FOREIGN KEY (`contenu_id`) REFERENCES `contenu` (`id`),
+  CONSTRAINT `FK_7A2602EDC31BA576` FOREIGN KEY (`couleur_id`) REFERENCES `couleur` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=882 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `couleur`
+--
+
+DROP TABLE IF EXISTS `couleur`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `couleur` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `etape`
+--
+
+DROP TABLE IF EXISTS `etape`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `etape` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `exercice`
+--
+
+DROP TABLE IF EXISTS `exercice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `exercice` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sequence_id` int(11) NOT NULL,
+  `type_exercice` varchar(255) NOT NULL,
+  `consigne` longtext DEFAULT NULL,
+  `ordre` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_E418C74D98FB19AE` (`sequence_id`),
+  CONSTRAINT `FK_E418C74D98FB19AE` FOREIGN KEY (`sequence_id`) REFERENCES `sequence` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1230 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sequence`
+--
+
+DROP TABLE IF EXISTS `sequence`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sequence` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `etape_id` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `video_url` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_5286D72B4A8CA2AD` (`etape_id`),
+  CONSTRAINT `FK_5286D72B4A8CA2AD` FOREIGN KEY (`etape_id`) REFERENCES `etape` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(180) NOT NULL,
+  `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '(DC2Type:json)' CHECK (json_valid(`roles`)),
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_IDENTIFIER_USERNAME` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-06-13 16:20:35
+/*M!999999\- enable the sandbox mode */ 
+-- MariaDB dump 10.19  Distrib 10.11.13-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: ntrugeon_lel
+-- ------------------------------------------------------
+-- Server version	10.11.13-MariaDB-0ubuntu0.24.04.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
 -- Dumping data for table `contenu`
@@ -2243,24 +2390,6 @@ INSERT INTO `contenu` VALUES
 (3547,3,'é',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `contenu` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `contenu_exercice`
---
-
-DROP TABLE IF EXISTS `contenu_exercice`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8mb4 */;
-CREATE TABLE `contenu_exercice` (
-  `contenu_id` int(11) NOT NULL,
-  `exercice_id` int(11) NOT NULL,
-  PRIMARY KEY (`contenu_id`,`exercice_id`),
-  KEY `IDX_596D469C3C1CC488` (`contenu_id`),
-  KEY `IDX_596D469C89D40298` (`exercice_id`),
-  CONSTRAINT `FK_596D469C3C1CC488` FOREIGN KEY (`contenu_id`) REFERENCES `contenu` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_596D469C89D40298` FOREIGN KEY (`exercice_id`) REFERENCES `exercice` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `contenu_exercice`
@@ -11429,27 +11558,6 @@ INSERT INTO `contenu_exercice` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `contenu_format`
---
-
-DROP TABLE IF EXISTS `contenu_format`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8mb4 */;
-CREATE TABLE `contenu_format` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `couleur_id` int(11) DEFAULT NULL,
-  `contenu_id` int(11) DEFAULT NULL,
-  `lettres` varchar(255) NOT NULL,
-  `bold` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_7A2602EDC31BA576` (`couleur_id`),
-  KEY `IDX_7A2602ED3C1CC488` (`contenu_id`),
-  CONSTRAINT `FK_7A2602ED3C1CC488` FOREIGN KEY (`contenu_id`) REFERENCES `contenu` (`id`),
-  CONSTRAINT `FK_7A2602EDC31BA576` FOREIGN KEY (`couleur_id`) REFERENCES `couleur` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=882 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `contenu_format`
 --
 
@@ -12340,20 +12448,6 @@ INSERT INTO `contenu_format` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `couleur`
---
-
-DROP TABLE IF EXISTS `couleur`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8mb4 */;
-CREATE TABLE `couleur` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `code` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `couleur`
 --
 
@@ -12375,20 +12469,6 @@ INSERT INTO `couleur` VALUES
 (68,'#98b253');
 /*!40000 ALTER TABLE `couleur` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `etape`
---
-
-DROP TABLE IF EXISTS `etape`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8mb4 */;
-CREATE TABLE `etape` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nom` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `etape`
@@ -12418,25 +12498,6 @@ INSERT INTO `etape` VALUES
 (22,'Etape 19');
 /*!40000 ALTER TABLE `etape` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `exercice`
---
-
-DROP TABLE IF EXISTS `exercice`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8mb4 */;
-CREATE TABLE `exercice` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sequence_id` int(11) NOT NULL,
-  `type_exercice` varchar(255) NOT NULL,
-  `consigne` longtext DEFAULT NULL,
-  `ordre` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_E418C74D98FB19AE` (`sequence_id`),
-  CONSTRAINT `FK_E418C74D98FB19AE` FOREIGN KEY (`sequence_id`) REFERENCES `sequence` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1230 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `exercice`
@@ -13676,24 +13737,6 @@ INSERT INTO `exercice` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `sequence`
---
-
-DROP TABLE IF EXISTS `sequence`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sequence` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `etape_id` int(11) NOT NULL,
-  `nom` varchar(255) NOT NULL,
-  `video_url` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_5286D72B4A8CA2AD` (`etape_id`),
-  CONSTRAINT `FK_5286D72B4A8CA2AD` FOREIGN KEY (`etape_id`) REFERENCES `etape` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `sequence`
 --
 
@@ -13799,14 +13842,25 @@ INSERT INTO `sequence` VALUES
 (97,18,'BILAN 18',NULL);
 /*!40000 ALTER TABLE `sequence` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES
+(1,'admin','[\"ROLE_ADMIN\"]','$2y$13$xnvraPrE0wWjT5l0PXbCQelk0JtOgeibEWIXlb28U5n/CBAK9Mydq'),
+(2,'ntrugeon','[\"ROLE_ADMIN\"]','$2y$13$9w4EQXEeF7wuPri06fESSeAmhXqR9hUHPaWIbmTCTG8Xv.tNfJK2S');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-13 14:43:50
+-- Dump completed on 2025-06-13 16:20:35
