@@ -25,7 +25,7 @@ jobs:
         id: set_archive_vars
         run: |
           TAG_NAME="${{ github.ref_name }}"
-          ARCHIVE_FILENAME="${{ github.event.repository.name }}-${TAG_NAME}.zip"
+          ARCHIVE_FILENAME="${{ github.event.repository.name }}.zip"
           echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_OUTPUT
           echo "ARCHIVE_FILENAME=${ARCHIVE_FILENAME}" >> $GITHUB_OUTPUT
 
