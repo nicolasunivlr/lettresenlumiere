@@ -74,36 +74,57 @@ final class UpdateGitAndDatabaseController extends AbstractController
 
         $backupFile = $projectDir . '/bdd.sql';
 
-        // Construction de la commande mysqldump
-        // L'utilisation de --password= directement en ligne de commande peut être un risque de sécurité.
-        // Pour une meilleure sécurité, envisagez d'utiliser un fichier d'options MySQL (my.cnf)
-        // ou des variables d'environnement que mysqldump peut lire (ex: MYSQL_PWD).
-        $command = [
+        // Commande pour exporter la structure de toutes les tables
+        $commandStructure = [
             'mysqldump',
             '--host=' . $dbHost,
-            '--user=' . $dbUser,
-            '--ignore-table='.$dbName.'.user'
         ];
-
-        // Ajouter le mot de passe seulement s'il est défini
+        if ($dbPort) {
+            $commandStructure[] = '--port=' . $dbPort;
+        }
+        $commandStructure[] = '--user=' . $dbUser;
         if ($dbPassword) {
-            $command[] = '--password=' . $dbPassword;
+            $commandStructure[] = '--password=' . $dbPassword;
         }
+        $commandStructure[] = '--no-data'; // Exporter uniquement la structure
+        $commandStructure[] = $dbName;
 
-        $command[] = $dbName;
+        $processStructure = new Process($commandStructure);
+        $processStructure->setTimeout(3600);
+        $processStructure->run();
 
-        $process = new Process($command);
-
-        // Augmenter le timeout si nécessaire pour les grosses bases de données
-        $process->setTimeout(3600); // 1 heure, par exemple
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+        if (!$processStructure->isSuccessful()) {
+            throw new ProcessFailedException($processStructure);
         }
+        $structureOutput = $processStructure->getOutput();
 
-        // Écrire la sortie dans le fichier de sauvegarde
-        $this->filesystem->dumpFile($backupFile, $process->getOutput());
+        // Commande pour exporter les données de toutes les tables SAUF la table user
+        $commandData = [
+            'mysqldump',
+            '--host=' . $dbHost,
+        ];
+        if ($dbPort) {
+            $commandData[] = '--port=' . $dbPort;
+        }
+        $commandData[] = '--user=' . $dbUser;
+        if ($dbPassword) {
+            $commandData[] = '--password=' . $dbPassword;
+        }
+        $commandData[] = '--no-create-info'; // Ne pas exporter la structure (déjà fait)
+        $commandData[] = '--ignore-table=' . $dbName . '.' . $userTable; // Ignorer la table user pour les données
+        $commandData[] = $dbName;
+
+        $processData = new Process($commandData);
+        $processData->setTimeout(3600);
+        $processData->run();
+
+        if (!$processData->isSuccessful()) {
+            throw new ProcessFailedException($processData);
+        }
+        $dataOutput = $processData->getOutput();
+
+        // Écrire la structure puis les données dans le fichier de sauvegarde
+        $this->filesystem->dumpFile($backupFile, $structureOutput . $dataOutput);
 
         $gitPullCommand = [
             'sudo',
