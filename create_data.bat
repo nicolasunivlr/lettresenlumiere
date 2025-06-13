@@ -28,9 +28,6 @@ for /d %%p in ("%PHP_PATH%\php8.2*") do (
     goto :version_found
 )
 
-REM Copier le fichier d'alias pour le projet
-copy lettresenlumiere.conf ..\..\alias\
-
 :version_found
 if "!PHP_FOUND!"=="" (
     echo PHP non trouve.
@@ -43,8 +40,9 @@ if "!PHP_FOUND!"=="" (
 :execute
 echo Execution avec !PHP_EXE!...
 "!PHP_EXE!" ./script.php ./bdd.sql
-"!PHP_EXE!" bin/console doctrine:fixtures:load --no-interaction --append
-echo Termine.
+REM Copier le fichier d'alias pour le projet
+copy /Y lettresenlumiere.conf ..\..\alias\
+echo Termine. Veuillez redémarrer WAMP pour appliquer les changements.
 pause
 
 :end

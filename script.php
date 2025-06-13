@@ -36,7 +36,7 @@ if (is_dir($cachePath)) {
 }
 
 // Déterminer le chemin de base de WAMP dynamiquement
-$wampBaseDir = dirname(dirname(__FILE__));
+$wampBaseDir = dirname(dirname(dirname(__FILE__)));
 echo "Base de WAMP: $wampBaseDir\n";
 
 // Trouver la version la plus récente de PHP dans les dossiers WAMP
@@ -104,8 +104,11 @@ if (file_exists($envFilePath)) {
 }
 
 // Create a new file with the DATABASE_URL
-$envContent = "DATABASE_URL=$databaseUrl\n";
-echo "Création du fichier avec: DATABASE_URL=$databaseUrl\n";
+$envDatabaseUrl = "DATABASE_URL=$databaseUrl\n";
+echo "Création du fichier avec: DATABASE_URL=$envDatabaseUrl\n";
+
+$envAppEnv = "APP_ENV=prod\n";
+$envContent = $envDatabaseUrl . $envAppEnv;
 
 if (file_put_contents($envFilePath, $envContent) === false) {
     echo "ERREUR: Impossible de créer $envFilePath\n";
@@ -229,7 +232,7 @@ if (file_put_contents($envJsPath, $envJsContent) === false) {
 }
 
 // Lancer les fixtures de symfony
-$phpCommand = sprintf('"%s" "%s" bin/console doctrine:fixtures:load --no-interaction --append', $phpExecutable, __DIR__);
+$phpCommand = sprintf('"%s" bin/console app:create-admin', $phpExecutable);
 echo "Création de l'utilisateur admin...\n";
 $output = [];
 $returnCode = 0;
