@@ -72,7 +72,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
 
         $projectDir = $this->params->get('kernel.project_dir');
 
-        $backupFile = $projectDir . '/backup_' . $dbName . '_' . date('Y-m-d_H-i-s') . '.sql';
+        $backupFile = $projectDir . '/bdd.sql';
 
         // Construction de la commande mysqldump
         // L'utilisation de --password= directement en ligne de commande peut être un risque de sécurité.
