@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use Doctrine\DBAL\Connection;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -20,7 +21,8 @@ final class UpdateGitAndDatabaseController extends AbstractController
         #[Autowire('%env(DATABASE_URL)%')]
         private $databaseUrl,
         #[Autowire('%env(GITUSER)%')]
-        private string $user
+        private string $user,
+        private Connection $connection
     )
     {}
 
@@ -48,8 +50,40 @@ final class UpdateGitAndDatabaseController extends AbstractController
         return $this->redirect($url);
     }
 
-    private function executeBackupDbAction(): string
+    private function executeBackupDbAction(): ?string
     {
+        /* Fonctionne grâce au trigger
+            DELIMITER $$
+
+            CREATE TRIGGER after_contenu_insert
+            AFTER INSERT ON contenu
+            FOR EACH ROW
+            BEGIN
+                UPDATE db_state SET has_changed = TRUE WHERE id = 1;
+            END$$
+
+            CREATE TRIGGER after_contenu_update
+            AFTER UPDATE ON contenu
+            FOR EACH ROW
+            BEGIN
+                UPDATE db_state SET has_changed = TRUE WHERE id = 1;
+            END$$
+
+            CREATE TRIGGER after_contenu_delete
+            AFTER DELETE ON contenu
+            FOR EACH ROW
+            BEGIN
+                UPDATE db_state SET has_changed = TRUE WHERE id = 1;
+            END$$
+
+            DELIMITER ;*/
+        $stmt = $this->connection->executeQuery('SELECT has_changed FROM db_state WHERE id = 1');
+        $dbHasChanged = (bool) $stmt->fetchOne();
+
+        if (!$dbHasChanged) {
+            $this->addFlash('info', 'Aucune modification détectée dans la base de données via l\'indicateur. Aucune action effectuée.');
+            return null;
+        }
         if (!$this->databaseUrl) {
             throw new \Exception("La variable d'environnement DATABASE_URL n'est pas configurée.");
         }
@@ -98,7 +132,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
         }
         $structureDump = $processStructure->getOutput();
         // Supprimer la première ligne du dump SQL car contient la ligne sandbox qui fait planter l'import
-        $structureDump = preg_replace('/\A[^\r\n]*\R?/', '', $structureDump, 1);
+        $structureDump = preg_replace('/\A[^\r\n]*sandbox[^\r\n]*\R?/', '', $structureDump, 1);
 
         // Commande pour exporter les données de toutes les tables SAUF la table user
         $commandData = [
@@ -125,7 +159,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
         }
         $dataDump = $processData->getOutput();
         // Supprimer la première ligne du dump SQL car contient la ligne sandbox qui fait planter l'import
-        $dataDump = preg_replace('/\A[^\r\n]*\R?/', '', $dataDump, 1);
+        $dataDump = preg_replace('/\A[^\r\n]*sandbox[^\r\n]*\R?/', '', $dataDump, 1);
         $sqlDump = $structureDump . $dataDump;
 
         // Écrire la structure puis les données dans le fichier de sauvegarde
@@ -167,6 +201,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
             'push'
         ];
         $this->executeGitCommands($gitPushCommand, $projectDir);
+        $this->connection->executeStatement('UPDATE db_state SET has_changed = FALSE WHERE id = 1');
 
         return $backupFile;
     }
