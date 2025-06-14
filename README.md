@@ -1,13 +1,16 @@
 # Lettres en lumière
 
 ## TODO
-- [ ] Enlever les accents dans les noms de fichiers
+- [X] Enlever les accents dans les noms de fichiers
+- [ ] Problème de fichier sql après le dump pour le réimport dans windows !
 
 # Lettres en lumière
 
 ## Description
 
-(Ajoutez ici une brève description de votre projet : à quoi sert-il, quel est son objectif principal ?)
+Lettres en lumière est une application d'aide à la lecture pour un public adulte.
+Il a été imaginé pour aider les personnes en détention à lire et à écrire.
+Il peut fonctionner sans connexion internet.
 
 ## Installation
 
@@ -24,22 +27,20 @@ Vous trouverez ci-dessous les logiciels requis pour faire fonctionner l'applicat
 1.  **Installez Wamp :**
     
 2. **Téléchargez le zip du projet :**
-TODO: Faire une release en incluant :
-- le dossier vendor de Composer
-- le build de react
-- le .env.local
-- le sql des données sous le nom bdd.sql
+Le zip du projet est disponible dans la partie "Releases" du dépôt GitHub.
+   * Téléchargez la dernière version stable de l'application Lettres en lumière.
+   * Le fichier sera nommé `lettresenlumiere.zip`.
+3.  **Extraire le zip dans le dossier C:\wamp64\www\lettresenlumiere :**
 
-3.  **Copiez le dossier d'archive dans C:\wamp64\www :**
-    * Il faut renommer le dossier en `lettresenlumiere`.
-
-4 **Configuration de Wamp :**
+4 **Configuration de l'application :**
+    * Lancez Wamp et assurez-vous qu'il est en ligne (icône verte dans la barre des tâches).
     * Lancez `create_data.bat` dans `C:\wamp\www\lettresenlumiere\` (double clic)
+    * Relancez les services Wamp (clic sur l'icône Wamp dans la barre des tâches et sélectionnez "Redémarrer tous les services").
 
 ## Utilisation
 
 Pour une utilisation optimale de l'application, nous vous recommandons les navigateurs suivants :
-* Edge
+* Edge (la synthèse vocale fonctionne mieux)
 * Chrome
 
 1.  **Accéder à l'application :**
