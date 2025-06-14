@@ -87,7 +87,6 @@ final class UpdateGitAndDatabaseController extends AbstractController
             $commandStructure[] = '--password=' . $dbPassword;
         }
         $commandStructure[] = '--no-data'; // Exporter uniquement la structure
-        $commandStructure[] = '--skip-opt';
         $commandStructure[] = $dbName;
 
         $processStructure = new Process($commandStructure);
@@ -113,7 +112,6 @@ final class UpdateGitAndDatabaseController extends AbstractController
         }
         $commandData[] = '--no-create-info'; // Ne pas exporter la structure (déjà fait)
         $commandData[] = '--ignore-table=' . $dbName . '.user'; // Ignorer la table user pour les données
-        $commandData[] = '--skip-opt';
         $commandData[] = $dbName;
 
         $processData = new Process($commandData);
@@ -124,12 +122,12 @@ final class UpdateGitAndDatabaseController extends AbstractController
             throw new ProcessFailedException($processData);
         }
         $dataDump = $processData->getOutput();
-        $dumpSql = $structureDump . $dataDump;
+        $sqlDump = $structureDump . $dataDump;
         // supprimer la ligne contenant la chaine \- du texte
-        $dumpSql = preg_replace('/^\/\*M!999999\- enable the sandbox mode \*\/\n/', '', $dumpSql);
+        $sqlDump = preg_replace('/^\s*\/\*M!999999\\\\- enable the sandbox mode \*\/\s*\R?/m', '', $sqlDump);
 
         // Écrire la structure puis les données dans le fichier de sauvegarde
-        $this->filesystem->dumpFile($backupFile, $structureDump . $dumpSql);
+        $this->filesystem->dumpFile($backupFile, $structureDump . $sqlDump);
 
         $gitPullCommand = [
             'sudo',
