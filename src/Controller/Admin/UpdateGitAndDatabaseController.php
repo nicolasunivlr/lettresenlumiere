@@ -97,6 +97,8 @@ final class UpdateGitAndDatabaseController extends AbstractController
             throw new ProcessFailedException($processStructure);
         }
         $structureDump = $processStructure->getOutput();
+        // Supprimer la première ligne du dump SQL car contient la ligne sandbox qui fait planter l'import
+        $structureDump = preg_replace('/\A[^\r\n]*\R?/', '', $structureDump, 1);
 
         // Commande pour exporter les données de toutes les tables SAUF la table user
         $commandData = [
@@ -122,9 +124,9 @@ final class UpdateGitAndDatabaseController extends AbstractController
             throw new ProcessFailedException($processData);
         }
         $dataDump = $processData->getOutput();
+        // Supprimer la première ligne du dump SQL car contient la ligne sandbox qui fait planter l'import
+        $dataDump = preg_replace('/\A[^\r\n]*\R?/', '', $dataDump, 1);
         $sqlDump = $structureDump . $dataDump;
-        // supprimer la ligne contenant la chaine \- du texte
-        $sqlDump = preg_replace('/^\s*\/\*M!999999\\\\- enable the sandbox mode \*\/\s*\R?/m', '', $sqlDump);
 
         // Écrire la structure puis les données dans le fichier de sauvegarde
         $this->filesystem->dumpFile($backupFile, $structureDump . $sqlDump);
