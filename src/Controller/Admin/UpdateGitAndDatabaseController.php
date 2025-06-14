@@ -87,6 +87,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
             $commandStructure[] = '--password=' . $dbPassword;
         }
         $commandStructure[] = '--no-data'; // Exporter uniquement la structure
+        $commandStructure[] = '--skip-opt';
         $commandStructure[] = $dbName;
 
         $processStructure = new Process($commandStructure);
@@ -111,7 +112,8 @@ final class UpdateGitAndDatabaseController extends AbstractController
             $commandData[] = '--password=' . $dbPassword;
         }
         $commandData[] = '--no-create-info'; // Ne pas exporter la structure (déjà fait)
-        $commandData[] = '--ignore-table=' . $dbName . '.' . $userTable; // Ignorer la table user pour les données
+        $commandData[] = '--ignore-table=' . $dbName . '.user'; // Ignorer la table user pour les données
+        $commandData[] = '--skip-opt';
         $commandData[] = $dbName;
 
         $processData = new Process($commandData);
