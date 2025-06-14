@@ -97,7 +97,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
         if (!$processStructure->isSuccessful()) {
             throw new ProcessFailedException($processStructure);
         }
-        $structureOutput = $processStructure->getOutput();
+        $structureDump = $processStructure->getOutput();
 
         // Commande pour exporter les données de toutes les tables SAUF la table user
         $commandData = [
@@ -123,12 +123,13 @@ final class UpdateGitAndDatabaseController extends AbstractController
         if (!$processData->isSuccessful()) {
             throw new ProcessFailedException($processData);
         }
-        $dataOutput = $processData->getOutput();
-        // supprimer la premièle ligne de la sortie de structure
-        $structureOutput = preg_replace('/^/*M!999999\- enable the sandbox mode */\n/', '', $structureOutput);
+        $dataDump = $processData->getOutput();
+        $dumpSql = $structureDump . $dataDump;
+        // supprimer la ligne contenant la chaine \- du texte
+        $dumpSql = preg_replace('/^\/\*M!999999\- enable the sandbox mode \*\/\n/', '', $dumpSql);
 
         // Écrire la structure puis les données dans le fichier de sauvegarde
-        $this->filesystem->dumpFile($backupFile, $structureOutput . $dataOutput);
+        $this->filesystem->dumpFile($backupFile, $structureDump . $dumpSql);
 
         $gitPullCommand = [
             'sudo',
