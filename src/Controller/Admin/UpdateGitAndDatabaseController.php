@@ -37,7 +37,9 @@ final class UpdateGitAndDatabaseController extends AbstractController
     {
         try {
             $backupFile = $this->executeBackupDbAction();
-            $this->addFlash('success', 'La sauvegarde de la base de données a été effectuée avec succès : ' . $backupFile);
+            if($backupFile) {
+                $this->addFlash('success', 'La sauvegarde de la base de données a été effectuée avec succès : ' . $backupFile);
+            }
         } catch (ProcessFailedException $exception) {
             $this->addFlash('danger', 'La sauvegarde de la base de données a échoué. Détails : ' . $exception->getProcess()->getErrorOutput());
         } catch (\Exception $e) {
@@ -50,9 +52,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
         return $this->redirect($url);
     }
 
-    private function executeBackupDbAction(): ?string
-    {
-        /* Fonctionne grâce au trigger
+    /* Fonctionne grâce au trigger
             DELIMITER $$
 
             CREATE TRIGGER after_contenu_insert
@@ -76,7 +76,10 @@ final class UpdateGitAndDatabaseController extends AbstractController
                 UPDATE db_state SET has_changed = TRUE WHERE id = 1;
             END$$
 
-            DELIMITER ;*/
+            DELIMITER ;
+    */
+    private function executeBackupDbAction(): ?string
+    {
         $stmt = $this->connection->executeQuery('SELECT has_changed FROM db_state WHERE id = 1');
         $dbHasChanged = (bool) $stmt->fetchOne();
 
