@@ -124,6 +124,8 @@ final class UpdateGitAndDatabaseController extends AbstractController
             throw new ProcessFailedException($processData);
         }
         $dataOutput = $processData->getOutput();
+        // supprimer la premièle ligne de la sortie de structure
+        $structureOutput = preg_replace('/^/*M!999999\- enable the sandbox mode */\n/', '', $structureOutput);
 
         // Écrire la structure puis les données dans le fichier de sauvegarde
         $this->filesystem->dumpFile($backupFile, $structureOutput . $dataOutput);
