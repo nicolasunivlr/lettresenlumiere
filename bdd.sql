@@ -1,3 +1,307 @@
+-- MariaDB dump 10.19  Distrib 10.11.13-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: ntrugeon_lel
+-- ------------------------------------------------------
+-- Server version	10.11.13-MariaDB-0ubuntu0.24.04.1
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `contenu`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contenu` (
+  `id` int(11) NOT NULL,
+  `sequence_id` int(11) NOT NULL,
+  `contenu` varchar(255) NOT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
+  `audio_url` varchar(255) DEFAULT NULL,
+  `syllabes` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_89C2003F98FB19AE` (`sequence_id`),
+  CONSTRAINT `FK_89C2003F98FB19AE` FOREIGN KEY (`sequence_id`) REFERENCES `sequence` (`id`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `contenu_exercice`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contenu_exercice` (
+  `contenu_id` int(11) NOT NULL,
+  `exercice_id` int(11) NOT NULL,
+  PRIMARY KEY (`contenu_id`,`exercice_id`),
+  KEY `IDX_596D469C3C1CC488` (`contenu_id`),
+  KEY `IDX_596D469C89D40298` (`exercice_id`),
+  CONSTRAINT `FK_596D469C3C1CC488` FOREIGN KEY (`contenu_id`) REFERENCES `contenu` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_596D469C89D40298` FOREIGN KEY (`exercice_id`) REFERENCES `exercice` (`id`) ON DELETE CASCADE
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `contenu_format`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contenu_format` (
+  `id` int(11) NOT NULL,
+  `couleur_id` int(11) DEFAULT NULL,
+  `contenu_id` int(11) DEFAULT NULL,
+  `lettres` varchar(255) NOT NULL,
+  `bold` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_7A2602EDC31BA576` (`couleur_id`),
+  KEY `IDX_7A2602ED3C1CC488` (`contenu_id`),
+  CONSTRAINT `FK_7A2602ED3C1CC488` FOREIGN KEY (`contenu_id`) REFERENCES `contenu` (`id`),
+  CONSTRAINT `FK_7A2602EDC31BA576` FOREIGN KEY (`couleur_id`) REFERENCES `couleur` (`id`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `couleur`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `couleur` (
+  `id` int(11) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `etape`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `etape` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `exercice`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `exercice` (
+  `id` int(11) NOT NULL,
+  `sequence_id` int(11) NOT NULL,
+  `type_exercice` varchar(255) NOT NULL,
+  `consigne` longtext DEFAULT NULL,
+  `ordre` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_E418C74D98FB19AE` (`sequence_id`),
+  CONSTRAINT `FK_E418C74D98FB19AE` FOREIGN KEY (`sequence_id`) REFERENCES `sequence` (`id`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sequence`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sequence` (
+  `id` int(11) NOT NULL,
+  `etape_id` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `video_url` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_5286D72B4A8CA2AD` (`etape_id`),
+  CONSTRAINT `FK_5286D72B4A8CA2AD` FOREIGN KEY (`etape_id`) REFERENCES `etape` (`id`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `username` varchar(180) NOT NULL,
+  `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '(DC2Type:json)' CHECK (json_valid(`roles`)),
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_IDENTIFIER_USERNAME` (`username`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-06-14 17:57:34
+-- MariaDB dump 10.19  Distrib 10.11.13-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: ntrugeon_lel
+-- ------------------------------------------------------
+-- Server version	10.11.13-MariaDB-0ubuntu0.24.04.1
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `contenu`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contenu` (
+  `id` int(11) NOT NULL,
+  `sequence_id` int(11) NOT NULL,
+  `contenu` varchar(255) NOT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
+  `audio_url` varchar(255) DEFAULT NULL,
+  `syllabes` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_89C2003F98FB19AE` (`sequence_id`),
+  CONSTRAINT `FK_89C2003F98FB19AE` FOREIGN KEY (`sequence_id`) REFERENCES `sequence` (`id`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `contenu_exercice`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contenu_exercice` (
+  `contenu_id` int(11) NOT NULL,
+  `exercice_id` int(11) NOT NULL,
+  PRIMARY KEY (`contenu_id`,`exercice_id`),
+  KEY `IDX_596D469C3C1CC488` (`contenu_id`),
+  KEY `IDX_596D469C89D40298` (`exercice_id`),
+  CONSTRAINT `FK_596D469C3C1CC488` FOREIGN KEY (`contenu_id`) REFERENCES `contenu` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_596D469C89D40298` FOREIGN KEY (`exercice_id`) REFERENCES `exercice` (`id`) ON DELETE CASCADE
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `contenu_format`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contenu_format` (
+  `id` int(11) NOT NULL,
+  `couleur_id` int(11) DEFAULT NULL,
+  `contenu_id` int(11) DEFAULT NULL,
+  `lettres` varchar(255) NOT NULL,
+  `bold` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_7A2602EDC31BA576` (`couleur_id`),
+  KEY `IDX_7A2602ED3C1CC488` (`contenu_id`),
+  CONSTRAINT `FK_7A2602ED3C1CC488` FOREIGN KEY (`contenu_id`) REFERENCES `contenu` (`id`),
+  CONSTRAINT `FK_7A2602EDC31BA576` FOREIGN KEY (`couleur_id`) REFERENCES `couleur` (`id`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `couleur`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `couleur` (
+  `id` int(11) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `etape`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `etape` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `exercice`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `exercice` (
+  `id` int(11) NOT NULL,
+  `sequence_id` int(11) NOT NULL,
+  `type_exercice` varchar(255) NOT NULL,
+  `consigne` longtext DEFAULT NULL,
+  `ordre` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_E418C74D98FB19AE` (`sequence_id`),
+  CONSTRAINT `FK_E418C74D98FB19AE` FOREIGN KEY (`sequence_id`) REFERENCES `sequence` (`id`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sequence`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sequence` (
+  `id` int(11) NOT NULL,
+  `etape_id` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `video_url` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_5286D72B4A8CA2AD` (`etape_id`),
+  CONSTRAINT `FK_5286D72B4A8CA2AD` FOREIGN KEY (`etape_id`) REFERENCES `etape` (`id`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `username` varchar(180) NOT NULL,
+  `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '(DC2Type:json)' CHECK (json_valid(`roles`)),
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_IDENTIFIER_USERNAME` (`username`)
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-06-14 17:57:34
 /*M!999999\- enable the sandbox mode */ 
 -- MariaDB dump 10.19  Distrib 10.11.13-MariaDB, for debian-linux-gnu (x86_64)
 --
@@ -13640,4 +13944,4 @@ INSERT INTO `sequence` VALUES (97,18,'BILAN 18',NULL);
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-14 17:50:12
+-- Dump completed on 2025-06-14 17:57:34
