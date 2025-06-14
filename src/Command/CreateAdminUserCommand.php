@@ -39,7 +39,9 @@ class CreateAdminUserCommand extends Command
             $io->note(sprintf('Un utilisateur avec le nom d\'utilisateur "%s" existe déjà.', $username));
             $user = $existingUser;
         } else {
+            $io->note(sprintf('Créaqtion d\'un utilisateur avec le nom "%s".', $username));
             $user = new User();
+            $user->setUsername($username);
         }
         $user->setRoles(['ROLE_ADMIN']);
         $hashedPassword = $this->passwordHasher->hashPassword(
