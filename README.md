@@ -2,7 +2,7 @@
 
 ## TODO
 - [X] Enlever les accents dans les noms de fichiers
-- [ ] Problème de fichier sql après le dump pour le réimport dans windows !
+- [X] Problème de fichier sql après le dump pour le réimport dans windows !
 
 # Lettres en lumière
 
