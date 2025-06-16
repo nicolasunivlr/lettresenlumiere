@@ -30,10 +30,10 @@ const Search = ({ onSearchChange }) => {
             </div>
             <input
                 type="text"
-                placeholder="Rechercher un exercice..."
+                placeholder="Rechercher une séquence"
                 value={searchTerm}
                 onChange={handleInputChange}
-                className="search-input py-4 pl-12 pr-4 w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="search-input py-4 pl-12 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
         </div>
     );
