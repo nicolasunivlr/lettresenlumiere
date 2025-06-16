@@ -87,6 +87,22 @@ Encore
             use: [
                 {
                     loader: 'file-loader',
+                    options: { // Il est bon de spécifier un nom/chemin de sortie
+                        name: 'media/[name].[hash:8].[ext]',
+                    },
+                },
+            ],
+        }
+    )
+    .addLoader( // Ajout du loader pour les PDF
+        {
+            test: /\.pdf$/,
+            use: [
+                {
+                    loader: 'file-loader',
+                    options: {
+                        name: 'documents/[name].[hash:8].[ext]', // Les PDF iront dans public/build/documents
+                    },
                 },
             ],
         }
