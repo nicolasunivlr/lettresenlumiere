@@ -7,6 +7,7 @@ import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
 import useSpeak from '../../hooks/useSpeak';
 import LabelImage from '../UI/LabelImage';
+import useConfig from '../../hooks/useConfig';
 
 import Instruction from '../Instruction';
 
@@ -17,6 +18,7 @@ const ExerciseTypeB = ({ content, onDone }) => {
   const [attempt, setAttempt] = useState(0);
   const [isLocked, setisLocked] = useState(false);
   const location = useLocation();
+  const config = useConfig();
 
   const { speak } = useSpeak();
 
@@ -123,6 +125,7 @@ const ExerciseTypeB = ({ content, onDone }) => {
         element: contenu.element,
         done: false,
         sound_group: contenu.sound_group,
+        sons_url: contenu.sons_url,
       }));
 
       // Toujours utiliser le tableau d'origine sans duplication
@@ -147,7 +150,13 @@ const ExerciseTypeB = ({ content, onDone }) => {
       if (firstNonDone) {
         const newContent = generateContentExercise(firstNonDone);
         setContentExercise(newContent);
-        speak(firstNonDone.element);
+        if(firstNonDone.sons_url) {
+          const url = `${config.audiosUrl}/${firstNonDone.sons_url}`;
+          const audio = new Audio(url);
+          audio.play();
+        } else {
+          speak(firstNonDone.element);
+        }
       }
     }
   }, [tabResponses, generateContentExercise, speak, isFinished]);
@@ -223,7 +232,13 @@ const ExerciseTypeB = ({ content, onDone }) => {
         setAttempt((prev) => prev + 1);
         setTimeout(() => {
           setAnswerLabel(undefined, index);
-          speak(firstNonDone.element);
+          if(firstNonDone.sons_url) {
+            const url = `${config.audiosUrl}/${firstNonDone.sons_url}`;
+            const audio = new Audio(url);
+            audio.play();
+          } else {
+            speak(firstNonDone.element);
+          }
         }, 2000);
       }
     },
