@@ -1,7 +1,13 @@
-{% block content %}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    Import issu d'une sauvegarde précédente (via Export Global)
+{% endblock %}
+
+{% block main %}
     <div class="container py-5">
         <div class="card shadow-lg p-4">
-            <h1 class="text-center text-primary mb-4">Import Global</h1>
+            <h1 class="text-center text-primary mb-4">Importer les données</h1>
 
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
