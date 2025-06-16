@@ -38,10 +38,6 @@
   }
 
   &__selection {
-    // min-width: 50rem;
-    // padding: 1rem 0 1rem 1rem;
-    // border-radius: 5px;
-
     display: flex;
     flex-direction: column;
     gap: 4rem;
@@ -69,7 +65,7 @@
     font-size: f.$font-size-medium;
     background-color: #fffbfb;
     transition: 0.2s all ease-out;
-    bottom: 5rem;
+    top: 5rem;
     a {
       color: v.$noir;
     }

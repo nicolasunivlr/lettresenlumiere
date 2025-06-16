@@ -6,6 +6,7 @@ const Credits = () => {
     { name: 'Raphaël Benmimoune', role: 'Développeur FullStack' },
     { name: 'Johan Canevet-Danois', role: 'Développeur FullStack' },
     { name: 'Angelo Palmino', role: 'Développeur FullStack' },
+    { name: 'Nicolas Trugeon', role: 'Développeur et gestion de projet' },
   ];
 
   return (
@@ -14,7 +15,7 @@ const Credits = () => {
       <div className='min-h-screen bg-opacity-50 flex flex-col items-center p-10'>
         <main className='min-w-[400px] w-[35vw] text-center'>
           <p className='text-2xl mb-6 text-gray-700'>
-            Merci à toute l'équipe pour leur travail exceptionnel :
+            Merci à toute l'équipe pour leur travail :
           </p>
           <div className='flex flex-wrap justify-center gap-8 mb-10 '>
             {teamMembers.map((member, index) => (

@@ -64,7 +64,7 @@ const MainMenu = () => {
           </motion.div>
         </div>
         <p className='home__credits'>
-          <Link to='/credits'>Credits</Link>
+          <Link to='/credits'>Crédits</Link>
         </p>
       </main>
     </div>
