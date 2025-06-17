@@ -241,6 +241,7 @@ function ExerciseTypeC(props) {
                     answer={isAnswerValidated}
                     syllabIndexes={contenu.syllabes}
                     value={userInput}
+                    isEffectivelyVisible={isInputActuallyVisible}
                 />
             ) : (
                 <InputLabel
@@ -248,6 +249,7 @@ function ExerciseTypeC(props) {
                     setUserInput={setUserInput}
                     answer={isAnswerValidated}
                     value={userInput}
+                    isEffectivelyVisible={isInputActuallyVisible}
                 />
             )}
           </div>

@@ -7,6 +7,7 @@ const InputLabel = (props) => {
     isSelected = false,
     answer = null,
     syllabIndexes,
+    isEffectivelyVisible
   } = props;
 
   const [currentInput, setCurrentInput] = useState('');
@@ -235,6 +236,14 @@ const InputLabel = (props) => {
   };
 
   useEffect(() => {
+    // simuler un click sur le premier span pour le focus
+    console.log(document.activeElement)
+    //inputRef.current.focus()
+    document.querySelector('input').focus()
+    console.log(document.activeElement)
+  }, []);
+
+  useEffect(() => {
     if (syllabIndexes) {
       if (currentInput.length === 0) {
         setUserInput('');
@@ -264,7 +273,7 @@ const InputLabel = (props) => {
       setCurrentInput(hasUnderscorePrefix ? '_' : '');
       setCursorPosition(0);
     }
-  }, [isDisabled]);
+  }, [isDisabled, isEffectivelyVisible]);
 
   useEffect(() => {
     if (answer === true) {
@@ -396,12 +405,14 @@ const InputLabel = (props) => {
   }, [displayValue]);
 
   const handleDisplayClick = () => {
+    console.log("display",document.activeElement)
     if (!isDisabled) {
       inputRef.current?.focus();
     }
   };
 
   const handleCharClick = (index) => {
+    console.log(document.activeElement)
     if (isDisabled) return;
     inputRef.current?.focus();
     if (syllabIndexes) {
@@ -457,7 +468,6 @@ const InputLabel = (props) => {
               style={{ cursor: isDisabled ? 'default' : 'text', zIndex: 100 }}
               onClick={() => {
                 handleCharClick(index);
-                console.log('click span', index);
               }}
             >
               {char === ' ' ? '\u00A0' : char}
