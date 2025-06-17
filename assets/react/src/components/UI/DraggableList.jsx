@@ -143,8 +143,7 @@ const DraggableList = forwardRef(
           if (type === 'H.Alphabet' || type === 'H.Graphemes') {
             // Pour H.Alphabet et H.Graphemes, on traite chaque mot séparément
             const words = word.split(' ');
-            for (let i = 0; i < words.length; i++) {
-              const char = words[i];
+            for (const char of words) {
               elements.push({ content: char, isDraggable: true });
               draggableElements.push(char);
             }
@@ -162,8 +161,7 @@ const DraggableList = forwardRef(
             }
           }
         } else {
-          for (let i = 0; i < word.length; i++) {
-            const char = word[i];
+          for (const char of word) {
             if (char === ' ') {
               elements.push({ content: ' ', isDraggable: false });
             } else {
