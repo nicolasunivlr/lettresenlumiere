@@ -3,6 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Contenu;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
@@ -22,6 +25,30 @@ class DashboardController extends AbstractDashboardController
     {
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
         return $this->redirect($adminUrlGenerator->setController(ContenuCrudController::class)->generateUrl());
+    }
+
+    public function configureActions(): Actions
+    {
+        $actions = parent::configureActions();
+        return $actions
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
+            ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
+                return $action->setIcon('fa fa-edit')
+                    ->addCssClass('btn btn-sm edit-icon')
+                    ->setLabel(false);
+            })
+            ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
+                return $action->setIcon('fa fa-trash')
+                    ->addCssClass('btn btn-sm delete-icon')
+                    ->setLabel(false);
+            });
+    }
+
+    public function configureCrud(): Crud
+    {
+        $crud = parent::configureCrud();
+        return $crud
+            ->showEntityActionsInlined();
     }
 
     public function configureDashboard(): Dashboard

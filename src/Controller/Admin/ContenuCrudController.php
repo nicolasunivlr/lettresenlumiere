@@ -161,22 +161,6 @@ class ContenuCrudController extends AbstractCrudController
         yield TextField::new('syllabes')->setLabel('Syllabes');
     }
 
-    public function configureActions(Actions $actions): Actions
-    {
-        return $actions
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
-            ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
-                return $action->setIcon('fa fa-edit')
-                    ->addCssClass('btn btn-sm edit-icon')
-                    ->setLabel(false);
-            })
-            ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
-                return $action->setIcon('fa fa-trash')
-                    ->addCssClass('btn btn-sm delete-icon')
-                    ->setLabel(false);
-            });
-    }
-
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         if ($entityInstance instanceof Contenu) {
@@ -213,12 +197,6 @@ class ContenuCrudController extends AbstractCrudController
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $this->persistEntity($entityManager, $entityInstance);
-    }
-
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud
-            ->showEntityActionsInlined();
     }
 
     public function configureAssets(Assets $assets): Assets
