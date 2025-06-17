@@ -18,7 +18,7 @@ const PageTitle = (props) => {
         </div>
         { sequence ? (
             <p className='header__sequence'> {sequence}</p>
-        ) : (
+        ) : title === "Progression" ? (
             <p className='header__sequence'>
                 <a
                     href={aideSequence} // Le chemin public du PDF fourni par file-loader
@@ -31,7 +31,7 @@ const PageTitle = (props) => {
                          src={bilanIcon}/>
                 </a>
             </p>
-        )}
+        ): ''}
       </div>
     </>
   );

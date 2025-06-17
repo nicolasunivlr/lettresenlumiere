@@ -6,7 +6,7 @@ const Credits = () => {
     { name: 'Raphaël Benmimoune', role: 'Développeur FullStack' },
     { name: 'Johan Canevet-Danois', role: 'Développeur FullStack' },
     { name: 'Angelo Palmino', role: 'Développeur FullStack' },
-    { name: 'Nicolas Trugeon', role: 'Développeur et gestion de projet' },
+    { name: 'Nicolas Trugeon', role: 'Enseignant et gestion de projet' },
   ];
 
   return (
