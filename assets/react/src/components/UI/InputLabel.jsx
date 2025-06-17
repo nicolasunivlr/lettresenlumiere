@@ -7,7 +7,7 @@ const InputLabel = (props) => {
     isSelected = false,
     answer = null,
     syllabIndexes,
-    isEffectivelyVisible
+    isEffectivelyVisible = true
   } = props;
 
   const [currentInput, setCurrentInput] = useState('');
@@ -236,14 +236,6 @@ const InputLabel = (props) => {
   };
 
   useEffect(() => {
-    // simuler un click sur le premier span pour le focus
-    console.log(document.activeElement)
-    //inputRef.current.focus()
-    document.querySelector('input').focus()
-    console.log(document.activeElement)
-  }, []);
-
-  useEffect(() => {
     if (syllabIndexes) {
       if (currentInput.length === 0) {
         setUserInput('');
@@ -270,8 +262,8 @@ const InputLabel = (props) => {
   useEffect(() => {
     if (!isDisabled) {
       inputRef.current?.focus();
-      setCurrentInput(hasUnderscorePrefix ? '_' : '');
-      setCursorPosition(0);
+      //setCurrentInput(hasUnderscorePrefix ? '_' : '');
+      //setCursorPosition(0);
     }
   }, [isDisabled, isEffectivelyVisible]);
 
@@ -395,24 +387,66 @@ const InputLabel = (props) => {
   ]);
 
   useEffect(() => {
-    if (
-      charRefs.current.length > 0 &&
-      charRefs.current.some((ref) => ref) &&
-      textContainerRef.current
-    ) {
-      setMeasuresDone(true);
+    // Si le composant n'est pas visible, ou si le conteneur de texte n'est pas encore référencé,
+    // ou si la valeur à afficher est vide (aucun caractère à mesurer),
+    // alors les mesures ne sont pas considérées comme faites.
+    if (!isEffectivelyVisible || !textContainerRef.current || displayValue.length === 0) {
+      setMeasuresDone(false);
+      return; // Sortie anticipée
     }
-  }, [displayValue]);
+
+    // À ce stade, le composant est visible, a un conteneur de texte, et a du contenu à afficher.
+    // Nous utilisons requestAnimationFrame pour attendre le prochain cycle de peinture du navigateur.
+    // Cela donne au navigateur le temps de calculer le layout des éléments DOM,
+    // en particulier s'ils viennent de devenir visibles.
+    const animationFrameId = requestAnimationFrame(() => {
+      // Il est bon de re-vérifier les conditions ici, au cas où l'état aurait changé
+      // très rapidement entre le moment où le rAF a été demandé et son exécution.
+      if (!isEffectivelyVisible || !textContainerRef.current || displayValue.length === 0) {
+        setMeasuresDone(false);
+        return;
+      }
+
+      // Vérifier si la ref du premier caractère est disponible.
+      // charRefs.current est peuplé lors du rendu de displayValue.
+      const firstCharRef = charRefs.current[0];
+
+      if (firstCharRef) {
+        const containerRect = textContainerRef.current.getBoundingClientRect();
+        const firstCharRect = firstCharRef.getBoundingClientRect();
+
+        // Les mesures sont considérées comme prêtes si le conteneur de texte
+        // et le premier caractère ont des dimensions physiques valides (par exemple, une largeur > 0).
+        if (containerRect.width > 0 && firstCharRect.width > 0) {
+          setMeasuresDone(true);
+        } else {
+          // Les dimensions sont encore nulles ou invalides.
+          // Cela peut se produire si l'élément est toujours caché d'une manière ou d'une autre,
+          // ou si le layout n'est pas encore complètement finalisé.
+          setMeasuresDone(false);
+        }
+      } else {
+        // displayValue n'est pas vide, mais charRefs.current[0] n'existe pas.
+        // Cela pourrait indiquer un décalage ou un cas imprévu.
+        // Par sécurité, on considère les mesures comme non prêtes.
+        setMeasuresDone(false);
+      }
+    });
+
+    // Nettoyage : annuler le requestAnimationFrame si le composant est démonté
+    // ou si les dépendances du useEffect changent avant son exécution.
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [displayValue, isEffectivelyVisible]);
 
   const handleDisplayClick = () => {
-    console.log("display",document.activeElement)
     if (!isDisabled) {
       inputRef.current?.focus();
     }
   };
 
   const handleCharClick = (index) => {
-    console.log(document.activeElement)
     if (isDisabled) return;
     inputRef.current?.focus();
     if (syllabIndexes) {
@@ -475,7 +509,7 @@ const InputLabel = (props) => {
           );
         })}
 
-        {!isDisabled && measuresDone && (
+        {!isDisabled && measuresDone && isEffectivelyVisible && (
           <div
             className='text-cursor'
             style={{
