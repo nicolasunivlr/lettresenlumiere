@@ -22,6 +22,7 @@ const PageTitle = (props) => {
             <p className='header__sequence'>
                 <a
                     href={aideSequence} // Le chemin public du PDF fourni par file-loader
+                    title="Aide pour les séquences"
                     target="_blank" // Ouvre dans un nouvel onglet
                     rel="noopener noreferrer" // Pour la sécurité
                     style={{cursor: 'pointer', textDecoration: 'underline'}}

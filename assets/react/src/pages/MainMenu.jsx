@@ -9,7 +9,7 @@ const MainMenu = () => {
   return (
     <div className='index'>
       <img src={logoLeL} alt='Logo Brain' className='index__logo' />
-      <main>
+      <main className={"top-negative"}>
         <motion.div
           className='part'
           initial={{ y: -500, opacity: 0 }}

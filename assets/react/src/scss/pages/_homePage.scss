@@ -4,6 +4,11 @@
 
 //  fon code page accueil loane
 
+.top-negative {
+  position: relative;
+  top: -12rem;
+}
+
 .home {
   display: flex;
   flex-direction: column;
@@ -65,7 +70,7 @@
     font-size: f.$font-size-medium;
     background-color: #fffbfb;
     transition: 0.2s all ease-out;
-    top: 5rem;
+    top: 0;
     a {
       color: v.$noir;
     }
