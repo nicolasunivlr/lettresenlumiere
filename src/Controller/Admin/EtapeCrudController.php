@@ -35,7 +35,7 @@ class EtapeCrudController extends AbstractCrudController
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         if ($entityInstance instanceof Etape) {
-            $dernierEtape = $entityManager->getRepository(Etape::class)->findOneBy([], ['id' => 'DESC']);
+            $dernierEtape = $this->etapeRepository->findOneBy([], ['id' => 'DESC']);
 
             $nouveauNumero = $dernierEtape ? intval(preg_replace('/[^0-9]/', '', $dernierEtape->getNom())) + 1 : 1;
 
