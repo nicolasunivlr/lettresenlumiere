@@ -3,13 +3,18 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\CouleurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CouleurRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    new Get(),
+    new GetCollection(),
+)]
 class Couleur
 {
     #[ORM\Id]

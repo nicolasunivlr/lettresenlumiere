@@ -4,6 +4,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\ExerciceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
@@ -12,6 +14,8 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
+    new Get(),
+    new GetCollection(),
     normalizationContext: ['groups' => ['exercice:read']],
     denormalizationContext: ['groups' => ['exercice:write']],
 )]
