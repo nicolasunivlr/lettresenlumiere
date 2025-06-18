@@ -12,8 +12,10 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 #[ApiResource(
-    new Get(),
-    new GetCollection(),
+    operations: [
+        new Get(),
+        new GetCollection(),
+    ],
     normalizationContext: ['groups' => ['sequence:read']],
     denormalizationContext: ['groups' => ['sequence:write']],
     paginationItemsPerPage: 10,

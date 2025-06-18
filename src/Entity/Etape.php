@@ -15,8 +15,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 
 #[ApiResource(
-    new Get(),
-    new GetCollection(),
+    operations: [
+        new Get(),
+        new GetCollection(),
+    ],
     normalizationContext: ['groups' => ['etape:read']],
     denormalizationContext: ['groups' => ['etape:write']],
 )]

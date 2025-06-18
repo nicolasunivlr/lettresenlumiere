@@ -14,8 +14,10 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
-    new Get(),
-    new GetCollection(),
+    operations: [
+        new Get(),
+        new GetCollection(),
+    ],
     normalizationContext: ['groups' => ['exercice:read']],
     denormalizationContext: ['groups' => ['exercice:write']],
 )]

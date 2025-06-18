@@ -12,8 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CouleurRepository::class)]
 #[ApiResource(
-    new Get(),
-    new GetCollection(),
+    operations: [
+        new Get(),
+        new GetCollection(),
+    ],
 )]
 class Couleur
 {

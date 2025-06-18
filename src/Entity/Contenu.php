@@ -12,8 +12,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 #[ApiResource(
-    new Get(),
-    new GetCollection(),
+    operations: [
+        new Get(),
+        new GetCollection(),
+    ],
     normalizationContext: ['groups' => ['contenu:read']],
     denormalizationContext: ['groups' => ['contenu:write']]
 )]
