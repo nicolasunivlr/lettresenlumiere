@@ -24,8 +24,7 @@ import Loader from '../components/UI/Loader';
 
 const LayoutExercices = () => {
   const { etapeid, id } = useParams();
-  let exerciceData;
-  id ? (exerciceData = useDataExercice(id)) : null;
+  let exerciceData =  (id ? (exerciceData = useDataExercice(id)) : null);
   const [isNotStep, setIsNotStep] = useState();
   const [sequence, setSequence] = useState();
   const [isRetryingAfterBilan, setIsRetryingAfterBilan] = useState(false);
@@ -52,9 +51,9 @@ const LayoutExercices = () => {
 
   useEffect(() => {
     if (exerciceData) {
-      setSequence(exerciceData[0].nom);
+      setSequence(exerciceData.nom);
       setExercices(
-        exerciceData[0].exercices.map((exercice) => ({
+        exerciceData.exercices.map((exercice) => ({
           ...exercice,
           score: undefined,
           done: false,
@@ -96,13 +95,13 @@ const LayoutExercices = () => {
     );
   };
 
-  const handleRedo = (exercice_id) => {
+  const handleRedo = (id) => {
     setExerciceKey(Date.now());
 
     setExercices((prevExercices) => {
       let found = false;
       return prevExercices.map((exercice) => {
-        if (exercice.exercice_id === exercice_id) {
+        if (exercice.id === id) {
           found = true;
           return { ...exercice, done: false, score: undefined };
         }
@@ -111,13 +110,13 @@ const LayoutExercices = () => {
     });
   };
 
-  const handleOnClickOnCircleResultPage = (exercice_id) => {
+  const handleOnClickOnCircleResultPage = (id) => {
     setIsRetryingAfterBilan(true);
     setExerciceKey(Date.now());
 
     setExercices((prevExercices) => {
       return prevExercices.map((exercice) => {
-        if (exercice.exercice_id === exercice_id) {
+        if (exercice.id === id) {
           return { ...exercice, done: false, score: undefined };
         }
         return { ...exercice, done: true };
@@ -238,11 +237,11 @@ const LayoutExercices = () => {
         sequence={
           isNotStep === 'alphabet' || isNotStep === 'graphemes'
             ? ''
-            : exerciceData && exerciceData[0].nom
-            ? exerciceData[0].nom
+            : exerciceData && exerciceData.nom
+            ? exerciceData.nom
             : ''
         }
-        video={exerciceData && exerciceData[0]}
+        video={exerciceData}
         isVideoOpenOnMount={true}
         openBilan={() => {
           setExercices((prevExercices) =>
@@ -277,7 +276,7 @@ const LayoutExercices = () => {
             ) : (
               <ModalEndExercise
                 next={handleNextExercise}
-                redo={() => handleRedo(currentExercice.exercice_id)}
+                redo={() => handleRedo(currentExercice.id)}
                 score={
                   exercices.find((exercice) => exercice.done === 'pending')
                     ?.score

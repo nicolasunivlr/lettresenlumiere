@@ -12,10 +12,10 @@ const Sidebar = (props) => {
       <div className='sidebar'>
         {exercices.map((exercice, index) => (
           <CircleProgress
-            key={`circle-${exercice.exercice_id}`}
+            key={`circle-${exercice.id}`}
             score={exercice.score}
             active={exercice === firstExerciseFalse}
-            onClick={() => disabled ? null : onClick(exercice.exercice_id)}
+            onClick={() => disabled ? null : onClick(exercice.id)}
             number={index + 1}
           />
         ))}

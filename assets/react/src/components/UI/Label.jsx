@@ -64,7 +64,7 @@ function Label(props) {
             if (i >= 0 && i < textArray.length) {
               formatMap[i] = {
                 color: couleur?.code,
-                bold: couleur?.bold || false,
+                bold: bold ?? false,
               };
             }
           }

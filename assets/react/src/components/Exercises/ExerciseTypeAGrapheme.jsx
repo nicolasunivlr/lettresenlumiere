@@ -105,7 +105,7 @@ const ExerciceTypeAGrapheme = (props) => {
               <div className='flex flex-col items-center' key={i}>
                 <span className='pb-6'>
                   <VideoModal
-                    key={el.contenu_id}
+                    key={el.id}
                     sequence={el}
                     title={`Graphème "${el.element}"`}
                   />

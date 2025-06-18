@@ -75,7 +75,7 @@ const ResultPage = (props) => {
             <CircleProgress
               score={exercice.score}
               number={index + 1}
-              onClick={() => circleOnClick(exercice.exercice_id)}
+              onClick={() => circleOnClick(exercice.id)}
             />
             <p>{exercice.consigne}</p>
           </div>

@@ -9,8 +9,8 @@ const useConfig = () => {
 
   // Chemins relatifs
   const paths = {
-    apiEtapes: '/api/custom/etapes',
-    apiSequences: '/api/custom/sequences',
+    apiEtapes: '/api/etapes',
+    apiSequences: '/api/sequences',
     imagesUrl: '/images',
     videosUrl: '/sequencevideos',
     audiosUrl: '/audios',

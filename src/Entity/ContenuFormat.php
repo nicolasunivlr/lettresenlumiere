@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ContenuFormatRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
 #[ORM\Entity(repositoryClass: ContenuFormatRepository::class)]
 class ContenuFormat
@@ -11,20 +13,24 @@ class ContenuFormat
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['sequence:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['sequence:read'])]
     private ?string $lettres = null;
 
     // La relation ManyToOne vers Couleur
     #[ORM\ManyToOne(targetEntity: Couleur::class, inversedBy: 'contenuFormats')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['sequence:read'])]
     private ?Couleur $couleur = null;
 
     #[ORM\ManyToOne(targetEntity: Contenu::class, inversedBy: 'contenuFormats')]
     private ?Contenu $contenu = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['sequence:read'])]
     private ?bool $bold = null;
 
     public function __toString(): string

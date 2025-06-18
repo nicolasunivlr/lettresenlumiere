@@ -1,16 +1,16 @@
 [
   {
-    "sequence_id": 1,
+    "id": 1,
     "nom": "Graphèmes",
     "video_url": "",
     "exercices": [
       {
-        "exercice_id": 1,
+        "id": 1,
         "type": "A.1",
         "consigne": "Écoute et répète.",
         "contenus": [
           {
-            "contenu_id": 1,
+            "id": 1,
             "element": "in",
             "image_url": null,
             "video_url": "/in.mp4",
@@ -18,7 +18,7 @@
             "sound_group": "un"
           },
           {
-            "contenu_id": 2,
+            "id": 2,
             "element": "un",
             "image_url": null,
             "video_url": "/un.mp4",
@@ -26,7 +26,7 @@
             "sound_group": "un"
           },
           {
-            "contenu_id": 3,
+            "id": 3,
             "element": "an",
             "image_url": null,
             "video_url": "/an.mp4",
@@ -34,7 +34,7 @@
             "sound_group": "en"
           },
           {
-            "contenu_id": 4,
+            "id": 4,
             "element": "en",
             "image_url": null,
             "video_url": "/en.mp4",
@@ -42,7 +42,7 @@
             "sound_group": "en"
           },
           {
-            "contenu_id": 5,
+            "id": 5,
             "element": "au",
             "image_url": null,
             "video_url": "/au.mp4",
@@ -50,7 +50,7 @@
             "sound_group": "o"
           },
           {
-            "contenu_id": 6,
+            "id": 6,
             "element": "eau",
             "image_url": null,
             "video_url": "/eau.mp4",
@@ -58,7 +58,7 @@
             "sound_group": "o"
           },
           {
-            "contenu_id": 7,
+            "id": 7,
             "element": "eu",
             "image_url": null,
             "video_url": "/eu.mp4",
@@ -66,7 +66,7 @@
             "sound_group": "e"
           },
           {
-            "contenu_id": 8,
+            "id": 8,
             "element": "œu",
             "image_url": null,
             "video_url": "/oeu.mp4",
@@ -74,7 +74,7 @@
             "sound_group": "e"
           },
           {
-            "contenu_id": 9,
+            "id": 9,
             "element": "ai",
             "image_url": null,
             "video_url": "/ai.mp4",
@@ -82,7 +82,7 @@
             "sound_group": "é"
           },
           {
-            "contenu_id": 10,
+            "id": 10,
             "element": "ei",
             "image_url": null,
             "video_url": "/ei.mp4",
@@ -90,7 +90,7 @@
             "sound_group": "é"
           },
           {
-            "contenu_id": 11,
+            "id": 11,
             "element": "est",
             "image_url": null,
             "video_url": "/est.mp4",
@@ -98,7 +98,7 @@
             "sound_group": "é"
           },
           {
-            "contenu_id": 12,
+            "id": 12,
             "element": "et",
             "image_url": null,
             "video_url": "/et.mp4",

@@ -57,9 +57,9 @@ function EtapesPage() {
                         if (sequencesFiltrees.length > 0) {
                             return sequencesFiltrees.map((sequence) => (
                                 <EtapesButton
-                                    key={`${etape.nom}-${sequence.sequence_id}`}
-                                    id={sequence.sequence_id}
-                                    link={`${etapeNumber}/sequence/${sequence.sequence_id}`}
+                                    key={`${etape.nom}-${sequence.id}`}
+                                    id={sequence.id}
+                                    link={`${etapeNumber}/sequence/${sequence.id}`}
                                     // Mettre en évidence le nom de l'étape et la séquence
                                     text={`${etape.nom} - ${sequence.nom}`}
                                     py={16}
@@ -91,9 +91,9 @@ function EtapesPage() {
                 etape.sequences && etape.sequences.length > 0 ? (
                   etape.sequences.map((sequence) => (
                     <EtapesButton
-                      key={sequence.sequence_id}
-                      id={sequence.sequence_id}
-                      link={`${etapeNumber}/sequence/${sequence.sequence_id}`}
+                      key={sequence.id}
+                      id={sequence.id}
+                      link={`${etapeNumber}/sequence/${sequence.id}`}
                       text={sequence.nom}
                       py={32}
                       width='100%'

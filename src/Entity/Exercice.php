@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
 #[ApiResource(
     operations: [
@@ -32,6 +33,7 @@ class Exercice
 
     #[ORM\Column(length: 255)]
     #[Groups(['exercice:read', 'sequence:read'])]
+    #[SerializedName("type")]
     private ?string $type_exercice = null;
 
     #[ORM\ManyToOne(targetEntity: Sequence::class, inversedBy: 'exercices')]

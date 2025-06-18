@@ -11,7 +11,7 @@ const useDataEtapes = () => {
     try {
       const response = await fetch(`${config.apiEtapes}`);
       const data = await response.json();
-      setEtapesData(data);
+      setEtapesData(data.member);
     } catch (error) {
       console.error('Erreur lors de la récupération des Etapes :', error);
       throw error;

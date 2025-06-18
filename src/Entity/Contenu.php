@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
 #[ApiResource(
     operations: [
@@ -29,7 +30,8 @@ class Contenu
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['contenu:read', 'contenu:write', 'exercice:read'])]
+    #[Groups(['contenu:read', 'contenu:write', 'exercice:read', 'sequence:read'])]
+    #[SerializedName("element")]
     private ?string $contenu = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -38,6 +40,7 @@ class Contenu
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['contenu:read', 'contenu:write', 'sequence:read'])]
+    #[SerializedName("sons_url")]
     private ?string $audio_url = null;
 
     #[ORM\ManyToMany(targetEntity: Exercice::class, inversedBy: 'contenus')]
