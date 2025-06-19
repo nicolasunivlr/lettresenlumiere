@@ -18,8 +18,6 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
     ],
     normalizationContext: ['groups' => ['sequence:read']],
     denormalizationContext: ['groups' => ['sequence:write']],
-    paginationItemsPerPage: 10,
-    paginationMaximumItemsPerPage: 50,
 )
 ]
 #[ORM\Entity(repositoryClass: SequenceRepository::class)]
@@ -44,6 +42,7 @@ class Sequence
 
     #[ORM\OneToMany(mappedBy: "sequence", targetEntity: Exercice::class)]
     #[Groups(['sequence:read', 'exercice:read'])]
+    #[ORM\OrderBy(['ordre' => 'ASC'])]
     private Collection $exercices;
 
     #[ORM\OneToMany(mappedBy: "sequence", targetEntity: Contenu::class)]

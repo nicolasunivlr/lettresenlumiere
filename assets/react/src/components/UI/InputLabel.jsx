@@ -262,8 +262,8 @@ const InputLabel = (props) => {
   useEffect(() => {
     if (!isDisabled) {
       inputRef.current?.focus();
-      //setCurrentInput(hasUnderscorePrefix ? '_' : '');
-      //setCursorPosition(0);
+      setCurrentInput(hasUnderscorePrefix ? '_' : '');
+      setCursorPosition(0);
     }
   }, [isDisabled, isEffectivelyVisible]);
 
