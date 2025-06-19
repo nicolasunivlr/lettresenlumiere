@@ -1,844 +1,842 @@
-[
-  {
-    "id": 1,
-    "nom": "Graphèmes",
-    "video_url": "",
-    "exercices": [
-      {
-        "id": 1,
-        "type": "A.1",
-        "consigne": "Écoute et répète.",
-        "contenus": [
-          {
-            "id": 1,
-            "element": "in",
-            "image_url": null,
-            "video_url": "/in.mp4",
-            "sons_url": null,
-            "sound_group": "un"
-          },
-          {
-            "id": 2,
-            "element": "un",
-            "image_url": null,
-            "video_url": "/un.mp4",
-            "sons_url": null,
-            "sound_group": "un"
-          },
-          {
-            "id": 3,
-            "element": "an",
-            "image_url": null,
-            "video_url": "/an.mp4",
-            "sons_url": null,
-            "sound_group": "en"
-          },
-          {
-            "id": 4,
-            "element": "en",
-            "image_url": null,
-            "video_url": "/en.mp4",
-            "sons_url": null,
-            "sound_group": "en"
-          },
-          {
-            "id": 5,
-            "element": "au",
-            "image_url": null,
-            "video_url": "/au.mp4",
-            "sons_url": null,
-            "sound_group": "o"
-          },
-          {
-            "id": 6,
-            "element": "eau",
-            "image_url": null,
-            "video_url": "/eau.mp4",
-            "sons_url": null,
-            "sound_group": "o"
-          },
-          {
-            "id": 7,
-            "element": "eu",
-            "image_url": null,
-            "video_url": "/eu.mp4",
-            "sons_url": null,
-            "sound_group": "e"
-          },
-          {
-            "id": 8,
-            "element": "œu",
-            "image_url": null,
-            "video_url": "/oeu.mp4",
-            "sons_url": null,
-            "sound_group": "e"
-          },
-          {
-            "id": 9,
-            "element": "ai",
-            "image_url": null,
-            "video_url": "/ai.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "id": 10,
-            "element": "ei",
-            "image_url": null,
-            "video_url": "/ei.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "id": 11,
-            "element": "est",
-            "image_url": null,
-            "video_url": "/est.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "id": 12,
-            "element": "et",
-            "image_url": null,
-            "video_url": "/et.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 13,
-            "element": "_er",
-            "image_url": null,
-            "video_url": "/er.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 14,
-            "element": "_ez",
-            "image_url": null,
-            "video_url": "/ez.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 15,
-            "element": "_es",
-            "image_url": null,
-            "video_url": "/es.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 16,
-            "element": "_ed",
-            "image_url": null,
-            "video_url": "/ed.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 17,
-            "element": "ien",
-            "image_url": null,
-            "video_url": "/ien.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 18,
-            "element": "on",
-            "image_url": null,
-            "video_url": "/on.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 19,
-            "element": "ou",
-            "image_url": null,
-            "video_url": "/ou.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 20,
-            "element": "oi",
-            "image_url": null,
-            "video_url": "/oi.mp4",
-            "sons_url": null,
-            "sound_group": null
-          }
-        ]
-      },
-      {
-        "exercice_id": 2,
-        "type": "B.1",
-        "consigne": "Trouve le bon graphème.",
-        "contenus": [
-          {
-            "contenu_id": 1,
-            "element": "in",
-            "image_url": null,
-            "video_url": "/in.mp4",
-            "sons_url": null,
-            "sound_group": "un"
-          },
-          {
-            "contenu_id": 2,
-            "element": "un",
-            "image_url": null,
-            "video_url": "/un.mp4",
-            "sons_url": null,
-            "sound_group": "un"
-          },
-          {
-            "contenu_id": 3,
-            "element": "an",
-            "image_url": null,
-            "video_url": "/an.mp4",
-            "sons_url": null,
-            "sound_group": "en"
-          },
-          {
-            "contenu_id": 4,
-            "element": "en",
-            "image_url": null,
-            "video_url": "/en.mp4",
-            "sons_url": null,
-            "sound_group": "en"
-          },
-          {
-            "contenu_id": 5,
-            "element": "au",
-            "image_url": null,
-            "video_url": "/au.mp4",
-            "sons_url": null,
-            "sound_group": "o"
-          },
-          {
-            "contenu_id": 6,
-            "element": "eau",
-            "image_url": null,
-            "video_url": "/eau.mp4",
-            "sons_url": null,
-            "sound_group": "o"
-          },
-          {
-            "contenu_id": 7,
-            "element": "eu",
-            "image_url": null,
-            "video_url": "/eu.mp4",
-            "sons_url": null,
-            "sound_group": "e"
-          },
-          {
-            "contenu_id": 8,
-            "element": "œu",
-            "image_url": null,
-            "video_url": "/oeu.mp4",
-            "sons_url": null,
-            "sound_group": "e"
-          },
-          {
-            "contenu_id": 9,
-            "element": "ai",
-            "image_url": null,
-            "video_url": "/ai.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 10,
-            "element": "ei",
-            "image_url": null,
-            "video_url": "/ei.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 11,
-            "element": "est",
-            "image_url": null,
-            "video_url": "/est.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 12,
-            "element": "et",
-            "image_url": null,
-            "video_url": "/et.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 13,
-            "element": "_er",
-            "image_url": null,
-            "video_url": "/er.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 14,
-            "element": "_ez",
-            "image_url": null,
-            "video_url": "/ez.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 15,
-            "element": "_es",
-            "image_url": null,
-            "video_url": "/es.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 16,
-            "element": "_ed",
-            "image_url": null,
-            "video_url": "/ed.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 17,
-            "element": "ien",
-            "image_url": null,
-            "video_url": "/ien.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 18,
-            "element": "on",
-            "image_url": null,
-            "video_url": "/on.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 19,
-            "element": "ou",
-            "image_url": null,
-            "video_url": "/ou.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 20,
-            "element": "oi",
-            "image_url": null,
-            "video_url": "/oi.mp4",
-            "sons_url": null,
-            "sound_group": null
-          }
-        ]
-      },
-      {
-        "exercice_id": 3,
-        "type": "C.1",
-        "consigne": "Écris le graphème.",
-        "contenus": [
-          {
-            "contenu_id": 1,
-            "element": "in",
-            "image_url": null,
-            "video_url": "/in.mp4",
-            "sons_url": null,
-            "sound_group": "un"
-          },
-          {
-            "contenu_id": 2,
-            "element": "un",
-            "image_url": null,
-            "video_url": "/un.mp4",
-            "sons_url": null,
-            "sound_group": "un"
-          },
-          {
-            "contenu_id": 3,
-            "element": "an",
-            "image_url": null,
-            "video_url": "/an.mp4",
-            "sons_url": null,
-            "sound_group": "en"
-          },
-          {
-            "contenu_id": 4,
-            "element": "en",
-            "image_url": null,
-            "video_url": "/en.mp4",
-            "sons_url": null,
-            "sound_group": "en"
-          },
-          {
-            "contenu_id": 5,
-            "element": "au",
-            "image_url": null,
-            "video_url": "/au.mp4",
-            "sons_url": null,
-            "sound_group": "o"
-          },
-          {
-            "contenu_id": 6,
-            "element": "eau",
-            "image_url": null,
-            "video_url": "/eau.mp4",
-            "sons_url": null,
-            "sound_group": "o"
-          },
-          {
-            "contenu_id": 7,
-            "element": "eu",
-            "image_url": null,
-            "video_url": "/eu.mp4",
-            "sons_url": null,
-            "sound_group": "e"
-          },
-          {
-            "contenu_id": 8,
-            "element": "œu",
-            "image_url": null,
-            "video_url": "/oeu.mp4",
-            "sons_url": null,
-            "sound_group": "e"
-          },
-          {
-            "contenu_id": 9,
-            "element": "ai",
-            "image_url": null,
-            "video_url": "/ai.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 10,
-            "element": "ei",
-            "image_url": null,
-            "video_url": "/ei.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 11,
-            "element": "est",
-            "image_url": null,
-            "video_url": "/est.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 12,
-            "element": "et",
-            "image_url": null,
-            "video_url": "/et.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 13,
-            "element": "_er",
-            "image_url": null,
-            "video_url": "/er.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 14,
-            "element": "_ez",
-            "image_url": null,
-            "video_url": "/ez.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 15,
-            "element": "_es",
-            "image_url": null,
-            "video_url": "/es.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 16,
-            "element": "_ed",
-            "image_url": null,
-            "video_url": "/ed.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 17,
-            "element": "ien",
-            "image_url": null,
-            "video_url": "/ien.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 18,
-            "element": "on",
-            "image_url": null,
-            "video_url": "/on.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 19,
-            "element": "ou",
-            "image_url": null,
-            "video_url": "/ou.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 20,
-            "element": "oi",
-            "image_url": null,
-            "video_url": "/oi.mp4",
-            "sons_url": null,
-            "sound_group": null
-          }
-        ]
-      },
-      {
-        "exercice_id": 4,
-        "type": "D.1",
-        "consigne": "Écris les 3 écritures du même graphème.",
-        "contenus": [
-          {
-            "contenu_id": 1,
-            "element": "in",
-            "image_url": null,
-            "video_url": "/in.mp4",
-            "sons_url": null,
-            "sound_group": "un"
-          },
-          {
-            "contenu_id": 2,
-            "element": "un",
-            "image_url": null,
-            "video_url": "/un.mp4",
-            "sons_url": null,
-            "sound_group": "un"
-          },
-          {
-            "contenu_id": 3,
-            "element": "an",
-            "image_url": null,
-            "video_url": "/an.mp4",
-            "sons_url": null,
-            "sound_group": "en"
-          },
-          {
-            "contenu_id": 4,
-            "element": "en",
-            "image_url": null,
-            "video_url": "/en.mp4",
-            "sons_url": null,
-            "sound_group": "en"
-          },
-          {
-            "contenu_id": 5,
-            "element": "au",
-            "image_url": null,
-            "video_url": "/au.mp4",
-            "sons_url": null,
-            "sound_group": "o"
-          },
-          {
-            "contenu_id": 6,
-            "element": "eau",
-            "image_url": null,
-            "video_url": "/eau.mp4",
-            "sons_url": null,
-            "sound_group": "o"
-          },
-          {
-            "contenu_id": 7,
-            "element": "eu",
-            "image_url": null,
-            "video_url": "/eu.mp4",
-            "sons_url": null,
-            "sound_group": "e"
-          },
-          {
-            "contenu_id": 8,
-            "element": "œu",
-            "image_url": null,
-            "video_url": "/oeu.mp4",
-            "sons_url": null,
-            "sound_group": "e"
-          },
-          {
-            "contenu_id": 9,
-            "element": "ai",
-            "image_url": null,
-            "video_url": "/ai.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 10,
-            "element": "ei",
-            "image_url": null,
-            "video_url": "/ei.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 11,
-            "element": "est",
-            "image_url": null,
-            "video_url": "/est.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 12,
-            "element": "et",
-            "image_url": null,
-            "video_url": "/et.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 13,
-            "element": "_er",
-            "image_url": null,
-            "video_url": "/er.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 14,
-            "element": "_ez",
-            "image_url": null,
-            "video_url": "/ez.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 15,
-            "element": "_es",
-            "image_url": null,
-            "video_url": "/es.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 16,
-            "element": "_ed",
-            "image_url": null,
-            "video_url": "/ed.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 17,
-            "element": "ien",
-            "image_url": null,
-            "video_url": "/ien.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 18,
-            "element": "on",
-            "image_url": null,
-            "video_url": "/on.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 19,
-            "element": "ou",
-            "image_url": null,
-            "video_url": "/ou.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 20,
-            "element": "oi",
-            "image_url": null,
-            "video_url": "/oi.mp4",
-            "sons_url": null,
-            "sound_group": null
-          }
-        ]
-      },
-      {
-        "exercice_id": 5,
-        "type": "H.1",
-        "consigne": "Mets les graphèmes dans l'ordre.",
-        "contenus": [
-          {
-            "contenu_id": 1,
-            "element": "in",
-            "image_url": null,
-            "video_url": "/in.mp4",
-            "sons_url": null,
-            "sound_group": "un"
-          },
-          {
-            "contenu_id": 2,
-            "element": "un",
-            "image_url": null,
-            "video_url": "/un.mp4",
-            "sons_url": null,
-            "sound_group": "un"
-          },
-          {
-            "contenu_id": 3,
-            "element": "an",
-            "image_url": null,
-            "video_url": "/an.mp4",
-            "sons_url": null,
-            "sound_group": "en"
-          },
-          {
-            "contenu_id": 4,
-            "element": "en",
-            "image_url": null,
-            "video_url": "/en.mp4",
-            "sons_url": null,
-            "sound_group": "en"
-          },
-          {
-            "contenu_id": 5,
-            "element": "au",
-            "image_url": null,
-            "video_url": "/au.mp4",
-            "sons_url": null,
-            "sound_group": "o"
-          },
-          {
-            "contenu_id": 6,
-            "element": "eau",
-            "image_url": null,
-            "video_url": "/eau.mp4",
-            "sons_url": null,
-            "sound_group": "o"
-          },
-          {
-            "contenu_id": 7,
-            "element": "eu",
-            "image_url": null,
-            "video_url": "/eu.mp4",
-            "sons_url": null,
-            "sound_group": "e"
-          },
-          {
-            "contenu_id": 8,
-            "element": "œu",
-            "image_url": null,
-            "video_url": "/oeu.mp4",
-            "sons_url": null,
-            "sound_group": "e"
-          },
-          {
-            "contenu_id": 9,
-            "element": "ai",
-            "image_url": null,
-            "video_url": "/ai.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 10,
-            "element": "ei",
-            "image_url": null,
-            "video_url": "/ei.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 11,
-            "element": "est",
-            "image_url": null,
-            "video_url": "/est.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 12,
-            "element": "et",
-            "image_url": null,
-            "video_url": "/et.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 13,
-            "element": "_er",
-            "image_url": null,
-            "video_url": "/er.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 14,
-            "element": "_ez",
-            "image_url": null,
-            "video_url": "/ez.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 15,
-            "element": "_es",
-            "image_url": null,
-            "video_url": "/es.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 16,
-            "element": "_ed",
-            "image_url": null,
-            "video_url": "/ed.mp4",
-            "sons_url": null,
-            "sound_group": "é"
-          },
-          {
-            "contenu_id": 17,
-            "element": "ien",
-            "image_url": null,
-            "video_url": "/ien.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 18,
-            "element": "on",
-            "image_url": null,
-            "video_url": "/on.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 19,
-            "element": "ou",
-            "image_url": null,
-            "video_url": "/ou.mp4",
-            "sons_url": null,
-            "sound_group": null
-          },
-          {
-            "contenu_id": 20,
-            "element": "oi",
-            "image_url": null,
-            "video_url": "/oi.mp4",
-            "sons_url": null,
-            "sound_group": null
-          }
-        ]
-      }
-    ]
-  }
-]
+{
+  "id": 1,
+  "nom": "Graphèmes",
+  "video_url": "",
+  "exercices": [
+    {
+      "id": 1,
+      "type": "A.1",
+      "consigne": "Écoute et répète.",
+      "contenus": [
+        {
+          "id": 1,
+          "element": "in",
+          "image_url": null,
+          "video_url": "/in.mp4",
+          "sons_url": null,
+          "sound_group": "un"
+        },
+        {
+          "id": 2,
+          "element": "un",
+          "image_url": null,
+          "video_url": "/un.mp4",
+          "sons_url": null,
+          "sound_group": "un"
+        },
+        {
+          "id": 3,
+          "element": "an",
+          "image_url": null,
+          "video_url": "/an.mp4",
+          "sons_url": null,
+          "sound_group": "en"
+        },
+        {
+          "id": 4,
+          "element": "en",
+          "image_url": null,
+          "video_url": "/en.mp4",
+          "sons_url": null,
+          "sound_group": "en"
+        },
+        {
+          "id": 5,
+          "element": "au",
+          "image_url": null,
+          "video_url": "/au.mp4",
+          "sons_url": null,
+          "sound_group": "o"
+        },
+        {
+          "id": 6,
+          "element": "eau",
+          "image_url": null,
+          "video_url": "/eau.mp4",
+          "sons_url": null,
+          "sound_group": "o"
+        },
+        {
+          "id": 7,
+          "element": "eu",
+          "image_url": null,
+          "video_url": "/eu.mp4",
+          "sons_url": null,
+          "sound_group": "e"
+        },
+        {
+          "id": 8,
+          "element": "œu",
+          "image_url": null,
+          "video_url": "/oeu.mp4",
+          "sons_url": null,
+          "sound_group": "e"
+        },
+        {
+          "id": 9,
+          "element": "ai",
+          "image_url": null,
+          "video_url": "/ai.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "id": 10,
+          "element": "ei",
+          "image_url": null,
+          "video_url": "/ei.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "id": 11,
+          "element": "est",
+          "image_url": null,
+          "video_url": "/est.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "id": 12,
+          "element": "et",
+          "image_url": null,
+          "video_url": "/et.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 13,
+          "element": "_er",
+          "image_url": null,
+          "video_url": "/er.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 14,
+          "element": "_ez",
+          "image_url": null,
+          "video_url": "/ez.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 15,
+          "element": "_es",
+          "image_url": null,
+          "video_url": "/es.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 16,
+          "element": "_ed",
+          "image_url": null,
+          "video_url": "/ed.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 17,
+          "element": "ien",
+          "image_url": null,
+          "video_url": "/ien.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 18,
+          "element": "on",
+          "image_url": null,
+          "video_url": "/on.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 19,
+          "element": "ou",
+          "image_url": null,
+          "video_url": "/ou.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 20,
+          "element": "oi",
+          "image_url": null,
+          "video_url": "/oi.mp4",
+          "sons_url": null,
+          "sound_group": null
+        }
+      ]
+    },
+    {
+      "exercice_id": 2,
+      "type": "B.1",
+      "consigne": "Trouve le bon graphème.",
+      "contenus": [
+        {
+          "contenu_id": 1,
+          "element": "in",
+          "image_url": null,
+          "video_url": "/in.mp4",
+          "sons_url": null,
+          "sound_group": "un"
+        },
+        {
+          "contenu_id": 2,
+          "element": "un",
+          "image_url": null,
+          "video_url": "/un.mp4",
+          "sons_url": null,
+          "sound_group": "un"
+        },
+        {
+          "contenu_id": 3,
+          "element": "an",
+          "image_url": null,
+          "video_url": "/an.mp4",
+          "sons_url": null,
+          "sound_group": "en"
+        },
+        {
+          "contenu_id": 4,
+          "element": "en",
+          "image_url": null,
+          "video_url": "/en.mp4",
+          "sons_url": null,
+          "sound_group": "en"
+        },
+        {
+          "contenu_id": 5,
+          "element": "au",
+          "image_url": null,
+          "video_url": "/au.mp4",
+          "sons_url": null,
+          "sound_group": "o"
+        },
+        {
+          "contenu_id": 6,
+          "element": "eau",
+          "image_url": null,
+          "video_url": "/eau.mp4",
+          "sons_url": null,
+          "sound_group": "o"
+        },
+        {
+          "contenu_id": 7,
+          "element": "eu",
+          "image_url": null,
+          "video_url": "/eu.mp4",
+          "sons_url": null,
+          "sound_group": "e"
+        },
+        {
+          "contenu_id": 8,
+          "element": "œu",
+          "image_url": null,
+          "video_url": "/oeu.mp4",
+          "sons_url": null,
+          "sound_group": "e"
+        },
+        {
+          "contenu_id": 9,
+          "element": "ai",
+          "image_url": null,
+          "video_url": "/ai.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 10,
+          "element": "ei",
+          "image_url": null,
+          "video_url": "/ei.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 11,
+          "element": "est",
+          "image_url": null,
+          "video_url": "/est.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 12,
+          "element": "et",
+          "image_url": null,
+          "video_url": "/et.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 13,
+          "element": "_er",
+          "image_url": null,
+          "video_url": "/er.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 14,
+          "element": "_ez",
+          "image_url": null,
+          "video_url": "/ez.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 15,
+          "element": "_es",
+          "image_url": null,
+          "video_url": "/es.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 16,
+          "element": "_ed",
+          "image_url": null,
+          "video_url": "/ed.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 17,
+          "element": "ien",
+          "image_url": null,
+          "video_url": "/ien.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 18,
+          "element": "on",
+          "image_url": null,
+          "video_url": "/on.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 19,
+          "element": "ou",
+          "image_url": null,
+          "video_url": "/ou.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 20,
+          "element": "oi",
+          "image_url": null,
+          "video_url": "/oi.mp4",
+          "sons_url": null,
+          "sound_group": null
+        }
+      ]
+    },
+    {
+      "exercice_id": 3,
+      "type": "C.1",
+      "consigne": "Écris le graphème.",
+      "contenus": [
+        {
+          "contenu_id": 1,
+          "element": "in",
+          "image_url": null,
+          "video_url": "/in.mp4",
+          "sons_url": null,
+          "sound_group": "un"
+        },
+        {
+          "contenu_id": 2,
+          "element": "un",
+          "image_url": null,
+          "video_url": "/un.mp4",
+          "sons_url": null,
+          "sound_group": "un"
+        },
+        {
+          "contenu_id": 3,
+          "element": "an",
+          "image_url": null,
+          "video_url": "/an.mp4",
+          "sons_url": null,
+          "sound_group": "en"
+        },
+        {
+          "contenu_id": 4,
+          "element": "en",
+          "image_url": null,
+          "video_url": "/en.mp4",
+          "sons_url": null,
+          "sound_group": "en"
+        },
+        {
+          "contenu_id": 5,
+          "element": "au",
+          "image_url": null,
+          "video_url": "/au.mp4",
+          "sons_url": null,
+          "sound_group": "o"
+        },
+        {
+          "contenu_id": 6,
+          "element": "eau",
+          "image_url": null,
+          "video_url": "/eau.mp4",
+          "sons_url": null,
+          "sound_group": "o"
+        },
+        {
+          "contenu_id": 7,
+          "element": "eu",
+          "image_url": null,
+          "video_url": "/eu.mp4",
+          "sons_url": null,
+          "sound_group": "e"
+        },
+        {
+          "contenu_id": 8,
+          "element": "œu",
+          "image_url": null,
+          "video_url": "/oeu.mp4",
+          "sons_url": null,
+          "sound_group": "e"
+        },
+        {
+          "contenu_id": 9,
+          "element": "ai",
+          "image_url": null,
+          "video_url": "/ai.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 10,
+          "element": "ei",
+          "image_url": null,
+          "video_url": "/ei.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 11,
+          "element": "est",
+          "image_url": null,
+          "video_url": "/est.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 12,
+          "element": "et",
+          "image_url": null,
+          "video_url": "/et.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 13,
+          "element": "_er",
+          "image_url": null,
+          "video_url": "/er.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 14,
+          "element": "_ez",
+          "image_url": null,
+          "video_url": "/ez.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 15,
+          "element": "_es",
+          "image_url": null,
+          "video_url": "/es.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 16,
+          "element": "_ed",
+          "image_url": null,
+          "video_url": "/ed.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 17,
+          "element": "ien",
+          "image_url": null,
+          "video_url": "/ien.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 18,
+          "element": "on",
+          "image_url": null,
+          "video_url": "/on.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 19,
+          "element": "ou",
+          "image_url": null,
+          "video_url": "/ou.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 20,
+          "element": "oi",
+          "image_url": null,
+          "video_url": "/oi.mp4",
+          "sons_url": null,
+          "sound_group": null
+        }
+      ]
+    },
+    {
+      "exercice_id": 4,
+      "type": "D.1",
+      "consigne": "Écris les 3 écritures du même graphème.",
+      "contenus": [
+        {
+          "contenu_id": 1,
+          "element": "in",
+          "image_url": null,
+          "video_url": "/in.mp4",
+          "sons_url": null,
+          "sound_group": "un"
+        },
+        {
+          "contenu_id": 2,
+          "element": "un",
+          "image_url": null,
+          "video_url": "/un.mp4",
+          "sons_url": null,
+          "sound_group": "un"
+        },
+        {
+          "contenu_id": 3,
+          "element": "an",
+          "image_url": null,
+          "video_url": "/an.mp4",
+          "sons_url": null,
+          "sound_group": "en"
+        },
+        {
+          "contenu_id": 4,
+          "element": "en",
+          "image_url": null,
+          "video_url": "/en.mp4",
+          "sons_url": null,
+          "sound_group": "en"
+        },
+        {
+          "contenu_id": 5,
+          "element": "au",
+          "image_url": null,
+          "video_url": "/au.mp4",
+          "sons_url": null,
+          "sound_group": "o"
+        },
+        {
+          "contenu_id": 6,
+          "element": "eau",
+          "image_url": null,
+          "video_url": "/eau.mp4",
+          "sons_url": null,
+          "sound_group": "o"
+        },
+        {
+          "contenu_id": 7,
+          "element": "eu",
+          "image_url": null,
+          "video_url": "/eu.mp4",
+          "sons_url": null,
+          "sound_group": "e"
+        },
+        {
+          "contenu_id": 8,
+          "element": "œu",
+          "image_url": null,
+          "video_url": "/oeu.mp4",
+          "sons_url": null,
+          "sound_group": "e"
+        },
+        {
+          "contenu_id": 9,
+          "element": "ai",
+          "image_url": null,
+          "video_url": "/ai.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 10,
+          "element": "ei",
+          "image_url": null,
+          "video_url": "/ei.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 11,
+          "element": "est",
+          "image_url": null,
+          "video_url": "/est.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 12,
+          "element": "et",
+          "image_url": null,
+          "video_url": "/et.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 13,
+          "element": "_er",
+          "image_url": null,
+          "video_url": "/er.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 14,
+          "element": "_ez",
+          "image_url": null,
+          "video_url": "/ez.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 15,
+          "element": "_es",
+          "image_url": null,
+          "video_url": "/es.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 16,
+          "element": "_ed",
+          "image_url": null,
+          "video_url": "/ed.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 17,
+          "element": "ien",
+          "image_url": null,
+          "video_url": "/ien.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 18,
+          "element": "on",
+          "image_url": null,
+          "video_url": "/on.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 19,
+          "element": "ou",
+          "image_url": null,
+          "video_url": "/ou.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 20,
+          "element": "oi",
+          "image_url": null,
+          "video_url": "/oi.mp4",
+          "sons_url": null,
+          "sound_group": null
+        }
+      ]
+    },
+    {
+      "exercice_id": 5,
+      "type": "H.1",
+      "consigne": "Mets les graphèmes dans l'ordre.",
+      "contenus": [
+        {
+          "contenu_id": 1,
+          "element": "in",
+          "image_url": null,
+          "video_url": "/in.mp4",
+          "sons_url": null,
+          "sound_group": "un"
+        },
+        {
+          "contenu_id": 2,
+          "element": "un",
+          "image_url": null,
+          "video_url": "/un.mp4",
+          "sons_url": null,
+          "sound_group": "un"
+        },
+        {
+          "contenu_id": 3,
+          "element": "an",
+          "image_url": null,
+          "video_url": "/an.mp4",
+          "sons_url": null,
+          "sound_group": "en"
+        },
+        {
+          "contenu_id": 4,
+          "element": "en",
+          "image_url": null,
+          "video_url": "/en.mp4",
+          "sons_url": null,
+          "sound_group": "en"
+        },
+        {
+          "contenu_id": 5,
+          "element": "au",
+          "image_url": null,
+          "video_url": "/au.mp4",
+          "sons_url": null,
+          "sound_group": "o"
+        },
+        {
+          "contenu_id": 6,
+          "element": "eau",
+          "image_url": null,
+          "video_url": "/eau.mp4",
+          "sons_url": null,
+          "sound_group": "o"
+        },
+        {
+          "contenu_id": 7,
+          "element": "eu",
+          "image_url": null,
+          "video_url": "/eu.mp4",
+          "sons_url": null,
+          "sound_group": "e"
+        },
+        {
+          "contenu_id": 8,
+          "element": "œu",
+          "image_url": null,
+          "video_url": "/oeu.mp4",
+          "sons_url": null,
+          "sound_group": "e"
+        },
+        {
+          "contenu_id": 9,
+          "element": "ai",
+          "image_url": null,
+          "video_url": "/ai.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 10,
+          "element": "ei",
+          "image_url": null,
+          "video_url": "/ei.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 11,
+          "element": "est",
+          "image_url": null,
+          "video_url": "/est.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 12,
+          "element": "et",
+          "image_url": null,
+          "video_url": "/et.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 13,
+          "element": "_er",
+          "image_url": null,
+          "video_url": "/er.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 14,
+          "element": "_ez",
+          "image_url": null,
+          "video_url": "/ez.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 15,
+          "element": "_es",
+          "image_url": null,
+          "video_url": "/es.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 16,
+          "element": "_ed",
+          "image_url": null,
+          "video_url": "/ed.mp4",
+          "sons_url": null,
+          "sound_group": "é"
+        },
+        {
+          "contenu_id": 17,
+          "element": "ien",
+          "image_url": null,
+          "video_url": "/ien.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 18,
+          "element": "on",
+          "image_url": null,
+          "video_url": "/on.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 19,
+          "element": "ou",
+          "image_url": null,
+          "video_url": "/ou.mp4",
+          "sons_url": null,
+          "sound_group": null
+        },
+        {
+          "contenu_id": 20,
+          "element": "oi",
+          "image_url": null,
+          "video_url": "/oi.mp4",
+          "sons_url": null,
+          "sound_group": null
+        }
+      ]
+    }
+  ]
+}

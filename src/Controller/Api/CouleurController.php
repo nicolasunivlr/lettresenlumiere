@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CouleurController extends AbstractController
 {
-    #[Route('/api/custom/couleur', name: 'custom_couleur', methods: ['GET'])]
+    //#[Route('/api/custom/couleur', name: 'custom_couleur', methods: ['GET'])]
     public function getCustomCouleur(CouleurRepository $couleurRepository): JsonResponse{
            $couleur = $couleurRepository->findAll();
            $data = [];

@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ContenuController extends AbstractController
 {
-    #[Route('/api/update-images', name: 'update_contenu_images', methods: ['POST'])]
+    //#[Route('/api/update-images', name: 'update_contenu_images', methods: ['POST'])]
     public function updateImages(ContenuRepository $contenuRepository, EntityManagerInterface $entityManager): JsonResponse
     {
         // Définir le dossier des images
@@ -60,7 +60,7 @@ class ContenuController extends AbstractController
         ]);
     }
 
-    #[Route('/api/test/bilan', name: 'test_bilan', methods: ['GET'])]
+    //#[Route('/api/test/bilan', name: 'test_bilan', methods: ['GET'])]
     public function getBilanTest(EntityManagerInterface $entityManager): JsonResponse
     {
         $sequences = $entityManager->getRepository(Sequence::class)

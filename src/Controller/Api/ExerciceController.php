@@ -17,7 +17,7 @@ class ExerciceController extends AbstractController
         $this->doctrine = $doctrine;
     }
 
-    #[Route('/api/exercices/{sequenceId}', name: 'api_exercices', methods: ['GET'])]
+    //#[Route('/api/exercices/{sequenceId}', name: 'api_exercices', methods: ['GET'])]
     public function getExercicesBySequence(int $sequenceId): JsonResponse
     {
         $repository = $this->doctrine->getRepository(Exercice::class);

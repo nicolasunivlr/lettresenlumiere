@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class EtapeController extends AbstractController
 {
-    #[Route('/api/custom/etapes', name: 'custom_etapes', methods: ['GET'])]
+    //#[Route('/api/custom/etapes', name: 'custom_etapes', methods: ['GET'])]
     public function getCustomEtape(SequenceRepository $sequenceRepository): JsonResponse{
         $sequence = $sequenceRepository->findAll();
         $data=[];
