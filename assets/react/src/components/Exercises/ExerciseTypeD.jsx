@@ -281,7 +281,13 @@ const ExerciseTypeD = (props) => {
             answer: undefined,
           }))
         );
-        speak(correctAnswer);
+        if( correctAnswer.sons_url ) {
+          const url = `${config.audiosUrl}/${correctAnswer.sons_url}`;
+          const audio = new Audio(url);
+          audio.play();
+        } else {
+          speak(correctAnswer.element);
+        }
         setisLocked(false);
       }, 2000);
     }

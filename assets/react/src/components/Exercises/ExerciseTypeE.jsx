@@ -8,6 +8,7 @@ import OKButton from '../UI/OKButton';
 import useSpeak from '../../hooks/useSpeak';
 import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
+import useConfig from '../../hooks/useConfig';
 
 function ExerciseTypeE(props) {
   const { content, onDone } = props;
@@ -23,6 +24,7 @@ function ExerciseTypeE(props) {
   const currentAttempt = useRef(0);
   const timeOutRef = useRef(4000);
   const [correctAnswerGiven, setCorrectAnswerGiven] = useState(false);
+  const config = useConfig();
 
   useEffect(() => {
     if (content && content.contenus) {
@@ -98,7 +100,13 @@ function ExerciseTypeE(props) {
       contentExercise[currentIndex] &&
       !correctAnswerGiven
     ) {
-      speak(contentExercise[currentIndex].element);
+      if( contentExercise[currentIndex].sons_url ) {
+        const url = `${config.audiosUrl}/${contentExercise[currentIndex].sons_url}`;
+        const audio = new Audio(url);
+        audio.play();
+      } else {
+        speak(contentExercise[currentIndex].element);
+      }
     }
   }, [isLabelVisible, contentExercise, currentIndex, correctAnswerGiven]);
 
@@ -170,7 +178,13 @@ function ExerciseTypeE(props) {
 
       setTimeout(() => {
         setUserInput('');
-        speak(contentExercise[currentIndex].element);
+        if( contentExercise[currentIndex].sons_url ) {
+          const url = `${config.audiosUrl}/${contentExercise[currentIndex].sons_url}`;
+          const audio = new Audio(url);
+          audio.play();
+        } else {
+          speak(contentExercise[currentIndex].element);
+        }
 
         setIsAnswerValidated(null);
       }, 2000);

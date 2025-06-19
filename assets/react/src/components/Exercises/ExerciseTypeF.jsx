@@ -8,6 +8,7 @@ import LabelImage from '../UI/LabelImage';
 import useSpeak from '../../hooks/useSpeak';
 import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
+import useConfig from '../../hooks/useConfig';
 
 const ExerciseTypeF = (props) => {
   const { content, onDone } = props;
@@ -16,6 +17,7 @@ const ExerciseTypeF = (props) => {
   const [currentResponse, setCurrentResponse] = useState(null);
   const [isValidated, setIsValidated] = useState(undefined);
   const [elementValidations, setElementValidations] = useState([]);
+  const config = useConfig();
 
   const [attempt, setAttempt] = useState(0);
 
@@ -71,7 +73,13 @@ const ExerciseTypeF = (props) => {
       if (firstNonDone) {
         setTimeout(() => {
           setShowLabel(false);
-          speak(firstNonDone.element);
+          if( firstNonDone.sons_url ) {
+            const url = `${config.audiosUrl}/${firstNonDone.sons_url}`;
+            const audio = new Audio(url);
+            audio.play();
+          } else {
+            speak(firstNonDone.element);
+          }
         }, displayTimeRef.current);
       }
     }
@@ -142,7 +150,13 @@ const ExerciseTypeF = (props) => {
       setShowLabel(true);
       setTimeout(() => {
         setShowLabel(false);
-        speak(currentResponse.element);
+        if( currentResponse.sons_url ) {
+          const url = `${config.audiosUrl}/${currentResponse.sons_url}`;
+          const audio = new Audio(url);
+          audio.play();
+        } else {
+          speak(currentResponse.element);
+        }
       }, 3000);
       return false;
     }
