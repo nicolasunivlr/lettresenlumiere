@@ -262,8 +262,6 @@ const InputLabel = (props) => {
   useEffect(() => {
     if (!isDisabled) {
       inputRef.current?.focus();
-      setCurrentInput(hasUnderscorePrefix ? '_' : '');
-      setCursorPosition(0);
     }
   }, [isDisabled, isEffectivelyVisible]);
 
@@ -310,6 +308,9 @@ const InputLabel = (props) => {
       const width = measureRef.current.offsetWidth;
       setInputWidth(`${width}px`);
     }
+    inputRef.current?.focus();
+    setCurrentInput(hasUnderscorePrefix ? '_' : '');
+    setCursorPosition(0);
   }, [correctAnswer]);
 
   useEffect(() => {
