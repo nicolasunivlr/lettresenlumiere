@@ -32,7 +32,7 @@ class Etape
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['etape:read', 'sequence:read'])]
+    #[Groups(['etape:read'])]
     private ?string $nom = null;
 
     #[ORM\OneToMany(mappedBy: 'etape', targetEntity: Sequence::class)]

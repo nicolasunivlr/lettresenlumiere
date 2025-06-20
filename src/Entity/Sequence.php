@@ -37,7 +37,7 @@ class Sequence
 
     #[ORM\ManyToOne(targetEntity: Etape::class, inversedBy: 'sequences')]
     #[ORM\JoinColumn(name: "etape_id", referencedColumnName: "id", nullable: false)]
-    #[Groups(['sequence:write'])]
+    #[Groups(['sequence:read'])]
     private ?Etape $etape = null;
 
     #[ORM\OneToMany(mappedBy: "sequence", targetEntity: Exercice::class)]
