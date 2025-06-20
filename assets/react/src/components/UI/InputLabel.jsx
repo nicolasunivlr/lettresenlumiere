@@ -42,6 +42,8 @@ const InputLabel = (props) => {
     [syllabIndexes]
   );
 
+  // USEFFECT
+
   useEffect(() => {
     setUserInput('');
     setFeedbackClass('');
@@ -69,6 +71,151 @@ const InputLabel = (props) => {
     }
   }, [correctAnswer, syllabIndexes, indexSyllab, syllabEndIndex]);
 
+  useEffect(() => {
+    if (syllabIndexes) {
+      if (currentInput.length === 0) {
+        setUserInput('');
+        return;
+      }
+
+      const beforeSyllab = correctAnswer.substring(0, indexSyllab);
+      const afterSyllab = correctAnswer.substring(syllabEndIndex + 1);
+      const fullWord = beforeSyllab + currentInput + afterSyllab;
+
+      setUserInput(fullWord);
+    } else {
+      setUserInput(currentInput);
+    }
+  }, [
+    currentInput,
+    correctAnswer,
+    syllabIndexes,
+    indexSyllab,
+    syllabEndIndex,
+    displayValue,
+  ]);
+
+  useEffect(() => {
+    if (!isDisabled) {
+      inputRef.current?.focus();
+    }
+  }, [isDisabled, isEffectivelyVisible]);
+
+  useEffect(() => {
+    if (answer === true) {
+      setIsDisabled(true);
+      setFeedbackClass('label--true');
+    } else if (answer === false) {
+      setIsDisabled(true);
+      setFeedbackClass('label--false');
+      if (errorTimerRef.current === null) {
+        errorTimerRef.current = setTimeout(() => {
+          setCurrentInput('');
+          setCursorPosition(0);
+          if (syllabIndexes) {
+            const initialDisplay = correctAnswer
+                .split('')
+                .map((char, index) => {
+                  if (
+                      indexSyllab !== undefined &&
+                      index >= indexSyllab &&
+                      index <= syllabEndIndex
+                  ) {
+                    return '_';
+                  }
+                  return char;
+                })
+                .join('');
+            setDisplayValue(initialDisplay);
+          } else {
+            setDisplayValue('_'.repeat(correctAnswer.length));
+          }
+          errorTimerRef.current = null;
+        }, 2000);
+      }
+    } else if (answer === null) {
+      setFeedbackClass('');
+      setIsDisabled(false);
+    }
+  }, [answer]);
+
+  useEffect(() => {
+    if (measureRef.current) {
+      const width = measureRef.current.offsetWidth;
+      console.log(measureRef.current.offsetWidth)
+      //setInputWidth(`${width}px`);
+    }
+    inputRef.current?.focus();
+    setCurrentInput(hasUnderscorePrefix ? '_' : '');
+    setCursorPosition(0);
+  }, [correctAnswer]);
+
+  useEffect(() => {
+    if (inputRef.current && !isDisabled) {
+      const adjustedPos = hasUnderscorePrefix
+          ? cursorPosition + 1
+          : cursorPosition;
+      inputRef.current.selectionStart = adjustedPos;
+      inputRef.current.selectionEnd = adjustedPos;
+    }
+  }, [cursorPosition, isDisabled, hasUnderscorePrefix]);
+
+  useEffect(() => {
+    // Si le composant n'est pas visible, ou si le conteneur de texte n'est pas encore référencé,
+    // ou si la valeur à afficher est vide (aucun caractère à mesurer),
+    // alors les mesures ne sont pas considérées comme faites.
+    if (!isEffectivelyVisible || !textContainerRef.current || displayValue.length === 0) {
+      setMeasuresDone(false);
+      return; // Sortie anticipée
+    }
+
+    // À ce stade, le composant est visible, a un conteneur de texte, et a du contenu à afficher.
+    // Nous utilisons requestAnimationFrame pour attendre le prochain cycle de peinture du navigateur.
+    // Cela donne au navigateur le temps de calculer le layout des éléments DOM,
+    // en particulier s'ils viennent de devenir visibles.
+    const animationFrameId = requestAnimationFrame(() => {
+      // Il est bon de re-vérifier les conditions ici, au cas où l'état aurait changé
+      // très rapidement entre le moment où le rAF a été demandé et son exécution.
+      if (!isEffectivelyVisible || !textContainerRef.current || displayValue.length === 0) {
+        setMeasuresDone(false);
+        return;
+      }
+
+      // Vérifier si la ref du premier caractère est disponible.
+      // charRefs.current est peuplé lors du rendu de displayValue.
+      const firstCharRef = charRefs.current[0];
+
+      if (firstCharRef) {
+        const containerRect = textContainerRef.current.getBoundingClientRect();
+        const firstCharRect = firstCharRef.getBoundingClientRect();
+
+        // Les mesures sont considérées comme prêtes si le conteneur de texte
+        // et le premier caractère ont des dimensions physiques valides (par exemple, une largeur > 0).
+        if (containerRect.width > 0 && firstCharRect.width > 0) {
+          setMeasuresDone(true);
+        } else {
+          // Les dimensions sont encore nulles ou invalides.
+          // Cela peut se produire si l'élément est toujours caché d'une manière ou d'une autre,
+          // ou si le layout n'est pas encore complètement finalisé.
+          setMeasuresDone(false);
+        }
+      } else {
+        // displayValue n'est pas vide, mais charRefs.current[0] n'existe pas.
+        // Cela pourrait indiquer un décalage ou un cas imprévu.
+        // Par sécurité, on considère les mesures comme non prêtes.
+        setMeasuresDone(false);
+      }
+    });
+
+    // Nettoyage : annuler le requestAnimationFrame si le composant est démonté
+    // ou si les dépendances du useEffect changent avant son exécution.
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [displayValue, isEffectivelyVisible]);
+
+    // HANDLERS
+
   const handleInputChange = (event) => {
     let newInput = event.target.value;
 
@@ -81,7 +228,6 @@ const InputLabel = (props) => {
     if (syllabIndexes) {
       if (newInput.length > (hasUnderscorePrefix ? 1 : 0) + syllab.length)
         return;
-
       setCurrentInput(newInput);
 
       const newDisplay = correctAnswer
@@ -108,7 +254,6 @@ const InputLabel = (props) => {
       setDisplayValue(newDisplay);
     } else {
       if (newInput.length > correctAnswer.length) return;
-
       setCurrentInput(newInput);
 
       const newDisplay = correctAnswer
@@ -173,7 +318,6 @@ const InputLabel = (props) => {
           );
 
           const newValue = beforeDelete + afterDelete;
-
           setCurrentInput(newValue);
 
           setCursorPosition(currentPos - 1);
@@ -183,6 +327,26 @@ const InputLabel = (props) => {
         break;
     }
   };
+
+  const handleDisplayClick = () => {
+    if (!isDisabled) {
+      inputRef.current?.focus();
+    }
+  };
+
+  const handleCharClick = (index) => {
+    if (isDisabled) return;
+    inputRef.current?.focus();
+    if (syllabIndexes) {
+      if (index >= indexSyllab && index <= syllabEndIndex) {
+        setCursorPosition(index + 1 - indexSyllab);
+      }
+    } else {
+      setCursorPosition(index + 1);
+    }
+  };
+
+  // Update display value based on user input
 
   const updateDisplayValue = (input) => {
     if (syllabIndexes) {
@@ -235,93 +399,7 @@ const InputLabel = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (syllabIndexes) {
-      if (currentInput.length === 0) {
-        setUserInput('');
-        return;
-      }
-
-      const beforeSyllab = correctAnswer.substring(0, indexSyllab);
-      const afterSyllab = correctAnswer.substring(syllabEndIndex + 1);
-      const fullWord = beforeSyllab + currentInput + afterSyllab;
-
-      setUserInput(fullWord);
-    } else {
-      setUserInput(currentInput);
-    }
-  }, [
-    currentInput,
-    correctAnswer,
-    syllabIndexes,
-    indexSyllab,
-    syllabEndIndex,
-    displayValue,
-  ]);
-
-  useEffect(() => {
-    if (!isDisabled) {
-      inputRef.current?.focus();
-    }
-  }, [isDisabled, isEffectivelyVisible]);
-
-  useEffect(() => {
-    if (answer === true) {
-      setIsDisabled(true);
-      setFeedbackClass('label--true');
-    } else if (answer === false) {
-      setIsDisabled(true);
-      setFeedbackClass('label--false');
-      if (errorTimerRef.current === null) {
-        errorTimerRef.current = setTimeout(() => {
-          setCurrentInput('');
-          setCursorPosition(0);
-          if (syllabIndexes) {
-            const initialDisplay = correctAnswer
-              .split('')
-              .map((char, index) => {
-                if (
-                  indexSyllab !== undefined &&
-                  index >= indexSyllab &&
-                  index <= syllabEndIndex
-                ) {
-                  return '_';
-                }
-                return char;
-              })
-              .join('');
-            setDisplayValue(initialDisplay);
-          } else {
-            setDisplayValue('_'.repeat(correctAnswer.length));
-          }
-          errorTimerRef.current = null;
-        }, 2000);
-      }
-    } else if (answer === null) {
-      setFeedbackClass('');
-      setIsDisabled(false);
-    }
-  }, [answer]);
-
-  useEffect(() => {
-    if (measureRef.current) {
-      const width = measureRef.current.offsetWidth;
-      setInputWidth(`${width}px`);
-    }
-    inputRef.current?.focus();
-    setCurrentInput(hasUnderscorePrefix ? '_' : '');
-    setCursorPosition(0);
-  }, [correctAnswer]);
-
-  useEffect(() => {
-    if (inputRef.current && !isDisabled) {
-      const adjustedPos = hasUnderscorePrefix
-        ? cursorPosition + 1
-        : cursorPosition;
-      inputRef.current.selectionStart = adjustedPos;
-      inputRef.current.selectionEnd = adjustedPos;
-    }
-  }, [cursorPosition, isDisabled, hasUnderscorePrefix]);
+  // Callbacks
 
   const calculateCursorPosition = useCallback(() => {
     if (syllabIndexes) {
@@ -386,78 +464,6 @@ const InputLabel = (props) => {
     currentInput,
     syllab,
   ]);
-
-  useEffect(() => {
-    // Si le composant n'est pas visible, ou si le conteneur de texte n'est pas encore référencé,
-    // ou si la valeur à afficher est vide (aucun caractère à mesurer),
-    // alors les mesures ne sont pas considérées comme faites.
-    if (!isEffectivelyVisible || !textContainerRef.current || displayValue.length === 0) {
-      setMeasuresDone(false);
-      return; // Sortie anticipée
-    }
-
-    // À ce stade, le composant est visible, a un conteneur de texte, et a du contenu à afficher.
-    // Nous utilisons requestAnimationFrame pour attendre le prochain cycle de peinture du navigateur.
-    // Cela donne au navigateur le temps de calculer le layout des éléments DOM,
-    // en particulier s'ils viennent de devenir visibles.
-    const animationFrameId = requestAnimationFrame(() => {
-      // Il est bon de re-vérifier les conditions ici, au cas où l'état aurait changé
-      // très rapidement entre le moment où le rAF a été demandé et son exécution.
-      if (!isEffectivelyVisible || !textContainerRef.current || displayValue.length === 0) {
-        setMeasuresDone(false);
-        return;
-      }
-
-      // Vérifier si la ref du premier caractère est disponible.
-      // charRefs.current est peuplé lors du rendu de displayValue.
-      const firstCharRef = charRefs.current[0];
-
-      if (firstCharRef) {
-        const containerRect = textContainerRef.current.getBoundingClientRect();
-        const firstCharRect = firstCharRef.getBoundingClientRect();
-
-        // Les mesures sont considérées comme prêtes si le conteneur de texte
-        // et le premier caractère ont des dimensions physiques valides (par exemple, une largeur > 0).
-        if (containerRect.width > 0 && firstCharRect.width > 0) {
-          setMeasuresDone(true);
-        } else {
-          // Les dimensions sont encore nulles ou invalides.
-          // Cela peut se produire si l'élément est toujours caché d'une manière ou d'une autre,
-          // ou si le layout n'est pas encore complètement finalisé.
-          setMeasuresDone(false);
-        }
-      } else {
-        // displayValue n'est pas vide, mais charRefs.current[0] n'existe pas.
-        // Cela pourrait indiquer un décalage ou un cas imprévu.
-        // Par sécurité, on considère les mesures comme non prêtes.
-        setMeasuresDone(false);
-      }
-    });
-
-    // Nettoyage : annuler le requestAnimationFrame si le composant est démonté
-    // ou si les dépendances du useEffect changent avant son exécution.
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [displayValue, isEffectivelyVisible]);
-
-  const handleDisplayClick = () => {
-    if (!isDisabled) {
-      inputRef.current?.focus();
-    }
-  };
-
-  const handleCharClick = (index) => {
-    if (isDisabled) return;
-    inputRef.current?.focus();
-    if (syllabIndexes) {
-      if (index >= indexSyllab && index <= syllabEndIndex) {
-        setCursorPosition(index + 1 - indexSyllab);
-      }
-    } else {
-      setCursorPosition(index + 1);
-    }
-  };
 
   return (
     <div
