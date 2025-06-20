@@ -1,4 +1,4 @@
-import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import MainMenu from './pages/MainMenu';
 import LayoutExercises from './pages/LayoutExercises';
 import EtapesPage from './pages/EtapesPage';
@@ -17,6 +17,7 @@ function App() {
         />
         <Route path='/etapes' element={<EtapesPage />} />
         <Route path='/credits' element={<Credits />} />
+        <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
     </Router>
   );
