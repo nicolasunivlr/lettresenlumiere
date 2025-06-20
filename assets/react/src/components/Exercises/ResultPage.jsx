@@ -9,7 +9,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import PDFModal from '../UI/PDFModal';
 
 const ResultPage = (props) => {
-  const { content, circleOnClick, sequence, etapeid } = props;
+  const {
+    content,
+    circleOnClick,
+    sequence,
+    etapeid
+  } = props;
   const { id } = useParams();
   const navigate = useNavigate();
   const showScore = () => {
@@ -47,7 +52,7 @@ const ResultPage = (props) => {
   }, [content]);
 
   const handleOnClick = () => {
-    navigate(`/`);
+    navigate(`/sequence/${sequence.id + 1}`);
   };
 
   const { scoreAvg, medalSrc, bgc } = showScore();
@@ -64,7 +69,7 @@ const ResultPage = (props) => {
 
         <PDFModal
           content={content}
-          sequence={sequence}
+          sequence={sequence.nom}
           etapeid={etapeid}
           score={scoreAvg.toFixed()}
         />

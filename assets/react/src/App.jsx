@@ -12,7 +12,7 @@ function App() {
         <Route path='/alphabet' element={<LayoutExercises />} />
         <Route path='/graphemes' element={<LayoutExercises />} />
         <Route
-          path='/etapes/:etapeid/sequence/:id'
+          path='/sequence/:id'
           element={<LayoutExercises />}
         />
         <Route path='/etapes' element={<EtapesPage />} />

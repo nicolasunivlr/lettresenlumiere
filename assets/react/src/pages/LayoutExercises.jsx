@@ -17,6 +17,7 @@ import ModalEndExercise from '../components/Exercises/ModalEndExercise';
 import AlphabetData from '../api/alphabet.json';
 import ExerciseTypeAAlphabet from '../components/Exercises/ExerciseTypeAAlphabet';
 import ResultPage from '../components/Exercises/ResultPage';
+import ErrorPage from '../pages/Error';
 
 import GraphemeData from '../api/graphèmes.json';
 import ExerciseTypeAGrapheme from '../components/Exercises/ExerciseTypeAGrapheme';
@@ -24,27 +25,19 @@ import Loader from '../components/UI/Loader';
 
 const LayoutExercices = () => {
   const { etapeid, id } = useParams();
-  let exerciceData =  (id ? (exerciceData = useDataExercice(id)) : null);
-  const [isNotStep, setIsNotStep] = useState();
   const [sequence, setSequence] = useState();
   const [isRetryingAfterBilan, setIsRetryingAfterBilan] = useState(false);
   const [exerciceKey, setExerciceKey] = useState(Date.now());
   const location = useLocation();
-  function setLastSegment() {
-    const pathSegments = location.pathname.split('/').filter(Boolean); // Divise l'URL et retire les segments vides
-    const lastSegment = pathSegments[pathSegments.length - 1];
-    if (lastSegment === 'alphabet') {
-      setIsNotStep(lastSegment);
-      exerciceData = AlphabetData;
-    } else if (lastSegment === 'graphemes') {
-      setIsNotStep(lastSegment);
-      exerciceData = GraphemeData;
-    }
-  }
 
-  useEffect(() => {
-    setLastSegment();
-  }, []);
+  const pathSegments = location.pathname.split('/').filter(Boolean);
+  const lastSegment = pathSegments[pathSegments.length - 1];
+  const isAlphabet = lastSegment === 'alphabet';
+  const isGraphemes = lastSegment === 'graphemes';
+
+  const apiData = useDataExercice(id && !isAlphabet && !isGraphemes ? id : null);
+
+  const exerciceData = isAlphabet ? AlphabetData : isGraphemes ? GraphemeData : apiData;
 
   const [exercices, setExercices] = useState([]);
   const [currentExercice, setCurrentExercice] = useState(null);
@@ -53,7 +46,7 @@ const LayoutExercices = () => {
     if (exerciceData) {
       setSequence(exerciceData.nom);
       setExercices(
-        exerciceData.exercices.map((exercice) => ({
+        exerciceData.exercices?.map((exercice) => ({
           ...exercice,
           score: undefined,
           done: false,
@@ -63,7 +56,7 @@ const LayoutExercices = () => {
   }, [exerciceData]);
 
   useEffect(() => {
-    if (!exercices.some((exercice) => exercice.done === 'pending')) {
+    if (!exercices?.some((exercice) => exercice.done === 'pending')) {
       getFirstIncompleteExercise();
     }
   }, [exercices]);
@@ -131,14 +124,14 @@ const LayoutExercices = () => {
           <ResultPage
             content={exercices}
             circleOnClick={handleOnClickOnCircleResultPage}
-            sequence={sequence}
+            sequence={exerciceData}
             etapeid={etapeid}
           />
         );
       }
       switch (currentExercice.type.charAt(0).toLowerCase()) {
         case 'a':
-          if (isNotStep === 'alphabet') {
+          if (isAlphabet) {
             return (
               <ExerciseTypeAAlphabet
                 key={exerciceKey}
@@ -147,7 +140,7 @@ const LayoutExercices = () => {
               />
             );
           }
-          if (isNotStep === 'graphemes') {
+          if (isGraphemes) {
             return (
               <ExerciseTypeAGrapheme
                 key={exerciceKey}
@@ -223,19 +216,36 @@ const LayoutExercices = () => {
     }
   };
 
+  if (!isAlphabet && !isGraphemes && !exerciceData) {
+    return <Loader />;
+  }
+
+  // Vérification de l'erreur 404 au début du rendu
+  if ( exerciceData?.status === 404) {
+    return (
+        <>
+          <Header link='/' pageName='Erreur' />
+          <ErrorPage
+              title='Séquence non trouvée'
+              message='Désolé, la séquence d’exercices que vous cherchez n’existe pas.'
+          />
+        </>
+    );
+  }
+
   return (
     <>
       <Header
         link='/'
         pageName={
-          isNotStep === 'alphabet'
+          isAlphabet
             ? 'Alphabet'
-            : isNotStep === 'graphemes'
+            : isGraphemes
             ? 'Graphèmes'
-            : `Étape ${etapeid}`
+            : `Étape ${exerciceData?.etape.id}`
         }
         sequence={
-          isNotStep === 'alphabet' || isNotStep === 'graphemes'
+          isAlphabet || isGraphemes
             ? ''
             : exerciceData && exerciceData.nom
             ? exerciceData.nom

@@ -93,7 +93,7 @@ function EtapesPage() {
                     <EtapesButton
                       key={sequence.id}
                       id={sequence.id}
-                      link={`${etapeNumber}/sequence/${sequence.id}`}
+                      link={`/sequence/${sequence.id}`}
                       text={sequence.nom}
                       py={32}
                       width='100%'
