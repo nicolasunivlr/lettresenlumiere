@@ -4,7 +4,7 @@
   "video_url": "",
   "exercices": [
     {
-      "exercice_id": 1,
+      "id": 1,
       "type": "A.1",
       "consigne": "Écoute et répète.",
       "contenus": [
@@ -193,7 +193,7 @@
       ]
     },
     {
-      "exercice_id": 2,
+      "id": 2,
       "type": "B.1",
       "consigne": "Trouve la bonne lettre.",
       "contenus": [
@@ -382,7 +382,7 @@
       ]
     },
     {
-      "exercice_id": 3,
+      "id": 3,
       "type": "C.1",
       "consigne": "Écris la lettre.",
       "contenus": [
@@ -571,7 +571,7 @@
       ]
     },
     {
-      "exercice_id": 4,
+      "id": 4,
       "type": "D.1",
       "consigne": "Trouve les 3 ecritures de la bonne lettre.",
       "contenus": [
@@ -760,7 +760,7 @@
       ]
     },
     {
-      "exercice_id": 5,
+      "id": 5,
       "type": "E.1",
       "consigne": "Écris la lettre (sans modèle).",
       "contenus": [
@@ -949,7 +949,7 @@
       ]
     },
     {
-      "exercice_id": 6,
+      "id": 6,
       "type": "H.1",
       "consigne": "Mets les lettres dans l'ordre.",
       "contenus": [
