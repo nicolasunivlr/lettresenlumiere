@@ -72,7 +72,7 @@ class SequenceController extends AbstractController
         return new JsonResponse($data);
     }
 
-    //#[Route('/api/custom/sequences/{id}', name: 'custom_sequence_id', methods: ['GET'])]
+    #[Route('/api/custom/sequences/{id}', name: 'custom_sequence_id', methods: ['GET'])]
     public function getCustomSequenceId(SequenceRepository $sequenceRepository, string $id): JsonResponse
     {
         $sequence = $sequenceRepository->find($id);
