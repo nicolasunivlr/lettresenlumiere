@@ -95,6 +95,7 @@ const InputLabel = (props) => {
     displayValue,
   ]);
 
+  // on remet le focus sur l'input
   useEffect(() => {
     if (!isDisabled) {
       inputRef.current?.focus();
@@ -139,17 +140,19 @@ const InputLabel = (props) => {
     }
   }, [answer]);
 
+  // nouvelle réponse
   useEffect(() => {
     if (measureRef.current) {
-      const width = measureRef.current.offsetWidth;
-      console.log(measureRef.current.offsetWidth)
-      //setInputWidth(`${width}px`);
+      const width = measureRef.current.offsetWidth === 0 ? 1 : measureRef.current.offsetWidth;
+      // crée un bug lorsqu'on tape un caractère composé de ^ ou ¨ avec un width de 0
+      setInputWidth(`${width}px`);
     }
     inputRef.current?.focus();
     setCurrentInput(hasUnderscorePrefix ? '_' : '');
     setCursorPosition(0);
   }, [correctAnswer]);
 
+  // mise à jour de la position du curseur
   useEffect(() => {
     if (inputRef.current && !isDisabled) {
       const adjustedPos = hasUnderscorePrefix
@@ -160,6 +163,7 @@ const InputLabel = (props) => {
     }
   }, [cursorPosition, isDisabled, hasUnderscorePrefix]);
 
+  // Mesures des dimensions du conteneur de texte et du premier caractère
   useEffect(() => {
     // Si le composant n'est pas visible, ou si le conteneur de texte n'est pas encore référencé,
     // ou si la valeur à afficher est vide (aucun caractère à mesurer),
