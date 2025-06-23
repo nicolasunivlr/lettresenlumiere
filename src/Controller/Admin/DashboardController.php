@@ -54,8 +54,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Lettres en lumière')
-            ->setFaviconPath('/images/logo/brainLogo.png');
+            ->setTitle('Lettres en lumière');
     }
 
     public function configureMenuItems(): iterable

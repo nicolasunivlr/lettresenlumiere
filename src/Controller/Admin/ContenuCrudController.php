@@ -3,29 +3,17 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Contenu;
-use App\Entity\ContenuFormat;
-use App\Entity\Couleur;
 use App\Form\ContenuFormatType;
-use App\Repository\ContenuFormatRepository;
-use App\Repository\CouleurRepository;
 use Doctrine\ORM\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Type\FileUploadType;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints\File;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
@@ -33,13 +21,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 
 class ContenuCrudController extends AbstractCrudController
 {
-    public function __construct(
-        private CouleurRepository $couleurRepository,
-        EntityManagerInterface $entityManager,
-        private ContenuFormatRepository $contenuFormatRepository
-    ) {
-        $this->entityManager = $entityManager;
-    }
 
     public static function getEntityFqcn(): string
     {
@@ -68,9 +49,7 @@ class ContenuCrudController extends AbstractCrudController
             ])
             ->setRequired(true)
             ->setLabel('Séquence')
-            ->formatValue(function ($value, $entity) {
-                return $entity->getSequence() ? $entity->getSequence()->getNom() : '-';
-            });
+            ->formatValue(fn ($v, $entity) => $entity->getSequence() ? $entity->getSequence()->getNom() : '-');
 
         yield AssociationField::new('exercices', 'Exercices')
             ->setFormTypeOptions([
@@ -100,7 +79,7 @@ class ContenuCrudController extends AbstractCrudController
         yield TextField::new('lettres')
             ->setLabel('Lettres colorées')
             ->hideOnForm()
-            ->formatValue(function ($value, $entity) {
+            ->formatValue(function ($v, $entity) {
                 // Personnaliser l'affichage des lettres avec les couleurs associées
                 $formatsData = [];
                 foreach ($entity->getContenuFormats() as $format) {
@@ -118,10 +97,6 @@ class ContenuCrudController extends AbstractCrudController
                 return implode('<br>', $formatsData);
             })
             ->setTemplatePath('admin/field/colored_square.html.twig');
-
-
-
-
 
         yield ImageField::new('image_url')
             ->setLabel('Image')
@@ -214,61 +189,4 @@ class ContenuCrudController extends AbstractCrudController
             ->addCssFile(Asset::new('css/stylesCrud.css'))
             ->addCssFile(Asset::new('css/choices.min.css'));
     }
-
-    private function getExistingColors(): array
-    {
-        $colors = $this->couleurRepository->findAll();
-        $contenuFormats = $this->contenuFormatRepository->findAll();
-        $choices = [];
-
-        foreach ($colors as $color) {
-            foreach ($contenuFormats as $contenu_format) {
-                $lettres = $contenu_format->getLettres();
-                $label = sprintf(
-                    '%s %s',
-                    $color->getCode(),
-                    $lettres
-                );
-                $choices[$label] = $color->getId();
-            }
-        }
-
-        return $choices;
-    }
-
-    private function getCouleurChoices(): array
-    {
-        $colors = $this->couleurRepository->findAll();
-        $choices = [];
-
-        foreach ($colors as $color) {
-            $choices[$color->getCode()] = $color->getId();
-        }
-
-        return $choices;
-    }
-
-    private function getLettresFromContenu(?Contenu $contenu): string
-    {
-        if ($contenu) {
-            // Utilise la méthode getContenuFormats() pour obtenir les formats associés à ce contenu
-            $contenuFormats = $contenu->getContenuFormats(); // Cette méthode existe dans la classe Contenu
-
-            // Si getContenuFormats() retourne une collection d'objets ContenuFormat, tu peux itérer sur celui-ci
-            $lettres = [];
-            foreach ($contenuFormats as $contenuFormat) {
-                // Supposons que getLettres() existe sur ContenuFormat et retourne les lettres associées
-                $lettres[] = $contenuFormat->getLettres();
-            }
-
-            return implode(', ', $lettres); // Retourne les lettres séparées par une virgule
-        }
-
-        return ''; // Retourne une chaîne vide si aucun contenu n'est passé
-    }
-
-
-
 }
-
-
