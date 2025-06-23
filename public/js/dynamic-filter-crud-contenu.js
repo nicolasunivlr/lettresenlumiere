@@ -16,11 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const response = await fetch(
-        `${BASE_ROUTE}/api/custom/sequences/${sequenceId}`
+        `${BASE_ROUTE}/api/sequences/${sequenceId}`
       );
       const data = await response.json();
 
-      if (data && Array.isArray(data[0].exercices)) {
+      if (data && Array.isArray(data.exercices)) {
         // Ajout de la checkbox "Tous cocher"
         const selectAllDiv = document.createElement('div');
         selectAllDiv.className = 'form-check';
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectAllDiv.appendChild(selectAllLabel);
         exerciceContainer.appendChild(selectAllDiv);
 
-        const exercices = data[0].exercices;
+        const exercices = data.exercices;
 
         const contenuInput = document.getElementById('Contenu_contenu');
         contenuInput.focus();
@@ -54,8 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
           input.type = 'checkbox';
           input.className = 'form-check-input';
           input.name = 'Contenu[exercices][]';
-          input.value = exercice.exercice_id;
-          input.id = `exercice_${exercice.exercice_id}`;
+          input.value = exercice.id;
+          input.id = `exercice_${exercice.id}`;
           if (exercice.contenus.length > 0) {
             if (
               exercice.contenus.find(
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           const label = document.createElement('label');
           label.className = 'form-check-label';
-          label.htmlFor = `exercice_${exercice.exercice_id}`;
+          label.htmlFor = `exercice_${exercice.id}`;
           label.textContent = exercice.type;
 
           div.appendChild(input);
