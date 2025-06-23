@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import {useState, useEffect, useRef, useMemo, useCallback, forwardRef} from 'react';
 
-const InputLabel = (props) => {
+const InputLabel = forwardRef((props, ref) => {
   const {
     correctAnswer,
     setUserInput,
@@ -13,7 +13,6 @@ const InputLabel = (props) => {
   const [currentInput, setCurrentInput] = useState('');
   const [feedbackClass, setFeedbackClass] = useState('');
   const [isDisabled, setIsDisabled] = useState(false);
-  const inputRef = useRef(null);
   const [inputWidth, setInputWidth] = useState('auto');
   const measureRef = useRef(null);
   const [displayValue, setDisplayValue] = useState('');
@@ -98,7 +97,7 @@ const InputLabel = (props) => {
   // on remet le focus sur l'input
   useEffect(() => {
     if (!isDisabled) {
-      inputRef.current?.focus();
+      ref.current?.focus();
     }
   }, [isDisabled, isEffectivelyVisible]);
 
@@ -147,19 +146,19 @@ const InputLabel = (props) => {
       // crée un bug lorsqu'on tape un caractère composé de ^ ou ¨ avec un width de 0
       setInputWidth(`${width}px`);
     }
-    inputRef.current?.focus();
+    ref.current?.focus();
     setCurrentInput(hasUnderscorePrefix ? '_' : '');
     setCursorPosition(0);
   }, [correctAnswer]);
 
   // mise à jour de la position du curseur
   useEffect(() => {
-    if (inputRef.current && !isDisabled) {
+    if (ref.current && !isDisabled) {
       const adjustedPos = hasUnderscorePrefix
           ? cursorPosition + 1
           : cursorPosition;
-      inputRef.current.selectionStart = adjustedPos;
-      inputRef.current.selectionEnd = adjustedPos;
+      ref.current.selectionStart = adjustedPos;
+      ref.current.selectionEnd = adjustedPos;
     }
   }, [cursorPosition, isDisabled, hasUnderscorePrefix]);
 
@@ -334,13 +333,13 @@ const InputLabel = (props) => {
 
   const handleDisplayClick = () => {
     if (!isDisabled) {
-      inputRef.current?.focus();
+      ref.current?.focus();
     }
   };
 
   const handleCharClick = (index) => {
     if (isDisabled) return;
-    inputRef.current?.focus();
+    ref.current?.focus();
     if (syllabIndexes) {
       if (index >= indexSyllab && index <= syllabEndIndex) {
         setCursorPosition(index + 1 - indexSyllab);
@@ -485,7 +484,7 @@ const InputLabel = (props) => {
       </span>
 
       <input
-        ref={inputRef}
+        ref={ ref }
         type='text'
         value={currentInput}
         onChange={handleInputChange}
@@ -536,6 +535,6 @@ const InputLabel = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default InputLabel;

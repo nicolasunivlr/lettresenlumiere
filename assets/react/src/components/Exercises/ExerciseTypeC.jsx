@@ -23,6 +23,7 @@ function ExerciseTypeC(props) {
   const attempt = useRef(0);
   const currentAttempt = useRef(0);
   const timeOutRef = useRef(4000);
+  const inputRef = useRef(null);
   const config = useConfig();
 
   useEffect(() => {
@@ -163,7 +164,9 @@ function ExerciseTypeC(props) {
   const handleQuestionMarkClick = () => {
     // Réaffiche la bonne réponse pendant le même temps qu'au départ
     setIsLabelVisible(true);
-
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
     // Le timer existant dans useEffect se chargera de la cacher après le délai
   };
 
@@ -242,6 +245,7 @@ function ExerciseTypeC(props) {
                     syllabIndexes={contenu.syllabes}
                     value={userInput}
                     isEffectivelyVisible={isInputActuallyVisible}
+                    ref={inputRef}
                 />
             ) : (
                 <InputLabel
@@ -250,6 +254,7 @@ function ExerciseTypeC(props) {
                     answer={isAnswerValidated}
                     value={userInput}
                     isEffectivelyVisible={isInputActuallyVisible}
+                    ref={inputRef}
                 />
             )}
           </div>

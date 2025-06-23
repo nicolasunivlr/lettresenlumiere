@@ -24,6 +24,7 @@ function ExerciseTypeE(props) {
   const currentAttempt = useRef(0);
   const timeOutRef = useRef(4000);
   const [correctAnswerGiven, setCorrectAnswerGiven] = useState(false);
+  const inputRef = useRef(null);
   const config = useConfig();
 
   useEffect(() => {
@@ -123,6 +124,12 @@ function ExerciseTypeE(props) {
     }
   }, [isLabelVisible, correctAnswerGiven]);
 
+    const handleLabelClick = () => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    };
+
   const handleAnswer = () => {
     attempt.current += 1;
     // Vérification que contentExercise et l'élément courant existent
@@ -213,6 +220,7 @@ function ExerciseTypeE(props) {
               format={contenu.contenuFormats ?? null}
               imageSrc={contenu.image_url}
               audioUrl={contenu.sons_url ?? null}
+              onClick={handleLabelClick}
             />
           ) : (
             <Label
@@ -228,6 +236,7 @@ function ExerciseTypeE(props) {
               sound={true}
               format={contenu.contenuFormats ?? null}
               audioUrl={contenu.sons_url ?? null}
+              onClick={handleLabelClick}
             />
           )}
         </div>
@@ -237,12 +246,14 @@ function ExerciseTypeE(props) {
             setUserInput={setUserInput}
             answer={isAnswerValidated}
             syllabIndexes={contenu.syllabes}
+            ref={inputRef}
           />
         ) : (
           <InputLabel
             correctAnswer={contenu.element}
             setUserInput={setUserInput}
             answer={isAnswerValidated}
+            ref={inputRef}
           />
         )}
       </>
