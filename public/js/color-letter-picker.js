@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('color-letter-picker.js loaded');
+  //console.log('color-letter-picker.js loaded');
 
   const contentInput = document.getElementById('Contenu_contenu');
   if (!contentInput) {
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     if (shouldInit) {
-      console.log('Nouveaux champs détectés, initialisation des sélecteurs...');
+      //console.log('Nouveaux champs détectés, initialisation des sélecteurs...');
       setTimeout(initializeLetterPickers, 50);
     }
   });
@@ -59,10 +59,10 @@ document.addEventListener('DOMContentLoaded', function () {
       event.target.classList.contains('collection-add') ||
       event.target.closest('.collection-add')
     ) {
-      console.log("Bouton d'ajout de collection cliqué");
+      //console.log("Bouton d'ajout de collection cliqué");
       // Attendre que le DOM soit mis à jour après l'ajout
       setTimeout(function () {
-        console.log('Initialisation des sélecteurs après ajout...');
+        //console.log('Initialisation des sélecteurs après ajout...');
         initializeLetterPickers();
       }, 100);
     }
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Chercher tous les champs de lettres
     const lettresInputs = document.querySelectorAll('input[id$="_lettres"]');
-    console.log(`Trouvé ${lettresInputs.length} champs de lettres`);
+    //console.log(`Trouvé ${lettresInputs.length} champs de lettres`);
 
     lettresInputs.forEach(function (input) {
       const formGroup = input.closest('.form-group');

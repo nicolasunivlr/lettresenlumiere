@@ -31,7 +31,7 @@ const exerciceSelect = document.getElementById('Contenu_exercices');
 syllabPickerContainer.addEventListener('contextmenu', (event) => {
   event.preventDefault();
   syllabInput.value = '';
-  console.log('right click', event);
+  //console.log('right click', event);
   handleClick(null, event);
 });
 
@@ -60,7 +60,7 @@ const verifySelection = () => {
 verifySelection();
 
 exerciceSelect.addEventListener('change', () => {
-  console.log(exerciceSelect);
+  //console.log(exerciceSelect);
   verifySelection();
 });
 

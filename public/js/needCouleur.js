@@ -118,15 +118,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       if (matchingOption) {
-        console.log(
-          'Option trouvée:',
-          matchingOption.value,
-          matchingOption.textContent
-        );
+        // console.log(
+        //   'Option trouvée:',
+        //   matchingOption.value,
+        //   matchingOption.textContent
+        // );
         // Utiliser l'API de Choices.js pour définir la valeur
         choicesInstance.setChoiceByValue(matchingOption.value);
       } else {
-        console.log('Aucune option correspondante trouvée');
+        //console.log('Aucune option correspondante trouvée');
       }
     }
   } catch (error) {
@@ -138,8 +138,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 let selectedText = '';
 
 selectValue?.addEventListener('change', () => {
-  console.log('test', selectValue.value);
-  console.log('ta capté', selectValue.value === '');
+  //console.log('test', selectValue.value);
+  //console.log('ta capté', selectValue.value === '');
   selectedText = selectValue.options[selectValue.selectedIndex]?.text || '';
   if (selectValue.value === '') {
     letterInput.style.display = 'block';
@@ -180,9 +180,9 @@ needCouleur?.addEventListener('change', () => {
 
 createColorInput?.addEventListener('change', () => {
   if (createColorInput.checked === true) {
-    console.log(createColorInput.checked);
-    console.log('fieldSelect', fieldSelect);
-    console.log('color', color);
+    //console.log(createColorInput.checked);
+    //console.log('fieldSelect', fieldSelect);
+    //console.log('color', color);
     color.style.display = 'block';
     fieldSelect.style.display = 'none';
     existingColor.style.display = 'block';

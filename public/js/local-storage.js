@@ -3,7 +3,7 @@ const saveLabel = document.querySelector(
 );
 const currentUrl = window.location.href;
 const isEditPage = currentUrl.includes('/edit');
-console.log(isEditPage);
+//console.log(isEditPage);
 if (!isEditPage) {
   const createButtonAndAddNewElement = document.getElementsByClassName(
     'action-saveAndAddAnother'

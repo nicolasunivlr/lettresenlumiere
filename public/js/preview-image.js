@@ -20,10 +20,10 @@ async function fetchContentData() {
     }
 
     const contentData = await response.json();
-    console.log('Données du contenu:', contentData);
+    //console.log('Données du contenu:', contentData);
 
     if (contentData.image_url) {
-      console.log('contentData.image_url', contentData.image_url);
+      //console.log('contentData.image_url', contentData.image_url);
       const inputImage = document.getElementById('Contenu_image_url_file');
       let previewContainer = document.getElementById('image-preview');
 
@@ -36,7 +36,7 @@ async function fetchContentData() {
 
       previewContainer.innerHTML = '';
       const img = document.createElement('img');
-      console.log('contentData,', contentData);
+      //console.log('contentData,', contentData);
       img.src = `${BASE_ROUTE}/images/${contentData.image_url}`;
       img.style.maxWidth = '100%';
       img.style.height = 'auto';
