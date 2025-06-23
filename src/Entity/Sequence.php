@@ -9,8 +9,7 @@ use App\Repository\SequenceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Serializer\Attribute\Groups;
 #[ApiResource(
     operations: [
         new Get(),
@@ -155,6 +154,4 @@ class Sequence
         }
         return $this;
     }
-
-    // Méthode obsolète à maintenir temporairement pour la compatibilité
 }
