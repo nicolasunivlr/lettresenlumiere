@@ -1,27 +1,9 @@
 # Lettres en lumière
 
-## TODO
-- [X] Enlever les accents dans les noms de fichiers
-- [X] Problème de fichier sql après le dump pour le réimport dans windows !
-- [X] Concernant les sons enregistrés, ça marche bien pour tous les exercices, sauf pour les types B (trouve la bonne syllabe ou le bon mot) et E (écris la syllabe ou le mot sans modèle). 
-C'est la voix de synthèse qui reprend le dessus. Voir par exemple séquence IL - OR (étape1).
-- [X] InputLabel : le focus n'est pas fonctionnel, on doit cliquer pour l'activer.
-- [ ] DraggleList : avoir une zone de drop dans la liste de départ pour remettre les lettres/syllables/mots dans la position d'origine. 
-Exemple étape 14 séquence [ti = si] exercice 7 (type F1), exercice 9 (type F2) ou exercice12 (type F3)
-- [X] Merci pour la barre de recherche dans la page des étapes, c'est parfait ! Juste si on pouvait modifier le texte : "Rechercher une séquence" (à la place de "Rechercher un exercice").
-- [X] Je te mets en pièce jointe le document à joindre à côté de la barre de recherche. Je ne sais pas quoi écrire avec le lien vers le pdf mais ça doit être bref ("Contenu" ou "Aide" par exemple?)
-- [X] Je ne sais pas si la forme est bonne, tu peux bien entendu modifier le document si tu penses pouvoir faire mieux. 
-- [X] Si possible, sur la page d'accueil, ne serait-ce pas mieux si on décalait l'onglet "credits" en haut à droite (espace vide) ? Car sur mon pc, l'onglet "credits" chevauche ce qui est en dessous, ça se superpose avec l'onglet "graphèmes" c'est pas top. Aussi, pourrait-on ajouter l'accent aigu à "Crédits" sur la page d'accueil ? Sinon à l'intérieur de la page "Crédits", j'aimerais supprimer le mot "exceptionnel" (même si c'est vrai, leur travail a vraiment été exceptionnel, mais ça manque un peu d'humilité). Tu pourrais d'ailleurs ajouter ton nom aussi, et modifier si besoin le contenu de cette page si tu veux ajouter des choses.
-- [X] avoir un vert un tout petit peu plus clair, plus vif (là il est trop foncé, on le distingue à peine du noir)
-- [X] avoir un gris plus foncé (là il est trop clair, on ne voit pas assez les lettres)
-- [X] avoir un jaune un tout petit peu plus foncé si possible
-
-# Lettres en lumière
-
 ## Description
 
 Lettres en lumière est une application d'aide à la lecture pour un public adulte.
-Il a été imaginé pour aider les personnes en détention à lire et à écrire.
+Il a été imaginé à l'initiative de Camille Burr (professeur des écoles spécialisé) pour aider les personnes en détention à lire et à écrire.
 Il peut fonctionner sans connexion internet.
 
 ## Installation
@@ -34,35 +16,76 @@ L'installation a été testée sur les systèmes suivants :
 
 Vous trouverez ci-dessous les logiciels requis pour faire fonctionner l'application :
 
+Pour la synthèse vocale sous chrome sans connexion internet :
+https://www.microsoft.com/en-us/download/details.aspx?id=27225
+
+Pour les voix françaises de la synthèse vocale sous chrome avec connexion internet :
+https://www.microsoft.com/en-us/download/details.aspx?id=27224
+
+Fichier de registre pour windows 7 :
+
+Site pour les Visual C++ Redistributable Runtimes :
+https://github.com/abbodi1406/vcredist
+
+Documentation à jour de Wamp :
+http://forum.wampserver.com/read.php?1,137154
+
 ### Étapes d'installation
 
-1.  **Installez Wamp :**
+1. **Installation des prérequis :**
+   * Installez tous les Microsoft Visual C++ Redistributable Runtimes
+
+2. **Installez Wamp :**
+   * Choisissez la version adéquate :
+     * 3.3.0 pour Windows 7/8
+     * 3.3.7 pour Windows 10/11
     
-2. **Téléchargez le zip du projet :**
+3. **Téléchargez le zip du projet :**
 Le zip du projet est disponible dans la partie "Releases" du dépôt GitHub.
    * Téléchargez la dernière version stable de l'application Lettres en lumière.
    * Le fichier sera nommé `lettresenlumiere.zip`.
-3.  **Extraire le zip dans le dossier C:\wamp64\www\lettresenlumiere :**
 
-4 **Configuration de l'application :**
+4. **Extraire le zip dans le dossier C:\wamp64\www\lettresenlumiere :**
+
+5. **Configuration de l'application :**
     * Lancez Wamp et assurez-vous qu'il est en ligne (icône verte dans la barre des tâches).
     * Lancez `create_data.bat` dans `C:\wamp\www\lettresenlumiere\` (double clic)
+        * Il ne doit pas avoir de message d'erreur. À la fin, vous pouvez voir l'adresse IP de votre serveur local.
     * Relancez les services Wamp (clic sur l'icône Wamp dans la barre des tâches et sélectionnez "Redémarrer tous les services").
 
 ## Utilisation
 
 Pour une utilisation optimale de l'application, nous vous recommandons les navigateurs suivants :
 * Edge (la synthèse vocale fonctionne mieux)
-* Chrome
+* Chrome (vous devez installer les voix françaises pour la synthèse vocale en utilisation hors ligne)
 
-1.  **Accéder à l'application :**
-    Ouvrez votre navigateur et allez à l'URL configurée `http://localhost/lettresenlumiere`.
+1. **Accéder à l'application :**
+    * Ouvrez votre navigateur et allez à l'URL configurée `http://localhost/lettresenlumiere'.
+
+2. **Administration du contenu :**
+Vous pouvez ajouter, modifier ou supprimer des contenus, des étapes, des séquences... via l'interface d'administration.
+    * Ouvrez votre navigateur et allez à l'URL configurée `http://localhost/lettresenlumiere/admin'.
+    * **Identifiant :** admin
+    * **Mot de passe :** 123456789 (par défaut)
+    * Vous pouvez modifier le mot de passe dans l'interface d'administration en cliquant sur votre profil en haut à droite.
+
+## Mise à jour de l'application
+
+Pour mettre à jour l'application, suivez ces étapes :
+1. **Récupération de la dernière version sur github :**
+   * Supprimez le dossier `C:\wamp64\www\lettresenlumiere`.
+   * Téléchargez la dernière version stable de l'application Lettres en lumière depuis la partie "Releases" du dépôt GitHub.
+   * Le fichier sera nommé `lettresenlumiere.zip`.
+   * Extrayez le zip dans le dossier `C:\wamp64\www\lettresenlumiere`.
+   * Lancez `create_data.bat` dans `C:\wamp64\www\lettresenlumiere\` (double clic).
 
 ## Partie Technique
 
 ### Technologies Utilisées
 
-*   **Backend :** PHP sous Symfony
-*   **Frontend :** React.js
+*   **Backend :** PHP sous Symfony 7
+*   **Frontend :** React.js 19
+*   **Builder :** Webpack Encore
+*   **Framework CSS :** Tailwind CSS
 *   **Base de données :** MariaDB
 *   **Serveur Web :** Apache (inclus dans Wamp)
