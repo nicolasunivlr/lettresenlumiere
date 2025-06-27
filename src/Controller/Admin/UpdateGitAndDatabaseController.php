@@ -165,7 +165,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
         $dataDump = preg_replace('/\A[^\r\n]*sandbox[^\r\n]*\R?/', '', $dataDump, 1);
 
         // ajout d'un utilisateur admin par défaut pour la version hors ligne.
-        $userDump = "\nINSERT INTO `user` (`username`, `roles`, `password`) VALUES ('admin', '[\"ROLE_ADMIN\"]', '\$2y\$13\$gDMytbgk8VWA8H0Sz4GvXOgnwsFQ90S.8yf78LRNTRJQuMaHy7.IG')"
+        $userDump = "\nINSERT INTO `user` (`username`, `roles`, `password`) VALUES ('admin', '[\"ROLE_ADMIN\"]', '\$2y\$13\$gDMytbgk8VWA8H0Sz4GvXOgnwsFQ90S.8yf78LRNTRJQuMaHy7.IG')";
 
         $sqlDump = $structureDump . $dataDump . $userDump;
 
