@@ -124,6 +124,8 @@ final class UpdateGitAndDatabaseController extends AbstractController
             $commandStructure[] = '--password=' . $dbPassword;
         }
         $commandStructure[] = '--no-data'; // Exporter uniquement la structure
+        $commandStructure[] = '--skip-triggers'; // Ne pas exporter les triggers
+        $commandStructure[] = '--ignore-table=' . $dbName . '.db_state'; // Ignorer la table user pour les données
         $commandStructure[] = $dbName;
 
         $processStructure = new Process($commandStructure);
