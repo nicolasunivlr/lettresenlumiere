@@ -108,7 +108,8 @@ $envDatabaseUrl = "DATABASE_URL=$databaseUrl\n";
 echo "Création du fichier avec: DATABASE_URL=$envDatabaseUrl\n";
 
 $envAppEnv = "APP_ENV=prod\n";
-$envContent = $envDatabaseUrl . $envAppEnv;
+$envGitUser = "GITUSER=nobody\n";
+$envContent = $envDatabaseUrl . $envAppEnv. $envGitUser;
 
 if (file_put_contents($envFilePath, $envContent) === false) {
     echo "ERREUR: Impossible de créer $envFilePath\n";
