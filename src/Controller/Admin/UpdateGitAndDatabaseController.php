@@ -80,6 +80,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
     */
     private function executeBackupDbAction(): ?string
     {
+
         $stmt = $this->connection->executeQuery('SELECT has_changed FROM db_state WHERE id = 1');
         $dbHasChanged = (bool) $stmt->fetchOne();
 
@@ -125,7 +126,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
         }
         $commandStructure[] = '--no-data'; // Exporter uniquement la structure
         $commandStructure[] = '--skip-triggers'; // Ne pas exporter les triggers
-        $commandStructure[] = '--ignore-table=' . $dbName . '.db_state'; // Ignorer la table user pour les données
+        $commandStructure[] = '--ignore-table=' . $dbName . '.db_state'; // Ignorer la table db_state pour la structure
         $commandStructure[] = $dbName;
 
         $processStructure = new Process($commandStructure);
@@ -152,7 +153,9 @@ final class UpdateGitAndDatabaseController extends AbstractController
             $commandData[] = '--password=' . $dbPassword;
         }
         $commandData[] = '--no-create-info'; // Ne pas exporter la structure (déjà fait)
+        $commandData[] = '--skip-triggers'; // Ne pas exporter les triggers
         $commandData[] = '--ignore-table=' . $dbName . '.user'; // Ignorer la table user pour les données
+        $commandData[] = '--ignore-table=' . $dbName . '.db_state'; // Ignorer la table db_state pour les données
         $commandData[] = $dbName;
 
         $processData = new Process($commandData);
