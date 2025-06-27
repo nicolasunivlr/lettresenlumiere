@@ -240,7 +240,7 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-27 14:14:42
+-- Dump completed on 2025-06-27 14:18:53
 -- MariaDB dump 10.19  Distrib 10.11.13-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: ntrugeon_lel
@@ -483,7 +483,7 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-27 14:14:42
+-- Dump completed on 2025-06-27 14:18:53
 -- MariaDB dump 10.19  Distrib 10.11.13-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: ntrugeon_lel
@@ -14240,4 +14240,6 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-27 14:14:42
+-- Dump completed on 2025-06-27 14:18:53
+
+INSERT INTO `user` (`username`, `roles`, `password`) VALUES ('admin', '["ROLE_ADMIN"]', '$2y$13$gDMytbgk8VWA8H0Sz4GvXOgnwsFQ90S.8yf78LRNTRJQuMaHy7.IG')
