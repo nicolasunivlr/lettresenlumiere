@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const Accordion = ({ children, defaultOpenId  }) => {
+const Accordion = ({ children, defaultOpenId, onToggle }) => {
   const [accordionList, setAccordionList] = useState([]);
 
   useEffect(() => {
@@ -15,13 +15,24 @@ const Accordion = ({ children, defaultOpenId  }) => {
   }, [children, defaultOpenId]);
 
   const toggleAccordion = (accordionId) => {
-    setAccordionList((prevList) =>
-      prevList.map((accordion) =>
-        accordion.accordionId === accordionId
-          ? { ...accordion, isOpen: !accordion.isOpen }
-          : { ...accordion, isOpen: false }
-      )
+    // Trouver l'état actuel de l'accordéon cliqué
+    const currentAccordion = accordionList.find(
+        (acc) => acc.accordionId === accordionId
     );
+    const newIsOpenState = !currentAccordion.isOpen;
+
+    setAccordionList((prevList) =>
+        prevList.map((accordion) =>
+            accordion.accordionId === accordionId
+                ? { ...accordion, isOpen: newIsOpenState }
+                : { ...accordion, isOpen: false }
+        )
+    );
+
+    // 2. Appeler la fonction onToggle si elle existe
+    if (onToggle) {
+      onToggle(accordionId, newIsOpenState);
+    }
   };
 
   return (

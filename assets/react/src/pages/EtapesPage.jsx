@@ -4,13 +4,14 @@ import Accordion from '../components/UI/Accordion';
 import EtapesButton from '../components/UI/EtapesButton';
 import useDataEtapes from '../hooks/api/useDataEtapes';
 import Loader from '../components/UI/Loader'; // Ajout du composant Loader
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 function EtapesPage() {
   const etapesData = useDataEtapes();
   const [searchTerm, setSearchTerm] = useState('');
   const { id } = useParams();
+  const navigate = useNavigate();
 
   if (!etapesData) {
     return (
@@ -22,6 +23,16 @@ function EtapesPage() {
 
     const handleSearchChange = (newSearchTerm) => {
         setSearchTerm(newSearchTerm.toLowerCase());
+    };
+
+    const handleAccordionToggle = (accordionId, isOpen) => {
+        if (isOpen) {
+            // Si un accordéon s'ouvre, mettre à jour l'URL avec son ID
+            navigate(`/etapes/${accordionId}`, { replace: true });
+        } else {
+            // Si un accordéon se ferme, revenir à l'URL de base
+            navigate('/etapes', { replace: true });
+        }
     };
 
     const etapesFiltrees = etapesData.filter(etape => {
@@ -77,7 +88,7 @@ function EtapesPage() {
                 )}
             </div>
         ) : (
-      <Accordion defaultOpenId={id}>
+      <Accordion defaultOpenId={id} onToggle={handleAccordionToggle}>
         {etapesFiltrees.map((etape, index) => {
           // Extract the number from "Étape X" using regex
           const etapeNumberMatch = etape.nom.match(/Étape\s+(\d+)/i);
