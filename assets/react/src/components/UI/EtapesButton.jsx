@@ -20,8 +20,9 @@ const EtapesButton = (props) => {
   const [medalType, setMedalType] = useState(null);
 
   useEffect(() => {
-    if (sessionStorage.getItem(`${id}`)) {
-      const scoreAvg = Number(sessionStorage.getItem(`${id}`));
+    const scores = JSON.parse(sessionStorage.getItem('scores')) || {};
+    if (scores[id]) {
+      const scoreAvg = Number(scores[id]);
       if (scoreAvg >= 80) {
         setMedalType('gold');
       } else if (scoreAvg >= 60) {

@@ -48,7 +48,10 @@ const ResultPage = (props) => {
   };
 
   useEffect(() => {
-    sessionStorage.setItem(`${id}`, scoreAvg);
+    const sessionScores = JSON.parse(sessionStorage.getItem('scores')) || {};
+    // ajout du scoreAvg en tant qu'objet avec l'id de la séquence
+    sessionScores[id] = scoreAvg;
+    sessionStorage.setItem('scores', JSON.stringify(sessionScores));
   }, [content]);
 
   const handleOnClick = () => {
