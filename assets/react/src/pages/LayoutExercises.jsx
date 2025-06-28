@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import useDataExercice from '../hooks/api/useDataExercice';
 import { useParams, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
@@ -70,15 +70,15 @@ const LayoutExercices = () => {
     }
   };
 
-  const handleSettingDoneExercice = (score = undefined) => {
+  const handleSettingDoneExercice = useCallback((score = undefined) => {
     setExercices((prevExercices) =>
-      prevExercices.map((exercice) =>
-        exercice === currentExercice
-          ? { ...exercice, score: score, done: 'pending' }
-          : exercice
-      )
+        prevExercices.map((exercice) =>
+            exercice.id === currentExercice?.id
+                ? { ...exercice, score: score, done: 'pending' }
+                : exercice
+        )
     );
-  };
+  }, [currentExercice]);
 
   const handleNextExercise = () => {
     setExercices((prevExercices) =>
