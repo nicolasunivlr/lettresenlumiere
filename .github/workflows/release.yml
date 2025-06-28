@@ -103,7 +103,7 @@ jobs:
           echo "[5/5] Creating ZIP archive: $ARCHIVE_FILENAME_ENV"
           cd "${{ env.RELEASE_BUILD_DIR }}"
           # L'archive est créée dans le répertoire parent (racine du workspace)
-          zip -r "../$ARCHIVE_FILENAME_ENV" . -x ".git/*" ".github/*" "node_modules/.cache/*"
+          zip -r "../$ARCHIVE_FILENAME_ENV" . -x ".git/*" ".github/*" "node_modules/*" "assets/*" "migrations/*"
           cd ..
           echo "Archive created: $ARCHIVE_FILENAME_ENV"
 
