@@ -4,11 +4,13 @@ import Accordion from '../components/UI/Accordion';
 import EtapesButton from '../components/UI/EtapesButton';
 import useDataEtapes from '../hooks/api/useDataEtapes';
 import Loader from '../components/UI/Loader'; // Ajout du composant Loader
+import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 
 function EtapesPage() {
   const etapesData = useDataEtapes();
   const [searchTerm, setSearchTerm] = useState('');
+  const { id } = useParams();
 
   if (!etapesData) {
     return (
@@ -75,7 +77,7 @@ function EtapesPage() {
                 )}
             </div>
         ) : (
-      <Accordion>
+      <Accordion defaultOpenId={id}>
         {etapesFiltrees.map((etape, index) => {
           // Extract the number from "Étape X" using regex
           const etapeNumberMatch = etape.nom.match(/Étape\s+(\d+)/i);

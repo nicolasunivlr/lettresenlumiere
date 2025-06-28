@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 
-const Accordion = ({ children }) => {
+const Accordion = ({ children, defaultOpenId  }) => {
   const [accordionList, setAccordionList] = useState([]);
 
   useEffect(() => {
-    const initialAccordionList = children.map((child, index) => ({
-      accordionId: `${index + 1}`,
-      isOpen: false,
-    }));
+    const initialAccordionList = children.map((child, index) => {
+      const accordionId = `${index + 1}`;
+      return {
+        accordionId: accordionId,
+        isOpen: accordionId === defaultOpenId,
+      };
+    });
     setAccordionList(initialAccordionList);
-  }, [children]);
+  }, [children, defaultOpenId]);
 
   const toggleAccordion = (accordionId) => {
     setAccordionList((prevList) =>

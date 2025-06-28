@@ -52,7 +52,7 @@ const ResultPage = (props) => {
   }, [content]);
 
   const handleOnClick = () => {
-    navigate(`/sequence/${sequence.id + 1}`);
+    navigate(`/etapes/${sequence.etape.id}`);
   };
 
   const { scoreAvg, medalSrc, bgc } = showScore();

@@ -15,6 +15,7 @@ function App() {
           path='/sequence/:id'
           element={<LayoutExercises />}
         />
+        <Route path="/etapes/:id" element={<EtapesPage />} />
         <Route path='/etapes' element={<EtapesPage />} />
         <Route path='/credits' element={<Credits />} />
         <Route path='*' element={<Navigate to='/' replace />} />
