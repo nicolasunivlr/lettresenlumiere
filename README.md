@@ -74,6 +74,31 @@ Vous pouvez ajouter, modifier ou supprimer des contenus, des étapes, des séque
     * **Mot de passe :** 123456789 (par défaut)
     * Vous pouvez modifier le mot de passe dans l'interface d'administration en cliquant sur votre profil en haut à droite.
 
+## Gestion des contenus :
+
+### Insertion manuelle de nouveaux contenus :
+Pour insérer ou modifier des contenus, rendez-vous à `localhost/lettresenlumiere/admin` et connectez-vous avec les identifiants depuis le pc hôte.
+D'ici, vous pourrez accéder aux étapes, contenus, séquences et exercices de l'application.
+
+**Chaque contenu** appartient à **une ou plusieurs séquences** possédant elle-même **plusieurs exercices**. **Une étape** est composée de **plusieurs séquences**. **Chaque étape** est **indépendante** des autres.
+
+
+![structure](doc/images/structure.png)
+
+Vous pourrez ainsi créer un contenu et l'affecter à un ou plusieurs exercices types, choisir la syllabe à **cacher** tel que :
+![cacher](doc/images/cacher.png)
+Ici `emp` sera caché à l'affichage et l'utilisateur devra le trouver.
+
+
+Notez que cette fonctionnalité n'est nécessaire et donc disponible que pour les exercices C.2 bis et E.2 bis.
+
+Aussi, vous pouvez **colorer** une partie du contenu entré de la couleur choisie tel que :
+![colorer](doc/images/couleur.png)
+
+Ici, toujours, `emp` sera coloré et en **gras** quand le mot apparaîtra dans l'exercice.
+
+Vous pouvez aussi assigner une **image** ou un **son** associé au contenu si c'est pertinent. **Tous les exercices ne prennent pas en charge ces fonctionnalités**.
+
 ## Mise à jour de l'application
 
 Pour mettre à jour l'application, suivez ces étapes :
