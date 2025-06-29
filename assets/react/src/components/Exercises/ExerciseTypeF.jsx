@@ -23,6 +23,7 @@ const ExerciseTypeF = (props) => {
 
   const [showLabel, setShowLabel] = useState(true);
 
+  const [isDraggableListVisible, setIsDraggableListVisible] = useState(false);
   const draggableListRef = useRef();
   const displayTimeRef = useRef(2000); // Temps d'affichage par défaut
   const { speak } = useSpeak();
@@ -73,6 +74,7 @@ const ExerciseTypeF = (props) => {
       if (firstNonDone) {
         setTimeout(() => {
           setShowLabel(false);
+          setIsDraggableListVisible(true);
           if( firstNonDone.sons_url ) {
             const url = `${config.audiosUrl}/${firstNonDone.sons_url}`;
             const audio = new Audio(url);
@@ -88,6 +90,7 @@ const ExerciseTypeF = (props) => {
   useEffect(() => {
     if (currentResponse) {
       setShowLabel(true);
+      setIsDraggableListVisible(false);
       const timer = setTimeout(() => {
         setShowLabel(false);
       }, displayTimeRef.current);
@@ -106,10 +109,12 @@ const ExerciseTypeF = (props) => {
   const handleQuestionMarkClick = () => {
     // Réaffiche la bonne réponse pendant le même temps qu'au départ
     setShowLabel(true);
+    setIsDraggableListVisible(false);
 
     // On remet un timer pour cacher à nouveau la réponse après le délai configuré
     setTimeout(() => {
       setShowLabel(false);
+      setIsDraggableListVisible(true);
     }, displayTimeRef.current);
   };
 
@@ -266,7 +271,7 @@ const ExerciseTypeF = (props) => {
                   )}
                 </div>
               )}
-              <div className='mt-4'>
+              <div className='mt-4' style={{ display: isDraggableListVisible ? 'block' : 'none' }}>
                 <DraggableList
                   key={currentResponse.id}
                   ref={draggableListRef}
