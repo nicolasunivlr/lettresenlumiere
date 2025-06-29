@@ -1,4 +1,5 @@
 import { useCallback, useState, useEffect } from 'react';
+import useConfig from './useConfig';
 import sound1 from '../assets/sons/graphemes/in.mp3';
 import sound2 from '../assets/sons/graphemes/an.mp3';
 import sound3 from '../assets/sons/graphemes/au.mp3';
@@ -134,6 +135,7 @@ const waitForVoices = async () => {
 const useSpeak = () => {
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [defaultVoice, setDefaultVoice] = useState(null);
+  const config = useConfig();
 
   useEffect(() => {
     const loadVoices = async () => {
@@ -217,9 +219,18 @@ const useSpeak = () => {
 
       const playNextItem = (index) => {
         if (index >= items.length) return;
+        let contenu, mp3;
 
-        const text = replacePronunciation(items[index]);
+        if(typeof items[index] === 'object') {
+          mp3 = items[index].sons_url || false
+          contenu = items[index].element;
+        } else {
+          contenu = items[index];
+        }
+
+        const text = replacePronunciation(contenu);
         const sound = isGrapheme(text);
+        //console.log(items[index],text, sound, mp3)
 
         const playNext = () => {
           setTimeout(() => {
@@ -230,6 +241,10 @@ const useSpeak = () => {
         if (sound) {
           const audio = new Audio(sound);
           audio.onended = playNext;
+          audio.play();
+        } else if (mp3) {
+          const url = `${config.audiosUrl}/${mp3}`;
+          const audio = new Audio(url);
           audio.play();
         } else {
           const utterance = new SpeechSynthesisUtterance(text);

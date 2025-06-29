@@ -208,8 +208,8 @@ const ExerciseTypeH = (props) => {
         setType('H');
 
         // Create groups of 3 elements
-        for (let i = 0; i < contents.length; i += 3) {
-          groups.push(contents.slice(i, Math.min(i + 3, contents.length)));
+        for (let i = 0; i < content.contenus.length; i += 3) {
+          groups.push(content.contenus.slice(i, Math.min(i + 3, content.contenus.length)));
         }
 
         // If the last group has fewer than 3 elements, fill it with elements from previous groups
@@ -391,9 +391,15 @@ const ExerciseTypeH = (props) => {
 
   const getCurrentGroupWord = () => {
     // Utiliser un séparateur spécial qui ne sera pas dans le contenu normal
+    let newGroup;
+    if ( typeof randomizedGroup[0] === 'object' ) {
+      newGroup = randomizedGroup.map(item => item.element);
+    } else {
+      newGroup = randomizedGroup;
+    }
     return type === 'H'
-      ? randomizedGroup.join('|||')
-      : randomizedGroup.join(' ');
+      ? newGroup.join('|||')
+      : newGroup.join(' ');
   };
 
   return (
