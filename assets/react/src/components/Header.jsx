@@ -29,7 +29,7 @@ const Header = (props) => {
           sequence={sequence}
           onClick={
             pageName && pageName.split(' ')[0] === 'Étape'
-              ? () => navigate('/etapes')
+              ? () => navigate(`/etapes/${pageName.split(' ')[1]}`)
               : undefined
           }
         />
