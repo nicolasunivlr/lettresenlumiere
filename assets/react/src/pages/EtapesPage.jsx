@@ -72,7 +72,7 @@ function EtapesPage() {
                                 <EtapesButton
                                     key={`${etape.nom}-${sequence.id}`}
                                     id={sequence.id}
-                                    link={`${etapeNumber}/sequence/${sequence.id}`}
+                                    link={`/sequence/${sequence.id}`}
                                     // Mettre en évidence le nom de l'étape et la séquence
                                     text={`${etape.nom} - ${sequence.nom}`}
                                     py={16}
