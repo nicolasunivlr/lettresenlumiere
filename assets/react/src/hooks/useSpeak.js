@@ -142,16 +142,17 @@ const useSpeak = () => {
       const availableVoices = await waitForVoices();
 
       // Définir une voix par défaut en français
-      const fallbackVoice = availableVoices.find((v) => v.lang === 'fr-FR');
+      const fallbackVoice = availableVoices.find((v) => (v.lang === 'fr-FR' || v.lang === 'fr'));
       setDefaultVoice(fallbackVoice || null);
+
+      console.log("Voix par défaut définie :", fallbackVoice ? fallbackVoice.name : "Aucune voix par défaut trouvée");
 
       // Ordre de priorité pour la recherche des voix
       const voicePriorities = [
-        //'Microsoft Henri Online (Natural) - French (France)',
         'Microsoft Denise Online (Natural) - French (France)',
+        'Microsoft Henri Online (Natural) - French (France)',
+        'Hortense',
         'Google français',
-        'Microsoft Hortense Desktop - French',
-        'Microsoft Hortense - French (France)',
       ];
 
       // Rechercher les voix dans l'ordre de priorité
@@ -159,10 +160,11 @@ const useSpeak = () => {
 
       for (const voiceName of voicePriorities) {
         foundVoice = availableVoices.find(
-          (v) => v.name === voiceName && v.lang.includes('fr')
+          (v) => v.name.includes(voiceName) && v.lang.includes('fr')
         );
 
         if (foundVoice) {
+          console.log("Voix trouvée :", foundVoice.name);
           setSelectedVoice(foundVoice);
           break;
         }
@@ -170,6 +172,7 @@ const useSpeak = () => {
 
       if (!foundVoice) {
         setSelectedVoice(fallbackVoice);
+        console.log("Veuillez installer une synthèse vocale française...");
       }
     };
 

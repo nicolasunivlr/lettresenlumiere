@@ -1,4 +1,4 @@
-import FlecheDroite from '../../assets/images/icones/flèche-droite.png';
+import FlecheDroite from '../../assets/images/icones/fleche-droite.png';
 
 const NextExerciseButton = (props) => {
   const { onClick } = props;
