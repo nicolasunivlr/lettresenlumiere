@@ -165,7 +165,7 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-30 23:09:32
+-- Dump completed on 2025-07-02 19:11:18
 -- MariaDB dump 10.19  Distrib 10.11.13-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: ntrugeon_lel
@@ -333,7 +333,7 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-30 23:09:32
+-- Dump completed on 2025-07-02 19:11:18
 -- MariaDB dump 10.19  Distrib 10.11.13-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: ntrugeon_lel
@@ -805,7 +805,7 @@ INSERT INTO `contenu` VALUES
 (1772,60,'les horaires','horaires.webp',NULL,'6-8'),
 (1773,60,'une livraison','livraison.webp',NULL,'6-9'),
 (1774,60,'une chaise','chaise.webp',NULL,'4-7'),
-(1775,60,'un peigne','peigne.webp',NULL,'3-5'),
+(1775,60,'un peigne','peigne-istockphoto-1751475563.jpg',NULL,'3-5'),
 (1776,60,'une reine','reine.webp',NULL,'4-6'),
 (1777,60,'treize','treize.webp',NULL,'0-3'),
 (1778,60,'un balai','balai.webp',NULL,'5-7'),
@@ -854,7 +854,7 @@ INSERT INTO `contenu` VALUES
 (1821,61,'les horaires','horaires.webp',NULL,NULL),
 (1822,61,'une livraison','livraison.webp',NULL,NULL),
 (1823,61,'une chaise','chaise.webp',NULL,NULL),
-(1824,61,'un peigne','peigne.webp',NULL,NULL),
+(1824,61,'un peigne','peigne-istockphoto-1751475583.jpg',NULL,NULL),
 (1825,61,'les veines','veines.webp',NULL,NULL),
 (1826,61,'treize','treize.webp',NULL,NULL),
 (1827,61,'seize','seize.webp',NULL,NULL),
@@ -15126,6 +15126,6 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-30 23:09:32
+-- Dump completed on 2025-07-02 19:11:18
 
 INSERT INTO `user` (`username`, `roles`, `password`) VALUES ('admin', '["ROLE_ADMIN"]', '$2y$13$gDMytbgk8VWA8H0Sz4GvXOgnwsFQ90S.8yf78LRNTRJQuMaHy7.IG')
