@@ -46,6 +46,7 @@ const ExerciseTypeA = (props) => {
           format={contenu.contenuFormats ?? null}
           imageSrc={contenu.image_url}
           isClickable={true}
+          audioUrl={contenu.sons_url ?? null}
         />
       ) : (
         <Label
