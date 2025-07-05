@@ -233,7 +233,6 @@ const useSpeak = () => {
 
         const text = replacePronunciation(contenu);
         const sound = isGrapheme(text);
-        //console.log(items[index],text, sound, mp3)
 
         const playNext = () => {
           setTimeout(() => {
@@ -248,6 +247,7 @@ const useSpeak = () => {
         } else if (mp3) {
           const url = `${config.audiosUrl}/${mp3}`;
           const audio = new Audio(url);
+          audio.onended = playNext;
           audio.play();
         } else {
           const utterance = new SpeechSynthesisUtterance(text);
