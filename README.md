@@ -1,5 +1,12 @@
 # Lettres en lumière
 
+## TODO
+
+- [X] Enregistrer les sons pour alphabets
+- [ ] Enregistrer consignes pour alphabets/graphèmes
+- [ ] Documentation pdf de l'installation
+- [ ] Vérifier les sons en durs dans l'application
+
 ## Description
 
 Lettres en lumière est une application d'aide à la lecture pour un public adulte.
