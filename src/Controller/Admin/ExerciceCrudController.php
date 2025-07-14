@@ -7,8 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use App\Repository\ExerciceRepository;
 
@@ -23,14 +22,13 @@ class ExerciceCrudController extends AbstractCrudController
     {
     }
 
-
     public function configureFields(string $pageName): iterable
     {
 
         yield AssociationField::new('sequence')
             ->setLabel('Séquence')
             ->setFormTypeOptions([
-                'choice_label' => 'nom', // Affiche le nom de la séquence au lieu de l'ID
+                'choice_label' => 'nom',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
                         ->orderBy('s.nom', 'ASC');
@@ -44,6 +42,8 @@ class ExerciceCrudController extends AbstractCrudController
 
         // Input text pour la consigne
         yield TextField::new('consigne')->setLabel('Consigne');
+        yield NumberField::new('ordre')->setLabel('Ordre')
+            ->setHelp('Ordre d\'affichage de l\'exercice dans la séquence');
     }
 
     private function getUniqueExerciceTypes(): array

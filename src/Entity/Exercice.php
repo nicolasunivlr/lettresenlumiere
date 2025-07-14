@@ -53,6 +53,11 @@ class Exercice
     #[Groups(['exercice:read', 'exercice:write'])]
     private ?int $ordre = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['exercice:read', 'sequence:read', 'contenu:read'])]
+    #[SerializedName("sons_url")]
+    private ?string $audioUrl = null;
+
     public function __construct()
     {
         $this->contenus = new ArrayCollection();
@@ -132,6 +137,18 @@ class Exercice
         if ($this->contenus->removeElement($contenu)) {
             $contenu->removeExercice($this);
         }
+
+        return $this;
+    }
+
+    public function getAudioUrl(): ?string
+    {
+        return $this->audioUrl;
+    }
+
+    public function setAudioUrl(?string $audioUrl): static
+    {
+        $this->audioUrl = $audioUrl;
 
         return $this;
     }
