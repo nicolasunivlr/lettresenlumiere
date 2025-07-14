@@ -5,10 +5,11 @@ import InputLabel from '../UI/InputLabel';
 import ProgressBar from './ProgressBar';
 import Instruction from '../Instruction';
 import OKButton from '../UI/OKButton';
-import useSpeak from '../../hooks/useSpeak';
+//import useSpeak from '../../hooks/useSpeak';
+import usePlay, { play } from '../../hooks/usePlay';
 import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
-import useConfig from '../../hooks/useConfig';
+//import useConfig from '../../hooks/useConfig';
 
 function ExerciseTypeE(props) {
   const { content, onDone } = props;
@@ -19,13 +20,14 @@ function ExerciseTypeE(props) {
   const [isLabelVisible, setIsLabelVisible] = useState(false);
   const [isAnswerValidated, setIsAnswerValidated] = useState(null);
   const [isLocked, setIsLocked] = useState(false);
-  const { speak } = useSpeak();
+  //const { speak } = useSpeak();
+  const { play } = usePlay();
   const attempt = useRef(0);
   const currentAttempt = useRef(0);
   const timeOutRef = useRef(4000);
   const [correctAnswerGiven, setCorrectAnswerGiven] = useState(false);
   const inputRef = useRef(null);
-  const config = useConfig();
+  //const config = useConfig();
 
   useEffect(() => {
     if (content && content.contenus) {
@@ -102,12 +104,13 @@ function ExerciseTypeE(props) {
       !correctAnswerGiven
     ) {
       if( contentExercise[currentIndex].sons_url ) {
-        const url = `${config.audiosUrl}/${contentExercise[currentIndex].sons_url}`;
-        const audio = new Audio(url);
-        audio.play();
-      } else {
-        speak(contentExercise[currentIndex].element);
-      }
+        //const url = `${config.audiosUrl}/${contentExercise[currentIndex].sons_url}`;
+        //const audio = new Audio(url);
+        //audio.play();
+        play(contentExercise[currentIndex]);
+      } //else {
+        //speak(contentExercise[currentIndex].element);
+      //}
     }
   }, [isLabelVisible, contentExercise, currentIndex, correctAnswerGiven]);
 
@@ -186,12 +189,13 @@ function ExerciseTypeE(props) {
       setTimeout(() => {
         setUserInput('');
         if( contentExercise[currentIndex].sons_url ) {
-          const url = `${config.audiosUrl}/${contentExercise[currentIndex].sons_url}`;
-          const audio = new Audio(url);
-          audio.play();
-        } else {
-          speak(contentExercise[currentIndex].element);
-        }
+          //const url = `${config.audiosUrl}/${contentExercise[currentIndex].sons_url}`;
+          //const audio = new Audio(url);
+          //audio.play();
+          play(contentExercise[currentIndex]);
+        } //else {
+          //speak(contentExercise[currentIndex].element);
+        //}
 
         setIsAnswerValidated(null);
       }, 2000);
@@ -264,7 +268,7 @@ function ExerciseTypeE(props) {
     <>
       {content ? (
         <div className='exercices'>
-          <Instruction instruction={content.consigne} />
+          <Instruction exercice={content} />
           <div className='exercice__item pt-5'>
             {displayLabels(contentExercise, currentIndex)}
           </div>

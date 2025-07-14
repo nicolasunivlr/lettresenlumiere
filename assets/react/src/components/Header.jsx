@@ -1,7 +1,7 @@
 import logoLettres from '../assets/images/Logolettresenlumiere.png';
 import QuitButton from './UI/QuitButton';
 import PageTitle from './UI/PageTitle';
-import Consigne from './Instruction';
+import Instruction from './Instruction';
 import Search from "./Search";
 import VideoModal from './UI/VideoModal';
 import BilanIcon from '../assets/images/bilan-icon.svg';
@@ -36,7 +36,7 @@ const Header = (props) => {
       ) : (
         <img src={logoLettres} alt='Page des étapes' className='header__logo' />
       )}
-      {consigne && <Consigne consigne={consigne} />}
+      {consigne && <Instruction exercice={consigne} />}
       {openBilan && (
         <img
           src={BilanIcon}

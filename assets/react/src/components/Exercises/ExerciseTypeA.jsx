@@ -69,7 +69,7 @@ const ExerciseTypeA = (props) => {
       {content ? (
         <>
           <div className='exercices'>
-            <Instruction instruction={content.consigne} />
+            <Instruction exercice={content} />
             <div className='exercice__item pt-5'>
               {Array.isArray(contentExercise) && displayLabels(contentExercise)}
             </div>

@@ -4,14 +4,15 @@ import LabelImage from '../UI/LabelImage';
 import ProgressBar from './ProgressBar';
 import OKbutton from '../UI/OKButton';
 import Instruction from '../Instruction';
-import useSpeak from '../../hooks/useSpeak';
+//import useSpeak from '../../hooks/useSpeak';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
 import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
-import useConfig from '../../hooks/useConfig';
+import usePlay from "../../hooks/usePlay";
+//import useConfig from '../../hooks/useConfig';
 
 const ExerciseTypeD = (props) => {
   const { content, onDone } = props;
-  const { speak } = useSpeak();
+  //const { speak } = useSpeak();
   const [contentExercise, setContentExercise] = useState([]);
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [availableCorrectAnswer, setAvailableCorrectAnswer] = useState(null);
@@ -21,7 +22,8 @@ const ExerciseTypeD = (props) => {
   const [isLocked, setisLocked] = useState(false);
   const [compteur, setCompteur] = useState(0);
   const [iterationCount, setIterationCount] = useState(0); // Nouveau compteur pour forcer la prononciation
-  const config = useConfig();
+  //const config = useConfig();
+  const { play } = usePlay(); // Utilisation de la fonction play passée en props
 
   // Ref pour suivre si l'initialisation a été effectuée
   const initializedRef = useRef(false);
@@ -186,14 +188,15 @@ const ExerciseTypeD = (props) => {
         (item) => item.element === correctAnswer
         );
       if( currentItem.sons_url) {
-        const url = `${config.audiosUrl}/${currentItem.sons_url}`;
-        const audio = new Audio(url);
-        audio.play();
-      } else {
-        speak(correctAnswer);
-      }
+        //const url = `${config.audiosUrl}/${currentItem.sons_url}`;
+        //const audio = new Audio(url);
+        //audio.play();
+        play(currentItem);
+      } //else {
+        //speak(correctAnswer);
+      //}
     }
-  }, [correctAnswer, iterationCount, speak]);
+  }, [correctAnswer, iterationCount]);
 
   // Gestion du clic sur OK
   const handleClickOKButton = () => {
@@ -282,12 +285,13 @@ const ExerciseTypeD = (props) => {
           }))
         );
         if( correctAnswer.sons_url ) {
-          const url = `${config.audiosUrl}/${correctAnswer.sons_url}`;
-          const audio = new Audio(url);
-          audio.play();
-        } else {
-          speak(correctAnswer.element);
-        }
+          //const url = `${config.audiosUrl}/${correctAnswer.sons_url}`;
+          //const audio = new Audio(url);
+          //audio.play();
+          play(correctAnswer);
+        } //else {
+          //speak(correctAnswer.element);
+        //}
         setisLocked(false);
       }, 2000);
     }
@@ -395,7 +399,7 @@ const ExerciseTypeD = (props) => {
     <>
       {content ? (
         <div className='exercices'>
-          {<Instruction instruction={content.consigne} />}
+          {<Instruction exercice={content} />}
           <div className='exercice__item consigne-label pt-5'>
             {content.type !== 'D.1' && getCorrectAnswerImage(correctAnswer) ? (
               <LabelImage

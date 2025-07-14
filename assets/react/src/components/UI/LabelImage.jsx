@@ -1,5 +1,5 @@
 import Label from './Label';
-import useSpeak from '../../hooks/useSpeak'; // ajout de l'import
+import React, { useRef } from 'react';
 import useConfig from '../../hooks/useConfig';
 
 function LabelImage(props) {
@@ -16,13 +16,18 @@ function LabelImage(props) {
     audioUrl,
   } = props;
 
-  const { speak } = useSpeak();
+  const labelRef = useRef(null);
   const config = useConfig();
 
-  const handleClick = () => {
-    if (onClick) onClick();
-    if (sound) {
-      speak(voiceLine ? voiceLine : text);
+  const handleContainerClick = () => {
+    // 1. Déclencher la lecture du son dans le composant Label
+    if (labelRef.current) {
+      labelRef.current.triggerClick();
+    }
+
+    // 2. Exécuter la fonction onClick passée en props (si elle existe)
+    if (onClick) {
+      onClick();
     }
   };
 
@@ -30,7 +35,7 @@ function LabelImage(props) {
     <div
       className='label-wrapper'
       key={`${text}`}
-      onClick={handleClick}
+      onClick={handleContainerClick}
       style={
         onClick || voiceLine ? { cursor: 'pointer' } : { cursor: 'default' }
       }
@@ -43,6 +48,8 @@ function LabelImage(props) {
         />
       </div>
       <Label
+        isControlled={true}
+        ref={labelRef}
         key={`${text}-label`}
         text={text ?? null}
         voiceLine={voiceLine ?? null}

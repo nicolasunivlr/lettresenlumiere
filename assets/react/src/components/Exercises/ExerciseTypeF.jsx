@@ -5,10 +5,11 @@ import Instruction from '../Instruction';
 import ProgressBar from './ProgressBar';
 import Label from '../UI/Label';
 import LabelImage from '../UI/LabelImage';
-import useSpeak from '../../hooks/useSpeak';
+//import useSpeak from '../../hooks/useSpeak';
 import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
-import useConfig from '../../hooks/useConfig';
+//import useConfig from '../../hooks/useConfig';
+import play from '../../hooks/usePlay';
 
 const ExerciseTypeF = (props) => {
   const { content, onDone } = props;
@@ -17,7 +18,8 @@ const ExerciseTypeF = (props) => {
   const [currentResponse, setCurrentResponse] = useState(null);
   const [isValidated, setIsValidated] = useState(undefined);
   const [elementValidations, setElementValidations] = useState([]);
-  const config = useConfig();
+  //const config = useConfig();
+  const play = usePlay();
 
   const [attempt, setAttempt] = useState(0);
 
@@ -26,7 +28,7 @@ const ExerciseTypeF = (props) => {
   const [isDraggableListVisible, setIsDraggableListVisible] = useState(false);
   const draggableListRef = useRef();
   const displayTimeRef = useRef(2000); // Temps d'affichage par défaut
-  const { speak } = useSpeak();
+  //const { speak } = useSpeak();
 
   const shuffle = (array) => {
     array.sort(() => Math.random() - 0.5);
@@ -76,12 +78,13 @@ const ExerciseTypeF = (props) => {
           setShowLabel(false);
           setIsDraggableListVisible(true);
           if( firstNonDone.sons_url ) {
-            const url = `${config.audiosUrl}/${firstNonDone.sons_url}`;
-            const audio = new Audio(url);
-            audio.play();
-          } else {
-            speak(firstNonDone.element);
-          }
+            play(firstNonDone);
+            //const url = `${config.audiosUrl}/${firstNonDone.sons_url}`;
+            //const audio = new Audio(url);
+            //audio.play();
+          } //else {
+            //speak(firstNonDone.element);
+          //}
         }, displayTimeRef.current);
       }
     }
@@ -156,12 +159,13 @@ const ExerciseTypeF = (props) => {
       setTimeout(() => {
         setShowLabel(false);
         if( currentResponse.sons_url ) {
-          const url = `${config.audiosUrl}/${currentResponse.sons_url}`;
-          const audio = new Audio(url);
-          audio.play();
-        } else {
-          speak(currentResponse.element);
-        }
+          play(currentResponse);
+          //const url = `${config.audiosUrl}/${currentResponse.sons_url}`;
+          //const audio = new Audio(url);
+          //audio.play();
+        } //else {
+          //speak(currentResponse.element);
+        //}
       }, 3000);
       return false;
     }
@@ -222,7 +226,7 @@ const ExerciseTypeF = (props) => {
   return (
     <>
       <div className='exercices'>
-        {content && <Instruction instruction={content.consigne} />}
+        {content && <Instruction exercice={content} />}
         <div className='flex flex-col pt-5 items-center justify-center'>
           {currentResponse && (
             <>

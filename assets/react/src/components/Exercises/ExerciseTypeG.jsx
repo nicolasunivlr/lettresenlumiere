@@ -2,11 +2,12 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import Label from '../UI/Label';
 import LabelImage from '../UI/LabelImage';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
-import useSpeak from '../../hooks/useSpeak';
+//import useSpeak from '../../hooks/useSpeak';
 import Timer from '../UI/Timer';
 import Instruction from '../Instruction';
 import ModalExerciseG from '../UI/ModalExerciseG';
-import useConfig from '../../hooks/useConfig';
+//import useConfig from '../../hooks/useConfig';
+import usePlay from "../../hooks/usePlay";
 
 const ExerciseTypeG = (props) => {
   const { content, onDone } = props;
@@ -23,9 +24,9 @@ const ExerciseTypeG = (props) => {
   const [availableContent, setAvailableContent] = useState([]); // Pour stocker les 6 éléments sélectionnés
   const [showModal, setShowModal] = useState(false);
   const [exerciseStarted, setExerciseStarted] = useState(false);
-  const config = useConfig();
-
-  const { speak } = useSpeak();
+  //const config = useConfig();
+  const { play } = usePlay();
+  //const { speak } = useSpeak();
 
   const shuffle = (array) => {
     const newArray = [...array];
@@ -111,12 +112,13 @@ const ExerciseTypeG = (props) => {
           (item) => item.element === response
       );
       if( currentItem.sons_url) {
-        const url = `${config.audiosUrl}/${currentItem.sons_url}`;
-        const audio = new Audio(url);
-        audio.play();
-      } else {
-        speak(response);
-      }
+        //const url = `${config.audiosUrl}/${currentItem.sons_url}`;
+        //const audio = new Audio(url);
+        //audio.play();
+        play(currentItem);
+      } //else {
+        //speak(response);
+      //}
     }
   }, [attempt, response, exerciseStarted]);
 
@@ -240,13 +242,13 @@ const ExerciseTypeG = (props) => {
       <ModalExerciseG
         onReady={handleReady}
         isVisible={showModal}
-        instruction={content.consigne}
+        instruction={content}
       />
 
       {content ? (
         <>
           <div className='consigne-timer-container flex justify-center items-center'>
-            <Instruction instruction={content.consigne} />
+            <Instruction exercice={content} />
             <div className='timer-container fixed right-0 mr-6'>
               {memoizedTimer}
             </div>
