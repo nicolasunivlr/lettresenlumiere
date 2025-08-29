@@ -111,24 +111,24 @@ class ContenuCrudController extends AbstractCrudController
             ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]');
 
 
-            yield ImageField::new('audioUrl')
-                ->setFormType(FileUploadType::class)
-                ->setLabel('Fichier Audio')
-                ->setBasePath('/audios/')
-                ->setUploadDir('public/audios/')
-                ->setRequired(false)
-                ->setHelp('Formats acceptés : MP3, WAV')
-                ->setHtmlAttribute('accept','audio/mp3, audio/wav')
-                ->setFileConstraints(new File([
-                    'mimeTypes' => [
-                        'audio/mpeg',
-                        'audio/vnd.wav',
-                        'audio/wav',  // Pour WAV
-                        'audio/x-wav',
-                    ],
-                    'mimeTypesMessage' => 'Veuillez télécharger un fichier audio valide (MP3 ou WAV).',
-                ]))
-                ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]');
+        yield ImageField::new('audioUrl')
+            ->setFormType(FileUploadType::class)
+            ->setLabel('Fichier Audio')
+            ->setBasePath('audios/')
+            ->setUploadDir('public/audios/')
+            ->setRequired(false)
+            ->setHelp('Formats acceptés : MP3, WAV')
+            ->setHtmlAttribute('accept','audio/mp3, audio/wav')
+            ->setFileConstraints(new File([
+                'mimeTypes' => [
+                    'audio/mpeg',
+                    'audio/vnd.wav',
+                    'audio/wav',  // Pour WAV
+                    'audio/x-wav',
+                ],
+                'mimeTypesMessage' => 'Veuillez télécharger un fichier audio valide (MP3 ou WAV).',
+            ]))
+            ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]');
                 
 
 
