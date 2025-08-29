@@ -406,7 +406,7 @@ const ExerciseTypeH = (props) => {
     <>
       {!isLetterSelected ? (
         <div className='exercices'>
-          <Instruction exercice={{consigne:'Choisissez une écriture', sons_url:'ecoute-et-repete-57790f80b78e.mp3'}} />
+          <Instruction exercice={{consigne:'Choisissez une écriture', sons_url:'choisissez-une-ecriture-a9f56db310f8.mp3'}} />
           <div className='exercice__item pt-5'>
             <Label
               font='script'

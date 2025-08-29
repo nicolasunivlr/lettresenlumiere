@@ -87,7 +87,7 @@ const ExerciceTypeAGrapheme = (props) => {
   return (
     <>
       <div className='flex items-center gap-2'>
-        <Instruction exercice={{consigne: 'Écoute et répète', sons_url: 'ecoute-et-repete-57790f80b78e.mp3'}} />
+        <Instruction exercice={{consigne: 'Écoute et répète', sons_url: 'ecoute-et-repete-4bfc606680da.mp3'}} />
       </div>
       <div className='graphemes ml-16'>
         {graphemArray.map((element, index) => (
