@@ -5,7 +5,7 @@ import OKButton from '../UI/OKButton';
 import ProgressBar from './ProgressBar';
 import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
-//import useSpeak from '../../hooks/useSpeak';
+import useSpeak from '../../hooks/useSpeak';
 import LabelImage from '../UI/LabelImage';
 //import useConfig from '../../hooks/useConfig';
 import usePlay from '../../hooks/usePlay';
@@ -20,7 +20,7 @@ const ExerciseTypeB = ({ content, onDone }) => {
   const location = useLocation();
   //const config = useConfig();
 
-  //const { speak } = useSpeak();
+  const { speak } = useSpeak();
   const { play } = usePlay();
 
   useEffect(() => {
@@ -156,9 +156,9 @@ const ExerciseTypeB = ({ content, onDone }) => {
           //const audio = new Audio(url);
           //audio.play();
           play(firstNonDone);
-        } //else {
-          //speak(firstNonDone.element);
-        //}
+        } else {
+          speak(firstNonDone.element);
+        }
       }
     }
   }, [tabResponses, generateContentExercise, /*speak,*/ isFinished]);
@@ -239,9 +239,9 @@ const ExerciseTypeB = ({ content, onDone }) => {
             // const audio = new Audio(url);
             // audio.play();
             play(firstNonDone);
-          } //else {
-            //speak(firstNonDone.element);
-          //}
+          } else {
+            speak(firstNonDone.element);
+          }
         }, 2000);
       }
     },

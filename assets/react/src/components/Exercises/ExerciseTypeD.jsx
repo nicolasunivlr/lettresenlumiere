@@ -4,7 +4,7 @@ import LabelImage from '../UI/LabelImage';
 import ProgressBar from './ProgressBar';
 import OKbutton from '../UI/OKButton';
 import Instruction from '../Instruction';
-//import useSpeak from '../../hooks/useSpeak';
+import useSpeak from '../../hooks/useSpeak';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
 import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
 import usePlay from "../../hooks/usePlay";
@@ -12,7 +12,7 @@ import usePlay from "../../hooks/usePlay";
 
 const ExerciseTypeD = (props) => {
   const { content, onDone } = props;
-  //const { speak } = useSpeak();
+  const { speak } = useSpeak();
   const [contentExercise, setContentExercise] = useState([]);
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [availableCorrectAnswer, setAvailableCorrectAnswer] = useState(null);
@@ -192,9 +192,9 @@ const ExerciseTypeD = (props) => {
         //const audio = new Audio(url);
         //audio.play();
         play(currentItem);
-      } //else {
-        //speak(correctAnswer);
-      //}
+      } else {
+        speak(correctAnswer);
+      }
     }
   }, [correctAnswer, iterationCount]);
 
@@ -289,9 +289,9 @@ const ExerciseTypeD = (props) => {
           //const audio = new Audio(url);
           //audio.play();
           play(correctAnswer);
-        } //else {
-          //speak(correctAnswer.element);
-        //}
+        } else {
+          speak(correctAnswer.element);
+        }
         setisLocked(false);
       }, 2000);
     }

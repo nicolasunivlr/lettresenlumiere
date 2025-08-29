@@ -5,7 +5,7 @@ import InputLabel from '../UI/InputLabel';
 import ProgressBar from './ProgressBar';
 import Instruction from '../Instruction';
 import OKButton from '../UI/OKButton';
-//import useSpeak from '../../hooks/useSpeak';
+import useSpeak from '../../hooks/useSpeak';
 import usePlay from '../../hooks/usePlay';
 import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
@@ -20,7 +20,7 @@ function ExerciseTypeC(props) {
   const [isLabelVisible, setIsLabelVisible] = useState(true);
   const [isAnswerValidated, setIsAnswerValidated] = useState(null);
   const [isLocked, setIsLocked] = useState(false);
-  //const { speak } = useSpeak();
+  const { speak } = useSpeak();
   const attempt = useRef(0);
   const currentAttempt = useRef(0);
   const timeOutRef = useRef(4000);
@@ -92,9 +92,9 @@ function ExerciseTypeC(props) {
         //const audio = new Audio(url);
         //audio.play();
         play(contentExercise[currentIndex]);
-      } //else {
-        //speak(contentExercise[currentIndex].element);
-      //}
+      } else {
+        speak(contentExercise[currentIndex].element);
+      }
     }
   }, [isLabelVisible, contentExercise, currentIndex]);
 
