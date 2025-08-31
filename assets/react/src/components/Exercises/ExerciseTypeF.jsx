@@ -9,7 +9,7 @@ import LabelImage from '../UI/LabelImage';
 import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
 //import useConfig from '../../hooks/useConfig';
-import play from '../../hooks/usePlay';
+import usePlay from '../../hooks/usePlay';
 
 const ExerciseTypeF = (props) => {
   const { content, onDone } = props;
@@ -19,7 +19,7 @@ const ExerciseTypeF = (props) => {
   const [isValidated, setIsValidated] = useState(undefined);
   const [elementValidations, setElementValidations] = useState([]);
   //const config = useConfig();
-  const play = usePlay();
+  const { play } = usePlay();
 
   const [attempt, setAttempt] = useState(0);
 
@@ -44,6 +44,7 @@ const ExerciseTypeF = (props) => {
         element: contenu.element,
         image: contenu.image_url,
         done: false,
+        sons_url: contenu.sons_url || null,
       }));
 
       // On utilise toujours responses1 sans duplication, peu importe le nombre d'éléments
@@ -239,7 +240,7 @@ const ExerciseTypeF = (props) => {
                       voiceLine={currentResponse?.element}
                       imageSrc={currentResponse?.image}
                       sound={true}
-                      audioUrl={currentResponse.audioUrl ?? null}
+                      audioUrl={currentResponse.sons_url ?? null}
                     />
                   ) : (
                     <Label
@@ -247,7 +248,7 @@ const ExerciseTypeF = (props) => {
                       text={currentResponse.element}
                       voiceLine={currentResponse?.element}
                       sound={true}
-                      audioUrl={currentResponse.audioUrl ?? null}
+                      audioUrl={currentResponse.sons_url ?? null}
                     />
                   )}
                 </div>
@@ -260,7 +261,7 @@ const ExerciseTypeF = (props) => {
                       voiceLine={currentResponse?.element}
                       imageSrc={currentResponse?.image}
                       sound={true}
-                      audioUrl={currentResponse.audioUrl ?? null}
+                      audioUrl={currentResponse.sons_url ?? null}
                       onClick={handleQuestionMarkClick}
                     />
                   ) : (
@@ -269,7 +270,7 @@ const ExerciseTypeF = (props) => {
                       text={'?'}
                       voiceLine={currentResponse?.element}
                       sound={true}
-                      audioUrl={currentResponse.audioUrl ?? null}
+                      audioUrl={currentResponse.sons_url ?? null}
                       onClick={handleQuestionMarkClick}
                     />
                   )}
