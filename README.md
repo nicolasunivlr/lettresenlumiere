@@ -1,12 +1,5 @@
 # Lettres en lumière
 
-## TODO
-
-- [X] Enregistrer les sons pour alphabets
-- [ ] Enregistrer consignes pour alphabets/graphèmes
-- [ ] Documentation pdf de l'installation
-- [ ] Vérifier les sons en durs dans l'application
-
 ## Description
 
 Lettres en lumière est une application d'aide à la lecture pour un public adulte.
@@ -22,14 +15,6 @@ L'installation a été testée sur les systèmes suivants :
 *  Windows 11 avec Wamp 3.3.7
 
 Vous trouverez ci-dessous les logiciels requis pour faire fonctionner l'application :
-
-Pour la synthèse vocale sous chrome sans connexion internet :
-https://www.microsoft.com/en-us/download/details.aspx?id=27225
-
-Pour les voix françaises de la synthèse vocale sous chrome avec connexion internet :
-https://www.microsoft.com/en-us/download/details.aspx?id=27224
-
-Fichier de registre pour windows 7 :
 
 Site pour les Visual C++ Redistributable Runtimes :
 https://github.com/abbodi1406/vcredist
@@ -60,15 +45,15 @@ Le zip du projet est disponible dans la partie "Releases" du dépôt GitHub.
 6. **Configuration de l'application :**
     * Lancez Wamp et assurez-vous qu'il est en ligne (icône verte dans la barre des tâches).
     * Pour Windows 7, passez Php en version 8.2 (clic droit sur l'icône Wamp dans la barre des tâches, sélectionnez "PHP" puis "Version" et choisissez 8.2).
-    * Lancez `create_data.bat` dans `C:\wamp\www\lettresenlumiere\` (double clic)
+    * Lancez `installation.bat` dans `C:\wamp\www\lettresenlumiere\` (double clic)
         * Il ne doit pas avoir de message d'erreur. À la fin, vous pouvez voir l'adresse IP de votre serveur local.
     * Relancez les services Wamp (clic sur l'icône Wamp dans la barre des tâches et sélectionnez "Redémarrer tous les services").
 
 ## Utilisation
 
 Pour une utilisation optimale de l'application, nous vous recommandons les navigateurs suivants :
-* Edge (la synthèse vocale fonctionne mieux)
-* Chrome (vous devez installer les voix françaises pour la synthèse vocale en utilisation hors ligne)
+* Edge
+* Chrome
 
 1. **Accéder à l'application :**
     * Sur le poste où l'application est installée, ouvrez votre navigateur et allez à l'URL configurée `http://localhost/lettresenlumiere'.
@@ -114,7 +99,7 @@ Pour mettre à jour l'application, suivez ces étapes :
    * Téléchargez la dernière version stable de l'application Lettres en lumière depuis la partie "Releases" du dépôt GitHub.
    * Le fichier sera nommé `lettresenlumiere.zip`.
    * Extrayez le zip dans le dossier `C:\wamp64\www\lettresenlumiere`.
-   * Lancez `create_data.bat` dans `C:\wamp64\www\lettresenlumiere\` (double clic).
+   * Lancez `installation.bat` dans `C:\wamp64\www\lettresenlumiere\` (double clic).
 
 ## Partie Technique
 
