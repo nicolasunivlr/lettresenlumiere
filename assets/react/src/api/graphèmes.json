@@ -7,6 +7,7 @@
       "id": 1,
       "type": "A.1",
       "consigne": "Écoute et répète.",
+      "sons_url": "ecoute-et-repete-4bfc606680da.mp3",
       "contenus": [
         {
           "id": 1,
@@ -174,6 +175,7 @@
       "id": 2,
       "type": "B.1",
       "consigne": "Trouve le bon graphème.",
+      "sons_url": "trouve-le-bon-grapheme-7b940fd35350.mp3",
       "contenus": [
         {
           "id": 1,
@@ -341,6 +343,7 @@
       "id": 3,
       "type": "C.1",
       "consigne": "Écris le graphème.",
+      "sons_url": "ecris-le-grapheme-1beb9316a45c.mp3",
       "contenus": [
         {
           "id": 1,
@@ -508,6 +511,7 @@
       "id": 4,
       "type": "D.1",
       "consigne": "Écris les 3 écritures du même graphème.",
+      "sons_url": "ecris-les-3-ecritures-du-meme-grapheme-3f3d6b2e7735.mp3",
       "contenus": [
         {
           "id": 1,
@@ -675,6 +679,7 @@
       "id": 5,
       "type": "H.1",
       "consigne": "Mets les graphèmes dans l'ordre.",
+      "sons_url": "mets-les-graphemes-dans-l-ordre-ed0bc3f15935.mp3",
       "contenus": [
         {
           "id": 1,

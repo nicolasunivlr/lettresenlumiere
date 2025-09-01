@@ -50,7 +50,7 @@ const ExerciseTypeH = (props) => {
 
   useEffect(() => {
     if (content && content.contenus.length > 0) {
-      const contents = content.contenus.map((item) => item.element);
+      const contents = content.contenus; //.map((item) => item.element);
       const groups = [];
       if (pathname.includes('alphabet')) {
         setType('H.Alphabet');
@@ -282,7 +282,6 @@ const ExerciseTypeH = (props) => {
     if (type === 'H') {
       // Comparaison élément par élément pour type H normal
       const isCorrect = validations.every((validation) => validation === true);
-
       if (isCorrect) {
         new Audio(urlSucces).play();
         setIsValidated(true);
@@ -316,12 +315,12 @@ const ExerciseTypeH = (props) => {
     const userAnswer = draggableListRef.current
       .getAnswerLetters()
       .toLowerCase();
-
     // Modifions la manière dont correctAnswer est construit pour tenir compte des espaces
     const correctAnswer =
-      type === 'H.Alphabet' || type === 'H.Graphemes'
-        ? randomizedGroup.join('').toLowerCase()
-        : randomizedGroup.join(' ').toLowerCase();
+      type === 'H.Alphabet'
+        ? randomizedGroup.map(item => item.element).join('').toLowerCase()
+        : type === 'H.Graphemes' ? randomizedGroup.join('').toLowerCase()
+              :randomizedGroup.join(' ').toLowerCase();
 
     const isCorrect = userAnswer === correctAnswer;
 
@@ -402,11 +401,12 @@ const ExerciseTypeH = (props) => {
       : newGroup.join(' ');
   };
 
+  // TODO: sons_url à modifier
   return (
     <>
       {!isLetterSelected ? (
         <div className='exercices'>
-          <Instruction instruction={'Choisissez une écriture'} />
+          <Instruction exercice={{consigne:'Choisissez une écriture', sons_url:'choisissez-une-ecriture-a9f56db310f8.mp3'}} />
           <div className='exercice__item pt-5'>
             <Label
               font='script'
@@ -435,7 +435,7 @@ const ExerciseTypeH = (props) => {
           {content ? (
             <>
               <div className='exercices'>
-                <Instruction instruction={content.consigne} />
+                <Instruction exercice={content} />
                 <div className='exercice__item pt-5'>
                   <Label
                     className='label-sound'

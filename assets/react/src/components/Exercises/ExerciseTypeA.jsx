@@ -46,6 +46,7 @@ const ExerciseTypeA = (props) => {
           format={contenu.contenuFormats ?? null}
           imageSrc={contenu.image_url}
           isClickable={true}
+          audioUrl={contenu.sons_url ?? null}
         />
       ) : (
         <Label
@@ -68,7 +69,7 @@ const ExerciseTypeA = (props) => {
       {content ? (
         <>
           <div className='exercices'>
-            <Instruction instruction={content.consigne} />
+            <Instruction exercice={content} />
             <div className='exercice__item pt-5'>
               {Array.isArray(contentExercise) && displayLabels(contentExercise)}
             </div>

@@ -1,8 +1,10 @@
 import useSpeak from '../../hooks/useSpeak';
+import usePlay from "../../hooks/usePlay";
 import hautParleur from '../../assets/images/haut-parleur.svg';
-import useConfig from '../../hooks/useConfig';
+//import useConfig from '../../hooks/useConfig';
+import React, { forwardRef, useImperativeHandle } from 'react';
 
-function Label(props) {
+const Label = forwardRef((props, ref) => {
   const {
     text,
     voiceLine,
@@ -14,7 +16,10 @@ function Label(props) {
     answer,
     audioUrl,
     useArraySpeak,
+    isControlled=false,
   } = props;
+
+  const { play } = usePlay();
 
   const fontClass = (() => {
     if (font === 'script') {
@@ -29,19 +34,32 @@ function Label(props) {
   })();
 
   const { speak, speakArray } = useSpeak();
-  const config = useConfig();
+  //const config = useConfig();
 
-  const handleOnClick = (voiceLine) => {
+  const playSound = () => {
     if (audioUrl) {
-      const url = `${config.audiosUrl}/${audioUrl}`;
-      const audio = new Audio(url);
-      audio.play();
+      //const url = `${config.audiosUrl}/${audioUrl}`;
+      //const audio = new Audio(url);
+      //audio.play();
+      play(audioUrl);
     } else if (useArraySpeak && Array.isArray(voiceLine)) {
       speakArray(voiceLine);
     } else {
       speak(voiceLine);
     }
   };
+
+  const handleOnClick = (voiceLine) => {
+    if (!isControlled) {
+      playSound();
+    }
+  };
+
+  useImperativeHandle(ref, () => ({
+    triggerClick() {
+      playSound();
+    },
+  }));
 
   const handleTextformat = () => {
     if (!format || !Array.isArray(format) || !text) return text;
@@ -129,6 +147,6 @@ function Label(props) {
       )}
     </>
   );
-}
+});
 
 export default Label;

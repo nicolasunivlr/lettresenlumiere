@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import Instruction from '../Instruction';
 import OKButton from './OKButton';
-import useSpeak from '../../hooks/useSpeak';
+import usePlay from '../../hooks/usePlay';
 
 const ModalExerciseG = ({ onReady, isVisible, instruction }) => {
-  const { speak } = useSpeak();
+  const { play } = usePlay();
   useEffect(() => {
-    if (instruction && isVisible) {
-      speak(instruction);
+    if (instruction?.sons_url && isVisible) {
+      play(instruction);
     }
   }, [isVisible]);
 
@@ -16,7 +16,7 @@ const ModalExerciseG = ({ onReady, isVisible, instruction }) => {
     <div className='modal-exercise'>
       <div className='modal-exercise__content'>
         <div className='Instruction-container'>
-          <Instruction instruction={instruction} />
+          <Instruction exercice={instruction} />
         </div>
         <h2>PRÊT ?</h2>
         <OKButton onClick={onReady} />

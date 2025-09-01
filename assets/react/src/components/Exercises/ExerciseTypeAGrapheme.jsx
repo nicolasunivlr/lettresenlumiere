@@ -87,7 +87,7 @@ const ExerciceTypeAGrapheme = (props) => {
   return (
     <>
       <div className='flex items-center gap-2'>
-        <Instruction instruction='Écoute et répète' />
+        <Instruction exercice={{consigne: 'Écoute et répète', sons_url: 'ecoute-et-repete-4bfc606680da.mp3'}} />
       </div>
       <div className='graphemes ml-16'>
         {graphemArray.map((element, index) => (
@@ -100,7 +100,7 @@ const ExerciceTypeAGrapheme = (props) => {
             }}
             className='grapheme__elements'
           >
-            <Speaker voiceLine={element[0].element} />
+            <Speaker voiceLine={element[0].element} sons_url={element[0].sons_url} />
             {element.map((el, i) => (
               <div className='flex flex-col items-center' key={i}>
                 <span className='pb-6'>

@@ -7,8 +7,8 @@ import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
 import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
 import useSpeak from '../../hooks/useSpeak';
 import LabelImage from '../UI/LabelImage';
-import useConfig from '../../hooks/useConfig';
-
+//import useConfig from '../../hooks/useConfig';
+import usePlay from '../../hooks/usePlay';
 import Instruction from '../Instruction';
 
 const ExerciseTypeB = ({ content, onDone }) => {
@@ -18,9 +18,10 @@ const ExerciseTypeB = ({ content, onDone }) => {
   const [attempt, setAttempt] = useState(0);
   const [isLocked, setisLocked] = useState(false);
   const location = useLocation();
-  const config = useConfig();
+  //const config = useConfig();
 
   const { speak } = useSpeak();
+  const { play } = usePlay();
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -151,15 +152,16 @@ const ExerciseTypeB = ({ content, onDone }) => {
         const newContent = generateContentExercise(firstNonDone);
         setContentExercise(newContent);
         if(firstNonDone.sons_url) {
-          const url = `${config.audiosUrl}/${firstNonDone.sons_url}`;
-          const audio = new Audio(url);
-          audio.play();
+          //const url = `${config.audiosUrl}/${firstNonDone.sons_url}`;
+          //const audio = new Audio(url);
+          //audio.play();
+          play(firstNonDone);
         } else {
           speak(firstNonDone.element);
         }
       }
     }
-  }, [tabResponses, generateContentExercise, speak, isFinished]);
+  }, [tabResponses, generateContentExercise, /*speak,*/ isFinished]);
 
   useEffect(() => {
     if (isFinished.every((item) => item.isFinished)) {
@@ -233,16 +235,17 @@ const ExerciseTypeB = ({ content, onDone }) => {
         setTimeout(() => {
           setAnswerLabel(undefined, index);
           if(firstNonDone.sons_url) {
-            const url = `${config.audiosUrl}/${firstNonDone.sons_url}`;
-            const audio = new Audio(url);
-            audio.play();
+            // const url = `${config.audiosUrl}/${firstNonDone.sons_url}`;
+            // const audio = new Audio(url);
+            // audio.play();
+            play(firstNonDone);
           } else {
             speak(firstNonDone.element);
           }
         }, 2000);
       }
     },
-    [contentExercise, tabResponses, setAnswerLabel, speak, setAttempt]
+    [contentExercise, tabResponses, setAnswerLabel, /*speak,*/ setAttempt]
   );
 
   const displayLabels = useMemo(() => {
@@ -255,6 +258,7 @@ const ExerciseTypeB = ({ content, onDone }) => {
         onClick={() => handleLabelClick(index, contenu.element)}
         answer={contenu.answer}
         format={contenu.contenuFormats ?? null}
+        audioUrl={contenu.sons_url}
       />
     ));
   }, [contentExercise, handleLabelClick]);
@@ -278,7 +282,7 @@ const ExerciseTypeB = ({ content, onDone }) => {
       {content ? (
         <>
           <div className='exercices'>
-            {contentExercise && <Instruction instruction={content.consigne} />}
+            {contentExercise && <Instruction exercice={content} />}
             <div className='exercice__item pt-5'>
               {content.type !== 'B.1' &&
               getCorrectAnswerImage(

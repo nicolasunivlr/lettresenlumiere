@@ -145,7 +145,7 @@ const useSpeak = () => {
       const fallbackVoice = availableVoices.find((v) => (v.lang === 'fr-FR' || v.lang === 'fr'));
       setDefaultVoice(fallbackVoice || null);
 
-      console.log("Voix par défaut définie :", fallbackVoice ? fallbackVoice.name : "Aucune voix par défaut trouvée");
+      //console.log("Voix par défaut définie :", fallbackVoice ? fallbackVoice.name : "Aucune voix par défaut trouvée");
 
       // Ordre de priorité pour la recherche des voix
       const voicePriorities = [
@@ -164,7 +164,7 @@ const useSpeak = () => {
         );
 
         if (foundVoice) {
-          console.log("Voix trouvée :", foundVoice.name);
+          //console.log("Voix trouvée :", foundVoice.name);
           setSelectedVoice(foundVoice);
           break;
         }
@@ -172,7 +172,7 @@ const useSpeak = () => {
 
       if (!foundVoice) {
         setSelectedVoice(fallbackVoice);
-        console.log("Veuillez installer une synthèse vocale française...");
+        //console.log("Veuillez installer une synthèse vocale française...");
       }
     };
 
@@ -233,7 +233,6 @@ const useSpeak = () => {
 
         const text = replacePronunciation(contenu);
         const sound = isGrapheme(text);
-        //console.log(items[index],text, sound, mp3)
 
         const playNext = () => {
           setTimeout(() => {
@@ -248,6 +247,7 @@ const useSpeak = () => {
         } else if (mp3) {
           const url = `${config.audiosUrl}/${mp3}`;
           const audio = new Audio(url);
+          audio.onended = playNext;
           audio.play();
         } else {
           const utterance = new SpeechSynthesisUtterance(text);

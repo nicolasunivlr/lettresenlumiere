@@ -31,24 +31,28 @@ const ExerciseTypeAAlphabet = (props) => {
               text={contenu.element}
               sound={true}
               font={'script'}
+              audioUrl={contenu.sons_url}
             />
             <Label
               key={`${index}-cursive`}
               text={contenu.element}
               sound={true}
               font={'cursive'}
+              audioUrl={contenu.sons_url}
             />
             <Label
               key={`${index}-script-upp`}
               text={contenu.element.toUpperCase()}
               sound={true}
               font={'script'}
+              audioUrl={contenu.sons_url}
             />
             <Label
               key={`${index}-cursive-upp`}
               text={contenu.element.toUpperCase()}
               sound={true}
               font={'cursiveupp'}
+              audioUrl={contenu.sons_url}
             />
           </div>
         ))}
@@ -60,7 +64,7 @@ const ExerciseTypeAAlphabet = (props) => {
     <>
       {content ? (
         <>
-          <Instruction instruction={content.consigne} />
+          <Instruction exercice={content} />
           <div className='exercice pt-5'>
             {Array.isArray(contentExercise) && displayLabels(contentExercise)}
           </div>
