@@ -1,9 +1,6 @@
 # Mise en place de l'environnement de développement
 
-## Méthode 1 (recommandée) - Avec la stack devPHP de N. Trugeon
-
-TODO
-Voir [Lien](...)
+## Méthode 1 (recommandée) - Avec la [stack devPHP de N. Trugeon](https://gitlab.univ-lr.fr/ntrugeon/docker-symfony-wp-2024)
 
 ### Importer le projet
 
@@ -54,6 +51,15 @@ npm run watch
 ```
 
 Aller sur [https://lettresenlumiere.localhost:8443/](https://lettresenlumiere.localhost:8443/)
+
+
+### Backoffice
+
+Allez sur [https://lettresenlumiere.localhost:8443/admin](https://lettresenlumiere.localhost:8443/admin)
+
+- Identifiant : admin
+- Mot de passe : 123456789
+
 
 
 Welcome on board! :smile:
