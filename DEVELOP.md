@@ -10,7 +10,7 @@ cd /path/to/devPhpLP/
 make down 
 cd projets/
 git clone git@gitlab.univ-lr.fr:lpmiaw-2025-2026/thunderwave/lettresenlumiere.git
-cd ../..
+cd ..
 # Configuration + lancement des services
 make existingProject lettresenlumiere 
 # On entre dans le container
