@@ -24,8 +24,12 @@ import ExerciseTypeAGrapheme from "../components/Exercises/ExerciseTypeAGrapheme
 import Loader from "../components/UI/Loader";
 
 const LayoutExercices = () => {
-  const { etapeid, id } = useParams();
-  const [sequence, setSequence] = useState();
+  /*
+  FIXME: etapeId est undefined car pas dans l'url
+  La génération de PDF n'aura pas l'info
+  */
+  const { id, etapeId } = useParams();
+
   const [isRetryingAfterBilan, setIsRetryingAfterBilan] = useState(false);
   const [exerciceKey, setExerciceKey] = useState(Date.now());
   const location = useLocation();
