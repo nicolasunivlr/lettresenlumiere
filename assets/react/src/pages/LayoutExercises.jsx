@@ -19,7 +19,7 @@ import ExerciseTypeAAlphabet from "../components/Exercises/ExerciseTypeAAlphabet
 import ResultPage from "../components/Exercises/ResultPage";
 import ErrorPage from "../pages/Error";
 
-import GraphemeData from "../api/graphèmes.json";
+import GraphemeData from "../api/graphemes.json";
 import ExerciseTypeAGrapheme from "../components/Exercises/ExerciseTypeAGrapheme";
 import Loader from "../components/UI/Loader";
 import useAuth from "../auth/useAuth";
