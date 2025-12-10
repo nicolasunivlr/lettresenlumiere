@@ -22,12 +22,8 @@ import ErrorPage from "../pages/Error";
 import GraphemeData from "../api/graphemes.json";
 import ExerciseTypeAGrapheme from "../components/Exercises/ExerciseTypeAGrapheme";
 import Loader from "../components/UI/Loader";
-import useAuth from "../auth/useAuth";
 
 const LayoutExercices = () => {
-  // >>> WIP
-  const { user } = useAuth();
-  // <<< WIP
   const { etapeid, id } = useParams();
   const [sequence, setSequence] = useState();
   const [isRetryingAfterBilan, setIsRetryingAfterBilan] = useState(false);
@@ -55,17 +51,11 @@ const LayoutExercices = () => {
   useEffect(() => {
     if (exerciceData) {
       setSequence(exerciceData.nom);
-      // On récupère l'éventuelle progression de cette séquence
-      const progression = user.getProgression(parseInt(id));
-      // On branche les exercices de la séquence sur un state et on rajoute des metas
       setExercices(
         exerciceData.exercices?.map((exercice) => ({
           ...exercice,
-          // Pour le mode libre le score associé à cette séquence et cet exo
-          score: (progression && progression[exercice.id]?.score) ?? undefined,
-          // Idem pour l'état terminé
+          score: undefined,
           done: false,
-          // done: (progression && progression[exercice.id]?.done) ?? false,
         }))
       );
     }
@@ -100,20 +90,6 @@ const LayoutExercices = () => {
   );
 
   const handleNextExercise = () => {
-    const progress = exercices.reduce((acc, ex) => {
-      if (ex.done === "pending") {
-        acc.push({
-          id: ex.id,
-          score: ex.score,
-          done: true,
-        });
-      }
-      return acc;
-    }, []);
-
-    console.log("update progression");
-    user.updateProgression(parseInt(id), progress);
-
     setExercices((prevExercices) =>
       prevExercices.map((exercice) =>
         exercice.done === "pending" ? { ...exercice, done: true } : exercice
@@ -268,35 +244,33 @@ const LayoutExercices = () => {
 
   return (
     <>
-      {exercices && exercices.length > 0 && (
-        <Header
-          link="/"
-          pageName={
-            isAlphabet
-              ? "Alphabet"
-              : isGraphemes
-              ? "Graphèmes"
-              : `Étape ${exerciceData?.etape.id}`
-          }
-          sequence={
-            isAlphabet || isGraphemes
-              ? ""
-              : exerciceData && exerciceData.nom
-              ? exerciceData.nom
-              : ""
-          }
-          video={exerciceData}
-          isVideoOpenOnMount={!exercices[0].done}
-          openBilan={() => {
-            setExercices((prevExercices) =>
-              prevExercices.map((exercice) => ({
-                ...exercice,
-                done: true,
-              }))
-            );
-          }}
-        />
-      )}
+      <Header
+        link="/"
+        pageName={
+          isAlphabet
+            ? "Alphabet"
+            : isGraphemes
+            ? "Graphèmes"
+            : `Étape ${exerciceData?.etape.id}`
+        }
+        sequence={
+          isAlphabet || isGraphemes
+            ? ""
+            : exerciceData && exerciceData.nom
+            ? exerciceData.nom
+            : ""
+        }
+        video={exerciceData}
+        isVideoOpenOnMount={true}
+        openBilan={() => {
+          setExercices((prevExercices) =>
+            prevExercices.map((exercice) => ({
+              ...exercice,
+              done: true,
+            }))
+          );
+        }}
+      />
 
       <div className="layoutExercice">
         {exercices && exercices.length > 0 ? (
