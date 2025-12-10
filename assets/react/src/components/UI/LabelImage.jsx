@@ -1,6 +1,6 @@
-import Label from './Label';
-import React, { useRef } from 'react';
-import useConfig from '../../hooks/useConfig';
+import { config } from "../../config";
+import Label from "./Label";
+import { useRef } from "react";
 
 function LabelImage(props) {
   const {
@@ -17,7 +17,6 @@ function LabelImage(props) {
   } = props;
 
   const labelRef = useRef(null);
-  const config = useConfig();
 
   const handleContainerClick = () => {
     // 1. Déclencher la lecture du son dans le composant Label
@@ -33,18 +32,18 @@ function LabelImage(props) {
 
   return (
     <div
-      className='label-wrapper'
+      className="label-wrapper"
       key={`${text}`}
       onClick={handleContainerClick}
       style={
-        onClick || voiceLine ? { cursor: 'pointer' } : { cursor: 'default' }
+        onClick || voiceLine ? { cursor: "pointer" } : { cursor: "default" }
       }
     >
-      <div className='label__image-responsive overflow-hidden flex justify-center items-center'>
+      <div className="label__image-responsive overflow-hidden flex justify-center items-center">
         <img
           src={`${config.imagesUrl}/${imageSrc}`}
           alt={text}
-          className='object-contain mb-2 w-auto h-auto max-w-[100%] max-h-[100%]'
+          className="object-contain mb-2 w-auto h-auto max-w-[100%] max-h-[100%]"
         />
       </div>
       <Label

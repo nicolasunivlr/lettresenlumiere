@@ -1,33 +1,29 @@
-import { useState, useEffect, useRef } from 'react';
-import Label from '../UI/Label';
-import LabelImage from '../UI/LabelImage';
-import InputLabel from '../UI/InputLabel';
-import ProgressBar from './ProgressBar';
-import Instruction from '../Instruction';
-import OKButton from '../UI/OKButton';
-//import useSpeak from '../../hooks/useSpeak';
-import usePlay, { play } from '../../hooks/usePlay';
-import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
-import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
-//import useConfig from '../../hooks/useConfig';
+import { useState, useEffect, useRef } from "react";
+import Label from "../UI/Label";
+import LabelImage from "../UI/LabelImage";
+import InputLabel from "../UI/InputLabel";
+import ProgressBar from "./ProgressBar";
+import Instruction from "../Instruction";
+import OKButton from "../UI/OKButton";
+import usePlay, { play } from "../../hooks/usePlay";
+import urlSucces from "../../assets/sons/apprentissage/reward-sound.mp3";
+import urlEchec from "../../assets/sons/apprentissage/error-sound.mp3";
 
 function ExerciseTypeE(props) {
   const { content, onDone } = props;
   const [contentExercise, setContentExercise] = useState([]);
   const [isFinished, setIsFinished] = useState([{ isFinished: false }]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [userInput, setUserInput] = useState('');
+  const [userInput, setUserInput] = useState("");
   const [isLabelVisible, setIsLabelVisible] = useState(false);
   const [isAnswerValidated, setIsAnswerValidated] = useState(null);
   const [isLocked, setIsLocked] = useState(false);
-  //const { speak } = useSpeak();
   const { play } = usePlay();
   const attempt = useRef(0);
   const currentAttempt = useRef(0);
   const timeOutRef = useRef(4000);
   const [correctAnswerGiven, setCorrectAnswerGiven] = useState(false);
   const inputRef = useRef(null);
-  //const config = useConfig();
 
   useEffect(() => {
     if (content && content.contenus) {
@@ -40,14 +36,14 @@ function ExerciseTypeE(props) {
       setContentExercise(shuffledContents);
       setIsFinished(shuffledContents.map(() => ({ isFinished: false })));
     }
-    if (content.type === 'E.3') {
+    if (content.type === "E.3") {
       timeOutRef.current = 6000;
     }
   }, [content]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Enter' && !isLocked) {
+      if (event.key === "Enter" && !isLocked) {
         handleClickOKButton();
         setIsLocked(true);
 
@@ -57,10 +53,10 @@ function ExerciseTypeE(props) {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isLocked, contentExercise, userInput]);
 
@@ -89,7 +85,7 @@ function ExerciseTypeE(props) {
 
       if (!isAllFinished) {
         setCurrentIndex((prev) => prev + 1);
-        setUserInput('');
+        setUserInput("");
         setIsLabelVisible(false); // Changed from true to false to reset for next question
         setIsAnswerValidated(null);
         setCorrectAnswerGiven(false); // Reset for the next question
@@ -103,14 +99,9 @@ function ExerciseTypeE(props) {
       contentExercise[currentIndex] &&
       !correctAnswerGiven
     ) {
-      if( contentExercise[currentIndex].sons_url ) {
-        //const url = `${config.audiosUrl}/${contentExercise[currentIndex].sons_url}`;
-        //const audio = new Audio(url);
-        //audio.play();
+      if (contentExercise[currentIndex].sons_url) {
         play(contentExercise[currentIndex]);
-      } //else {
-        //speak(contentExercise[currentIndex].element);
-      //}
+      }
     }
   }, [isLabelVisible, contentExercise, currentIndex, correctAnswerGiven]);
 
@@ -127,11 +118,11 @@ function ExerciseTypeE(props) {
     }
   }, [isLabelVisible, correctAnswerGiven]);
 
-    const handleLabelClick = () => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
-    };
+  const handleLabelClick = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
 
   const handleAnswer = () => {
     attempt.current += 1;
@@ -146,14 +137,14 @@ function ExerciseTypeE(props) {
 
     // Vérification supplémentaire que l'élément a bien une propriété 'element'
     if (!contenu || !contenu.element) {
-      console.error('Élément de contenu invalide');
+      console.error("Élément de contenu invalide");
       return;
     }
 
     let isCorrect;
 
     // Prends en compte les majuscules si c'est type C.3, sinon non
-    if (content.type === 'E.3') {
+    if (content.type === "E.3") {
       if (userInput.trim() === contenu.element.trim()) {
         isCorrect = true;
       } else {
@@ -187,15 +178,10 @@ function ExerciseTypeE(props) {
       setIsAnswerValidated(false);
 
       setTimeout(() => {
-        setUserInput('');
-        if( contentExercise[currentIndex].sons_url ) {
-          //const url = `${config.audiosUrl}/${contentExercise[currentIndex].sons_url}`;
-          //const audio = new Audio(url);
-          //audio.play();
+        setUserInput("");
+        if (contentExercise[currentIndex].sons_url) {
           play(contentExercise[currentIndex]);
-        } //else {
-          //speak(contentExercise[currentIndex].element);
-        //}
+        }
 
         setIsAnswerValidated(null);
       }, 2000);
@@ -208,16 +194,16 @@ function ExerciseTypeE(props) {
 
     return (
       <>
-        <div className='exercice__item mb-12'>
-          {content.type !== 'E.1' && contenu.image_url ? (
+        <div className="exercice__item mb-12">
+          {content.type !== "E.1" && contenu.image_url ? (
             <LabelImage
-              classe='label-sound'
+              classe="label-sound"
               text={
                 currentAttempt.current > 2 ||
                 isLabelVisible ||
                 correctAnswerGiven
                   ? contenu.element
-                  : '?'
+                  : "?"
               }
               voiceLine={contenu.element}
               sound={true}
@@ -228,13 +214,13 @@ function ExerciseTypeE(props) {
             />
           ) : (
             <Label
-              classe='label-sound'
+              classe="label-sound"
               text={
                 currentAttempt.current > 2 ||
                 isLabelVisible ||
                 correctAnswerGiven
                   ? contenu.element
-                  : '?'
+                  : "?"
               }
               voiceLine={contenu.element}
               sound={true}
@@ -244,7 +230,7 @@ function ExerciseTypeE(props) {
             />
           )}
         </div>
-        {contenu.syllabes && content.type === 'E.2 bis' ? (
+        {contenu.syllabes && content.type === "E.2 bis" ? (
           <InputLabel
             correctAnswer={contenu.element}
             setUserInput={setUserInput}
@@ -267,9 +253,9 @@ function ExerciseTypeE(props) {
   return (
     <>
       {content ? (
-        <div className='exercices'>
+        <div className="exercices">
           <Instruction exercice={content} />
-          <div className='exercice__item pt-5'>
+          <div className="exercice__item pt-5">
             {displayLabels(contentExercise, currentIndex)}
           </div>
         </div>

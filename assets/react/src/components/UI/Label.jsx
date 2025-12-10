@@ -1,8 +1,7 @@
-import useSpeak from '../../hooks/useSpeak';
+import useSpeak from "../../hooks/useSpeak";
 import usePlay from "../../hooks/usePlay";
-import hautParleur from '../../assets/images/haut-parleur.svg';
-//import useConfig from '../../hooks/useConfig';
-import React, { forwardRef, useImperativeHandle } from 'react';
+import hautParleur from "../../assets/images/haut-parleur.svg";
+import { forwardRef, useImperativeHandle } from "react";
 
 const Label = forwardRef((props, ref) => {
   const {
@@ -16,20 +15,20 @@ const Label = forwardRef((props, ref) => {
     answer,
     audioUrl,
     useArraySpeak,
-    isControlled=false,
+    isControlled = false,
   } = props;
 
   const { play } = usePlay();
 
   const fontClass = (() => {
-    if (font === 'script') {
-      return 'font-script';
-    } else if (font === 'cursive') {
-      return 'font-cursiv';
-    } else if (font === 'cursiveupp') {
-      return 'font-cursivupp';
+    if (font === "script") {
+      return "font-script";
+    } else if (font === "cursive") {
+      return "font-cursiv";
+    } else if (font === "cursiveupp") {
+      return "font-cursivupp";
     } else {
-      return 'font-regular';
+      return "font-regular";
     }
   })();
 
@@ -65,7 +64,7 @@ const Label = forwardRef((props, ref) => {
     if (!format || !Array.isArray(format) || !text) return text;
 
     // Créer une copie du texte sous forme de tableau de caractères
-    const textArray = text.split('');
+    const textArray = text.split("");
 
     // Créer un tableau de formats pour chaque caractère
     const formatMap = Array(textArray.length).fill(null);
@@ -75,9 +74,9 @@ const Label = forwardRef((props, ref) => {
       const { couleur, lettres, bold } = item;
 
       if (lettres) {
-        if (lettres.includes('-')) {
+        if (lettres.includes("-")) {
           // Gérer la plage de lettres (ex: "3-4")
-          const [start, end] = lettres.split('-').map(Number);
+          const [start, end] = lettres.split("-").map(Number);
           for (let i = start; i <= end; i++) {
             if (i >= 0 && i < textArray.length) {
               formatMap[i] = {
@@ -103,8 +102,8 @@ const Label = forwardRef((props, ref) => {
           <span
             key={`${char}-${index}`}
             style={{
-              color: formatMap[index]?.color || 'inherit',
-              fontWeight: formatMap[index]?.bold ? 'bold' : 'normal',
+              color: formatMap[index]?.color || "inherit",
+              fontWeight: formatMap[index]?.bold ? "bold" : "normal",
             }}
           >
             {char}
@@ -119,16 +118,16 @@ const Label = forwardRef((props, ref) => {
       {sound ? (
         <div
           className={`label ${fontClass} py-6 px-14 rounded-2xl relative ${
-            isSelected && 'label--selected'
+            isSelected && "label--selected"
           } ${
-            answer === true ? 'label--true' : answer === false && 'label--false'
+            answer === true ? "label--true" : answer === false && "label--false"
           }`}
           onClick={() =>
             handleOnClick(voiceLine ? voiceLine : text, onClick && onClick())
           }
         >
-          <div className='absolute top-2 right-2'>
-            <img className='h-6 w-6' src={hautParleur} alt='Speaker' />
+          <div className="absolute top-2 right-2">
+            <img className="h-6 w-6" src={hautParleur} alt="Speaker" />
           </div>
 
           {text && <p>{handleTextformat()}</p>}
@@ -136,9 +135,9 @@ const Label = forwardRef((props, ref) => {
       ) : (
         <div
           className={`label ${fontClass} py-6 px-14 rounded-2xl relative ${
-            isSelected && 'label--selected'
+            isSelected && "label--selected"
           } ${
-            answer === true ? 'label--true' : answer === false && 'label--false'
+            answer === true ? "label--true" : answer === false && "label--false"
           }`}
           onClick={onClick}
         >

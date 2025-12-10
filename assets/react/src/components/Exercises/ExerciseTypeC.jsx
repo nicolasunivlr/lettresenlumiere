@@ -1,22 +1,21 @@
-import { useState, useEffect, useRef } from 'react';
-import Label from '../UI/Label';
-import LabelImage from '../UI/LabelImage';
-import InputLabel from '../UI/InputLabel';
-import ProgressBar from './ProgressBar';
-import Instruction from '../Instruction';
-import OKButton from '../UI/OKButton';
-import useSpeak from '../../hooks/useSpeak';
-import usePlay from '../../hooks/usePlay';
-import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
-import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
-//import useConfig from '../../hooks/useConfig';
+import { useState, useEffect, useRef } from "react";
+import Label from "../UI/Label";
+import LabelImage from "../UI/LabelImage";
+import InputLabel from "../UI/InputLabel";
+import ProgressBar from "./ProgressBar";
+import Instruction from "../Instruction";
+import OKButton from "../UI/OKButton";
+import useSpeak from "../../hooks/useSpeak";
+import usePlay from "../../hooks/usePlay";
+import urlSucces from "../../assets/sons/apprentissage/reward-sound.mp3";
+import urlEchec from "../../assets/sons/apprentissage/error-sound.mp3";
 
 function ExerciseTypeC(props) {
   const { content, onDone } = props;
   const [contentExercise, setContentExercise] = useState([]);
   const [isFinished, setIsFinished] = useState([{ isFinished: false }]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [userInput, setUserInput] = useState('');
+  const [userInput, setUserInput] = useState("");
   const [isLabelVisible, setIsLabelVisible] = useState(true);
   const [isAnswerValidated, setIsAnswerValidated] = useState(null);
   const [isLocked, setIsLocked] = useState(false);
@@ -25,7 +24,6 @@ function ExerciseTypeC(props) {
   const currentAttempt = useRef(0);
   const timeOutRef = useRef(4000);
   const inputRef = useRef(null);
-  //const config = useConfig();
   const { play } = usePlay();
 
   useEffect(() => {
@@ -39,14 +37,14 @@ function ExerciseTypeC(props) {
       setContentExercise(shuffledContents);
       setIsFinished(shuffledContents.map(() => ({ isFinished: false })));
     }
-    if (content.type === 'C.3') {
+    if (content.type === "C.3") {
       timeOutRef.current = 6000;
     }
   }, [content]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Enter' && !isLocked) {
+      if (event.key === "Enter" && !isLocked) {
         handleClickOKButton();
         setIsLocked(true);
 
@@ -56,15 +54,27 @@ function ExerciseTypeC(props) {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isLocked, contentExercise, userInput, currentIndex, isAnswerValidated, isFinished]);
+  }, [
+    isLocked,
+    contentExercise,
+    userInput,
+    currentIndex,
+    isAnswerValidated,
+    isFinished,
+  ]);
 
   useEffect(() => {
-    if (isFinished.length > 0 && contentExercise.length > 0 && isFinished.length === contentExercise.length && isFinished.every((item) => item.isFinished === true)) {
+    if (
+      isFinished.length > 0 &&
+      contentExercise.length > 0 &&
+      isFinished.length === contentExercise.length &&
+      isFinished.every((item) => item.isFinished === true)
+    ) {
       const score = Math.round((isFinished.length / attempt.current) * 100);
       onDone(score);
     }
@@ -77,7 +87,7 @@ function ExerciseTypeC(props) {
       const nextIndex = currentIndex + 1;
       if (nextIndex < contentExercise.length) {
         setCurrentIndex(nextIndex);
-        setUserInput('');
+        setUserInput("");
         setIsLabelVisible(true);
         setIsAnswerValidated(null);
         currentAttempt.current = 0;
@@ -87,10 +97,7 @@ function ExerciseTypeC(props) {
 
   useEffect(() => {
     if (!isLabelVisible && contentExercise[currentIndex]) {
-      if( contentExercise[currentIndex].sons_url) {
-        //const url = `${config.audiosUrl}/${contentExercise[currentIndex].sons_url}`;
-        //const audio = new Audio(url);
-        //audio.play();
+      if (contentExercise[currentIndex].sons_url) {
         play(contentExercise[currentIndex]);
       } else {
         speak(contentExercise[currentIndex].element);
@@ -100,7 +107,8 @@ function ExerciseTypeC(props) {
 
   useEffect(() => {
     let timer;
-    if (isLabelVisible && contentExercise.length > 0) { // S'assurer que contentExercise est chargé
+    if (isLabelVisible && contentExercise.length > 0) {
+      // S'assurer que contentExercise est chargé
       timer = setTimeout(() => {
         setIsLabelVisible(false);
       }, timeOutRef.current);
@@ -121,14 +129,14 @@ function ExerciseTypeC(props) {
 
     // Vérification supplémentaire que l'élément a bien une propriété 'element'
     if (!contenu || !contenu.element) {
-      console.error('Élément de contenu invalide');
+      console.error("Élément de contenu invalide");
       return;
     }
 
     let isCorrect;
 
     // Prends en compte les majuscules si c'est type C.3, sinon non
-    if (content.type === 'C.3') {
+    if (content.type === "C.3") {
       if (userInput.trim() === contenu.element.trim()) {
         isCorrect = true;
       } else {
@@ -178,8 +186,8 @@ function ExerciseTypeC(props) {
     const contenu = currentContent;
 
     const revealAnswerCondition =
-        (currentAttempt.current > 1 && content.type === 'C.3') ||
-        (currentAttempt.current > 2 && content.type !== 'C.3');
+      (currentAttempt.current > 1 && content.type === "C.3") ||
+      (currentAttempt.current > 2 && content.type !== "C.3");
 
     // Le label initial est affiché si isLabelVisible est vrai ET que la réponse ne doit pas encore être révélée
     const showInitialLabelElement = isLabelVisible && !revealAnswerCondition;
@@ -189,104 +197,105 @@ function ExerciseTypeC(props) {
     const isInputActuallyVisible = !isLabelVisible || revealAnswerCondition;
 
     return (
-        <>
-          <div className='exercice__item mb-12'>
-            {showInitialLabelElement ? (
-                // Phase 1: Affichage initial du label/image avec la réponse
-                <>
-                  {content.type !== 'C.1' && contenu?.image_url ? (
-                      <LabelImage
-                          // key={`initial-${currentIndex}`} // Optionnel, si currentIndex ne suffit pas
-                          text={contenu.element}
-                          format={contenu.contenuFormats ?? null}
-                          imageSrc={contenu.image_url}
-                      />
-                  ) : (
-                      <Label
-                          // key={`initial-${currentIndex}`}
-                          text={contenu.element}
-                          format={contenu.contenuFormats ?? null}
-                      />
-                  )}
-                </>
-            ) : (
-                // Phase 2: Affichage du '?' ou de la réponse après trop d'erreurs (ou après timeout de isLabelVisible)
-                <>
-                  {content.type !== 'C.1' && contenu.image_url ? (
-                      <LabelImage
-                          classe='label-sound'
-                          text={revealAnswerCondition ? contenu.element : '?'}
-                          voiceLine={contenu.element}
-                          sound={false}
-                          format={contenu.contenuFormats ?? null}
-                          imageSrc={contenu.image_url}
-                          audioUrl={contenu.sons_url ?? null}
-                          onClick={handleQuestionMarkClick}
-                      />
-                  ) : (
-                      <Label
-                          classe='label-sound'
-                          text={revealAnswerCondition ? contenu.element : '?'}
-                          voiceLine={contenu.element}
-                          sound={false}
-                          format={contenu.contenuFormats ?? null}
-                          audioUrl={contenu.sons_url ?? null}
-                          onClick={handleQuestionMarkClick}
-                      />
-                  )}
-                </>
-            )}
-          </div>
+      <>
+        <div className="exercice__item mb-12">
+          {showInitialLabelElement ? (
+            // Phase 1: Affichage initial du label/image avec la réponse
+            <>
+              {content.type !== "C.1" && contenu?.image_url ? (
+                <LabelImage
+                  // key={`initial-${currentIndex}`} // Optionnel, si currentIndex ne suffit pas
+                  text={contenu.element}
+                  format={contenu.contenuFormats ?? null}
+                  imageSrc={contenu.image_url}
+                />
+              ) : (
+                <Label
+                  // key={`initial-${currentIndex}`}
+                  text={contenu.element}
+                  format={contenu.contenuFormats ?? null}
+                />
+              )}
+            </>
+          ) : (
+            // Phase 2: Affichage du '?' ou de la réponse après trop d'erreurs (ou après timeout de isLabelVisible)
+            <>
+              {content.type !== "C.1" && contenu.image_url ? (
+                <LabelImage
+                  classe="label-sound"
+                  text={revealAnswerCondition ? contenu.element : "?"}
+                  voiceLine={contenu.element}
+                  sound={false}
+                  format={contenu.contenuFormats ?? null}
+                  imageSrc={contenu.image_url}
+                  audioUrl={contenu.sons_url ?? null}
+                  onClick={handleQuestionMarkClick}
+                />
+              ) : (
+                <Label
+                  classe="label-sound"
+                  text={revealAnswerCondition ? contenu.element : "?"}
+                  voiceLine={contenu.element}
+                  sound={false}
+                  format={contenu.contenuFormats ?? null}
+                  audioUrl={contenu.sons_url ?? null}
+                  onClick={handleQuestionMarkClick}
+                />
+              )}
+            </>
+          )}
+        </div>
 
-          {/* InputLabel est toujours rendu, sa visibilité est contrôlée par le style */}
-          <div style={{ display: isInputActuallyVisible ? 'block' : 'none' }}>
-            {contenu.syllabes && content.type === 'C.2 bis' ? (
-                <InputLabel
-                    correctAnswer={contenu.element}
-                    setUserInput={setUserInput}
-                    answer={isAnswerValidated}
-                    syllabIndexes={contenu.syllabes}
-                    value={userInput}
-                    isEffectivelyVisible={isInputActuallyVisible}
-                    ref={inputRef}
-                />
-            ) : (
-                <InputLabel
-                    correctAnswer={contenu.element}
-                    setUserInput={setUserInput}
-                    answer={isAnswerValidated}
-                    value={userInput}
-                    isEffectivelyVisible={isInputActuallyVisible}
-                    ref={inputRef}
-                />
-            )}
-          </div>
-        </>
+        {/* InputLabel est toujours rendu, sa visibilité est contrôlée par le style */}
+        <div style={{ display: isInputActuallyVisible ? "block" : "none" }}>
+          {contenu.syllabes && content.type === "C.2 bis" ? (
+            <InputLabel
+              correctAnswer={contenu.element}
+              setUserInput={setUserInput}
+              answer={isAnswerValidated}
+              syllabIndexes={contenu.syllabes}
+              value={userInput}
+              isEffectivelyVisible={isInputActuallyVisible}
+              ref={inputRef}
+            />
+          ) : (
+            <InputLabel
+              correctAnswer={contenu.element}
+              setUserInput={setUserInput}
+              answer={isAnswerValidated}
+              value={userInput}
+              isEffectivelyVisible={isInputActuallyVisible}
+              ref={inputRef}
+            />
+          )}
+        </div>
+      </>
     );
   };
 
   const currentExerciseContent = contentExercise[currentIndex];
 
   return (
-      <>
-        {content && currentExerciseContent ? (
-            <div className='exercices'>
-              <Instruction exercice={content} />
-              <div className='exercice__item pt-5'>
-                {displayLabels(currentExerciseContent)}
-              </div>
-            </div>
-        ) : (
-            <div>Chargement de l&apos;exercice...</div>
-        )}
-
-        <ProgressBar content={isFinished} />
-        <div>
-          {contentExercise.length > 0 && !isFinished.every((item) => item.isFinished) && (
-              <OKButton onClick={handleClickOKButton} />
-          )}
+    <>
+      {content && currentExerciseContent ? (
+        <div className="exercices">
+          <Instruction exercice={content} />
+          <div className="exercice__item pt-5">
+            {displayLabels(currentExerciseContent)}
+          </div>
         </div>
-      </>
+      ) : (
+        <div>Chargement de l&apos;exercice...</div>
+      )}
+
+      <ProgressBar content={isFinished} />
+      <div>
+        {contentExercise.length > 0 &&
+          !isFinished.every((item) => item.isFinished) && (
+            <OKButton onClick={handleClickOKButton} />
+          )}
+      </div>
+    </>
   );
 }
 

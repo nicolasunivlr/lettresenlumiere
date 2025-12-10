@@ -1,12 +1,10 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import Label from '../UI/Label';
-import LabelImage from '../UI/LabelImage';
-import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
-//import useSpeak from '../../hooks/useSpeak';
-import Timer from '../UI/Timer';
-import Instruction from '../Instruction';
-import ModalExerciseG from '../UI/ModalExerciseG';
-//import useConfig from '../../hooks/useConfig';
+import { useState, useEffect, useMemo, useCallback } from "react";
+import Label from "../UI/Label";
+import LabelImage from "../UI/LabelImage";
+import urlEchec from "../../assets/sons/apprentissage/error-sound.mp3";
+import Timer from "../UI/Timer";
+import Instruction from "../Instruction";
+import ModalExerciseG from "../UI/ModalExerciseG";
 import usePlay from "../../hooks/usePlay";
 
 const ExerciseTypeG = (props) => {
@@ -24,9 +22,7 @@ const ExerciseTypeG = (props) => {
   const [availableContent, setAvailableContent] = useState([]); // Pour stocker les 6 éléments sélectionnés
   const [showModal, setShowModal] = useState(false);
   const [exerciseStarted, setExerciseStarted] = useState(false);
-  //const config = useConfig();
   const { play } = usePlay();
-  //const { speak } = useSpeak();
 
   const shuffle = (array) => {
     const newArray = [...array];
@@ -109,16 +105,11 @@ const ExerciseTypeG = (props) => {
   useEffect(() => {
     if (response && exerciseStarted && timerKey > 0) {
       const currentItem = contentExercise.find(
-          (item) => item.element === response
+        (item) => item.element === response
       );
-      if( currentItem.sons_url) {
-        //const url = `${config.audiosUrl}/${currentItem.sons_url}`;
-        //const audio = new Audio(url);
-        //audio.play();
+      if (currentItem.sons_url) {
         play(currentItem);
-      } //else {
-        //speak(response);
-      //}
+      }
     }
   }, [attempt, response, exerciseStarted]);
 
@@ -247,18 +238,18 @@ const ExerciseTypeG = (props) => {
 
       {content ? (
         <>
-          <div className='consigne-timer-container flex justify-center items-center'>
+          <div className="consigne-timer-container flex justify-center items-center">
             <Instruction exercice={content} />
-            <div className='timer-container fixed right-0 mr-6'>
+            <div className="timer-container fixed right-0 mr-6">
               {memoizedTimer}
             </div>
           </div>
-          <div className='exercice__item pt-5 flex justify-center'>
+          <div className="exercice__item pt-5 flex justify-center">
             {response && getCorrectAnswer(response) ? (
-              content.type !== 'G.1' && getCorrectAnswer(response).image_url ? (
+              content.type !== "G.1" && getCorrectAnswer(response).image_url ? (
                 <LabelImage
-                  classe='label-sound'
-                  text='?'
+                  classe="label-sound"
+                  text="?"
                   voiceLine={response}
                   sound={true}
                   isClickable={true}
@@ -267,8 +258,8 @@ const ExerciseTypeG = (props) => {
                 />
               ) : (
                 <Label
-                  classe='label-sound'
-                  text='?'
+                  classe="label-sound"
+                  text="?"
                   voiceLine={response}
                   sound={true}
                   isClickable={true}
@@ -279,15 +270,15 @@ const ExerciseTypeG = (props) => {
               <div>Chargement...</div> // Message de chargement si aucune réponse n'est disponible
             )}
           </div>
-          <div className='exercice__item pt-5'>
+          <div className="exercice__item pt-5">
             {Array.isArray(contentExercise) && displayLabels(contentExercise)}
           </div>
         </>
       ) : (
         <div>Erreur dans le chargement du contenu de l'exercice...</div>
       )}
-      <div className='container-score'>
-        <div className='score font-regular'>{goodResponse}</div>
+      <div className="container-score">
+        <div className="score font-regular">{goodResponse}</div>
       </div>
     </>
   );

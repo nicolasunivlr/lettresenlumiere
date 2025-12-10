@@ -1,13 +1,12 @@
-import { useState, useRef, useEffect } from 'react';
-import camera from '../../assets/images/camera.svg';
-import useConfig from '../../hooks/useConfig';
+import { useState, useRef, useEffect } from "react";
+import camera from "../../assets/images/camera.svg";
+import { config } from "../../config";
 
 const VideoModal = (props) => {
   const { sequence, title, isOpenOnMount } = props;
   const [isOpen, setIsOpen] = useState(isOpenOnMount ?? false);
   const videoRef = useRef(null);
   const playPromiseRef = useRef(null);
-  const config = useConfig();
 
   useEffect(() => {
     if (isOpen && videoRef.current) {
@@ -18,13 +17,13 @@ const VideoModal = (props) => {
         // Gestion des erreurs lors de la lecture
         if (playPromiseRef.current) {
           playPromiseRef.current.catch((error) => {
-            if (error.name !== 'AbortError') {
-              console.error('Erreur de lecture vidéo:', error);
+            if (error.name !== "AbortError") {
+              console.error("Erreur de lecture vidéo:", error);
             }
           });
         }
       } catch (error) {
-        console.error('Erreur lors de la tentative de lecture vidéo:', error);
+        console.error("Erreur lors de la tentative de lecture vidéo:", error);
       }
     } else if (videoRef.current) {
       try {
@@ -35,7 +34,7 @@ const VideoModal = (props) => {
               await playPromiseRef.current;
             } catch (error) {
               // Ignorer les erreurs AbortError qui sont attendues
-              if (error.name !== 'AbortError') {
+              if (error.name !== "AbortError") {
                 console.error(
                   "Erreur lors de l'attente de la promesse de lecture:",
                   error
@@ -53,7 +52,7 @@ const VideoModal = (props) => {
 
         handlePause();
       } catch (error) {
-        console.error('Erreur lors de la pause de la vidéo:', error);
+        console.error("Erreur lors de la pause de la vidéo:", error);
       }
     }
 
@@ -69,9 +68,9 @@ const VideoModal = (props) => {
           })
           .catch((error) => {
             // Ignorer les erreurs AbortError qui sont attendues lors du démontage
-            if (error.name !== 'AbortError') {
+            if (error.name !== "AbortError") {
               console.error(
-                'Erreur lors du nettoyage de la lecture vidéo:',
+                "Erreur lors du nettoyage de la lecture vidéo:",
                 error
               );
             }
@@ -89,32 +88,32 @@ const VideoModal = (props) => {
   // Définir les composants internes séparément
   const CameraButton = () => (
     <img
-      className='h-30 w-30 camera'
+      className="h-30 w-30 camera"
       src={camera}
-      alt='Camera'
+      alt="Camera"
       onClick={() => setIsOpen(true)}
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: "pointer" }}
     />
   );
 
   const VideoContent = () => (
     <div
-      className='modal opened'
-      id='videoModal'
+      className="modal opened"
+      id="videoModal"
       onClick={() => setIsOpen(false)}
     >
       <div
-        className='modal-content__video'
+        className="modal-content__video"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className='videoBox h-full'>
-          <div className='videoBox__header'>
+        <div className="videoBox h-full">
+          <div className="videoBox__header">
             <h2>{sequence?.nom ?? title}</h2>
             <span
-              className='close'
-              id='closeModal'
+              className="close"
+              id="closeModal"
               onClick={() => setIsOpen(false)}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               &times;
             </span>
@@ -122,10 +121,10 @@ const VideoModal = (props) => {
           <video
             ref={videoRef}
             autoPlay
-            width='100%'
+            width="100%"
             src={`${config.videosUrl}${sequence?.video_url}`}
-            title={sequence?.nom ?? 'Video sequence'}
-            type='video/mp4'
+            title={sequence?.nom ?? "Video sequence"}
+            type="video/mp4"
             controls
           />
         </div>

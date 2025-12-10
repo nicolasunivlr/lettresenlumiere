@@ -1,15 +1,14 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
-import Label from '../UI/Label';
-import OKButton from '../UI/OKButton';
-import ProgressBar from './ProgressBar';
-import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
-import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
-import useSpeak from '../../hooks/useSpeak';
-import LabelImage from '../UI/LabelImage';
-//import useConfig from '../../hooks/useConfig';
-import usePlay from '../../hooks/usePlay';
-import Instruction from '../Instruction';
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useLocation } from "react-router-dom";
+import Label from "../UI/Label";
+import OKButton from "../UI/OKButton";
+import ProgressBar from "./ProgressBar";
+import urlSucces from "../../assets/sons/apprentissage/reward-sound.mp3";
+import urlEchec from "../../assets/sons/apprentissage/error-sound.mp3";
+import useSpeak from "../../hooks/useSpeak";
+import LabelImage from "../UI/LabelImage";
+import usePlay from "../../hooks/usePlay";
+import Instruction from "../Instruction";
 
 const ExerciseTypeB = ({ content, onDone }) => {
   const [contentExercise, setContentExercise] = useState([]);
@@ -18,14 +17,13 @@ const ExerciseTypeB = ({ content, onDone }) => {
   const [attempt, setAttempt] = useState(0);
   const [isLocked, setisLocked] = useState(false);
   const location = useLocation();
-  //const config = useConfig();
 
   const { speak } = useSpeak();
   const { play } = usePlay();
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Enter' && !isLocked) {
+      if (event.key === "Enter" && !isLocked) {
         setisLocked(true);
         handleClickOKButton();
         setTimeout(() => {
@@ -34,9 +32,9 @@ const ExerciseTypeB = ({ content, onDone }) => {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isLocked, contentExercise]);
 
@@ -74,7 +72,7 @@ const ExerciseTypeB = ({ content, onDone }) => {
         // Ajoute un item de chaque sound_group
         Array.from(uniqueGroups).forEach((group) => {
           if (
-            location.pathname.endsWith('/alphabet') ||
+            location.pathname.endsWith("/alphabet") ||
             selectedItems.length < 9
           ) {
             const itemsInGroup = content.contenus.filter(
@@ -94,7 +92,7 @@ const ExerciseTypeB = ({ content, onDone }) => {
         );
 
         // Ne pas limiter pour '/alphabet', sinon limiter à 8 éléments supplémentaires
-        const maxAdditionalItems = location.pathname.endsWith('/alphabet')
+        const maxAdditionalItems = location.pathname.endsWith("/alphabet")
           ? otherItems.length
           : Math.min(8, otherItems.length);
 
@@ -107,7 +105,7 @@ const ExerciseTypeB = ({ content, onDone }) => {
 
       // Ne pas mélanger pour '/alphabet', mais les présenter dans l'ordre alphabétique
       // Pour les autres routes, on mélange
-      const finalItems = location.pathname.endsWith('/alphabet')
+      const finalItems = location.pathname.endsWith("/alphabet")
         ? selectedItems.sort((a, b) => a.element.localeCompare(b.element)) // Tri alphabétique
         : shuffle(selectedItems);
 
@@ -151,7 +149,7 @@ const ExerciseTypeB = ({ content, onDone }) => {
       if (firstNonDone) {
         const newContent = generateContentExercise(firstNonDone);
         setContentExercise(newContent);
-        if(firstNonDone.sons_url) {
+        if (firstNonDone.sons_url) {
           //const url = `${config.audiosUrl}/${firstNonDone.sons_url}`;
           //const audio = new Audio(url);
           //audio.play();
@@ -234,7 +232,7 @@ const ExerciseTypeB = ({ content, onDone }) => {
         setAttempt((prev) => prev + 1);
         setTimeout(() => {
           setAnswerLabel(undefined, index);
-          if(firstNonDone.sons_url) {
+          if (firstNonDone.sons_url) {
             // const url = `${config.audiosUrl}/${firstNonDone.sons_url}`;
             // const audio = new Audio(url);
             // audio.play();
@@ -281,15 +279,15 @@ const ExerciseTypeB = ({ content, onDone }) => {
     <>
       {content ? (
         <>
-          <div className='exercices'>
+          <div className="exercices">
             {contentExercise && <Instruction exercice={content} />}
-            <div className='exercice__item pt-5'>
-              {content.type !== 'B.1' &&
+            <div className="exercice__item pt-5">
+              {content.type !== "B.1" &&
               getCorrectAnswerImage(
                 tabResponses.find((response) => !response.done)?.element
               ) ? (
                 <LabelImage
-                  text={'?'}
+                  text={"?"}
                   voiceLine={
                     tabResponses &&
                     tabResponses.find((response) => !response.done)?.element
@@ -304,10 +302,10 @@ const ExerciseTypeB = ({ content, onDone }) => {
                 />
               ) : (
                 <Label
-                  classe='label-sound'
-                  text='?'
+                  classe="label-sound"
+                  text="?"
                   audioUrl={getCorrectAnswerAudio(
-                      tabResponses.find((response) => !response.done)?.element
+                    tabResponses.find((response) => !response.done)?.element
                   )}
                   voiceLine={
                     tabResponses &&
@@ -317,7 +315,7 @@ const ExerciseTypeB = ({ content, onDone }) => {
                 />
               )}
             </div>
-            <div className='exercice__item pt-5'>{displayLabels}</div>
+            <div className="exercice__item pt-5">{displayLabels}</div>
           </div>
 
           <ProgressBar content={isFinished} />

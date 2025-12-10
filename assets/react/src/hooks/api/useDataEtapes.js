@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
-import useConfig from '../useConfig.js';
+import { useCallback, useEffect, useState } from "react";
+import { config } from "../../config";
 
 const useDataEtapes = () => {
   const [etapesData, setEtapesData] = useState(null);
-  const config = useConfig();
 
   const getEtapes = useCallback(async () => {
     if (!config) return;
@@ -13,7 +12,7 @@ const useDataEtapes = () => {
       const data = await response.json();
       setEtapesData(data.member);
     } catch (error) {
-      console.error('Erreur lors de la récupération des Etapes :', error);
+      console.error("Erreur lors de la récupération des Etapes :", error);
       throw error;
     }
   }, [config]);

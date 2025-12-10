@@ -1,15 +1,13 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import DraggableList from '../UI/DraggableList';
-import OKButton from '../UI/OKButton';
-import Instruction from '../Instruction';
-import ProgressBar from './ProgressBar';
-import Label from '../UI/Label';
-import LabelImage from '../UI/LabelImage';
-//import useSpeak from '../../hooks/useSpeak';
-import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
-import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
-//import useConfig from '../../hooks/useConfig';
-import usePlay from '../../hooks/usePlay';
+import { useState, useEffect, useRef, useCallback } from "react";
+import DraggableList from "../UI/DraggableList";
+import OKButton from "../UI/OKButton";
+import Instruction from "../Instruction";
+import ProgressBar from "./ProgressBar";
+import Label from "../UI/Label";
+import LabelImage from "../UI/LabelImage";
+import urlSucces from "../../assets/sons/apprentissage/reward-sound.mp3";
+import urlEchec from "../../assets/sons/apprentissage/error-sound.mp3";
+import usePlay from "../../hooks/usePlay";
 
 const ExerciseTypeF = (props) => {
   const { content, onDone } = props;
@@ -18,7 +16,6 @@ const ExerciseTypeF = (props) => {
   const [currentResponse, setCurrentResponse] = useState(null);
   const [isValidated, setIsValidated] = useState(undefined);
   const [elementValidations, setElementValidations] = useState([]);
-  //const config = useConfig();
   const { play } = usePlay();
 
   const [attempt, setAttempt] = useState(0);
@@ -28,7 +25,6 @@ const ExerciseTypeF = (props) => {
   const [isDraggableListVisible, setIsDraggableListVisible] = useState(false);
   const draggableListRef = useRef();
   const displayTimeRef = useRef(2000); // Temps d'affichage par défaut
-  //const { speak } = useSpeak();
 
   const shuffle = (array) => {
     array.sort(() => Math.random() - 0.5);
@@ -55,12 +51,11 @@ const ExerciseTypeF = (props) => {
 
       setTabResponses(shuffle(finalResponses));
       // Définir le temps d'affichage en fonction du type d'exercice
-      if (content.type === 'F.3') {
+      if (content.type === "F.3") {
         displayTimeRef.current = 4000; // 2x plus long pour F.3
       } else {
         displayTimeRef.current = 2000; // Temps par défaut
       }
-
     }
   }, [content]);
 
@@ -78,14 +73,9 @@ const ExerciseTypeF = (props) => {
         setTimeout(() => {
           setShowLabel(false);
           setIsDraggableListVisible(true);
-          if( firstNonDone.sons_url ) {
+          if (firstNonDone.sons_url) {
             play(firstNonDone);
-            //const url = `${config.audiosUrl}/${firstNonDone.sons_url}`;
-            //const audio = new Audio(url);
-            //audio.play();
-          } //else {
-            //speak(firstNonDone.element);
-          //}
+          }
         }, displayTimeRef.current);
       }
     }
@@ -159,14 +149,9 @@ const ExerciseTypeF = (props) => {
       setShowLabel(true);
       setTimeout(() => {
         setShowLabel(false);
-        if( currentResponse.sons_url ) {
+        if (currentResponse.sons_url) {
           play(currentResponse);
-          //const url = `${config.audiosUrl}/${currentResponse.sons_url}`;
-          //const audio = new Audio(url);
-          //audio.play();
-        } //else {
-          //speak(currentResponse.element);
-        //}
+        }
       }, 3000);
       return false;
     }
@@ -213,26 +198,26 @@ const ExerciseTypeF = (props) => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Enter') {
+      if (e.key === "Enter") {
         handleClickOKButton();
       }
     };
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [handleClickOKButton]);
 
   return (
     <>
-      <div className='exercices'>
+      <div className="exercices">
         {content && <Instruction exercice={content} />}
-        <div className='flex flex-col pt-5 items-center justify-center'>
+        <div className="flex flex-col pt-5 items-center justify-center">
           {currentResponse && (
             <>
               {showLabel ? (
-                <div className='label-container'>
+                <div className="label-container">
                   {currentResponse?.image ? (
                     <LabelImage
                       key={currentResponse.id}
@@ -253,11 +238,11 @@ const ExerciseTypeF = (props) => {
                   )}
                 </div>
               ) : (
-                <div className='label-container'>
+                <div className="label-container">
                   {currentResponse?.image ? (
                     <LabelImage
                       key={currentResponse.id}
-                      text={'?'}
+                      text={"?"}
                       voiceLine={currentResponse?.element}
                       imageSrc={currentResponse?.image}
                       sound={true}
@@ -267,7 +252,7 @@ const ExerciseTypeF = (props) => {
                   ) : (
                     <Label
                       key={currentResponse.id}
-                      text={'?'}
+                      text={"?"}
                       voiceLine={currentResponse?.element}
                       sound={true}
                       audioUrl={currentResponse.sons_url ?? null}
@@ -276,7 +261,10 @@ const ExerciseTypeF = (props) => {
                   )}
                 </div>
               )}
-              <div className='mt-4' style={{ display: isDraggableListVisible ? 'block' : 'none' }}>
+              <div
+                className="mt-4"
+                style={{ display: isDraggableListVisible ? "block" : "none" }}
+              >
                 <DraggableList
                   key={currentResponse.id}
                   ref={draggableListRef}

@@ -1,20 +1,14 @@
-/* eslint-disable react/prop-types */
-import { useEffect } from 'react';
-import CircleProgress from '../UI/CircleProgress';
-import GoldMedal from '../../assets/images/gamification/medailleetapeor.svg';
-import SilverMedal from '../../assets/images/gamification/medailleetapeargent.svg';
-import BronzeMedal from '../../assets/images/gamification/medailleetapebronze.svg';
-import NextExerciseButton from '../UI/NextExerciseButton';
-import { useParams, useNavigate } from 'react-router-dom';
-import PDFModal from '../UI/PDFModal';
+import { useEffect } from "react";
+import CircleProgress from "../UI/CircleProgress";
+import GoldMedal from "../../assets/images/gamification/medailleetapeor.svg";
+import SilverMedal from "../../assets/images/gamification/medailleetapeargent.svg";
+import BronzeMedal from "../../assets/images/gamification/medailleetapebronze.svg";
+import NextExerciseButton from "../UI/NextExerciseButton";
+import { useParams, useNavigate } from "react-router-dom";
+import PDFModal from "../UI/PDFModal";
 
 const ResultPage = (props) => {
-  const {
-    content,
-    circleOnClick,
-    sequence,
-    etapeid
-  } = props;
+  const { content, circleOnClick, sequence, etapeid } = props;
   const { id } = useParams();
   const navigate = useNavigate();
   const showScore = () => {
@@ -27,31 +21,31 @@ const ResultPage = (props) => {
       0
     );
     const scoreAvg = Math.round((scoreTotal / content.length) * 100) / 100;
-    let medalSrc = '';
+    let medalSrc = "";
 
     let bgc;
 
     if (scoreAvg >= 80) {
       medalSrc = GoldMedal;
-      bgc = 'medal-score--bravo';
+      bgc = "medal-score--bravo";
     } else if (scoreAvg >= 60) {
       medalSrc = SilverMedal;
-      bgc = 'medal-score--bien';
+      bgc = "medal-score--bien";
     } else if (scoreAvg >= 40) {
       medalSrc = BronzeMedal;
-      bgc = 'medal-score--pasmal';
+      bgc = "medal-score--pasmal";
     } else {
-      bgc = 'medal-score--revoir';
+      bgc = "medal-score--revoir";
     }
 
     return { scoreAvg, medalSrc, bgc };
   };
 
   useEffect(() => {
-    const sessionScores = JSON.parse(sessionStorage.getItem('scores')) || {};
+    const sessionScores = JSON.parse(sessionStorage.getItem("scores")) || {};
     // ajout du scoreAvg en tant qu'objet avec l'id de la séquence
     sessionScores[id] = scoreAvg;
-    sessionStorage.setItem('scores', JSON.stringify(sessionScores));
+    sessionStorage.setItem("scores", JSON.stringify(sessionScores));
   }, [content]);
 
   const handleOnClick = () => {
@@ -61,8 +55,8 @@ const ResultPage = (props) => {
   const { scoreAvg, medalSrc, bgc } = showScore();
 
   return (
-    <section className='results-container'>
-      <div className='header-result'>
+    <section className="results-container">
+      <div className="header-result">
         {
           <div className={`medal-score ${bgc}`}>
             {medalSrc && <img src={medalSrc}></img>}
@@ -77,9 +71,9 @@ const ResultPage = (props) => {
           score={scoreAvg.toFixed()}
         />
       </div>
-      <div className='results'>
+      <div className="results">
         {content.map((exercice, index) => (
-          <div key={index} className='result'>
+          <div key={index} className="result">
             <CircleProgress
               score={exercice.score}
               number={index + 1}

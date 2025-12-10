@@ -1,20 +1,19 @@
-import { useState, useEffect, useRef } from 'react';
-import Label from '../UI/Label';
-import LabelImage from '../UI/LabelImage';
-import ProgressBar from './ProgressBar';
-import OKbutton from '../UI/OKButton';
-import Instruction from '../Instruction';
-import useSpeak from '../../hooks/useSpeak';
-import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
-import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
+import { useState, useEffect, useRef } from "react";
+import Label from "../UI/Label";
+import LabelImage from "../UI/LabelImage";
+import ProgressBar from "./ProgressBar";
+import OKbutton from "../UI/OKButton";
+import Instruction from "../Instruction";
+import useSpeak from "../../hooks/useSpeak";
+import urlEchec from "../../assets/sons/apprentissage/error-sound.mp3";
+import urlSucces from "../../assets/sons/apprentissage/reward-sound.mp3";
 import usePlay from "../../hooks/usePlay";
-//import useConfig from '../../hooks/useConfig';
 
 const ExerciseTypeD = (props) => {
   const { content, onDone } = props;
   const { speak } = useSpeak();
   const [contentExercise, setContentExercise] = useState([]);
-  const [correctAnswer, setCorrectAnswer] = useState('');
+  const [correctAnswer, setCorrectAnswer] = useState("");
   const [availableCorrectAnswer, setAvailableCorrectAnswer] = useState(null);
   const [isFinished, setIsFinished] = useState([]);
   const [iterationExercice, setIterationExercice] = useState(0);
@@ -22,13 +21,12 @@ const ExerciseTypeD = (props) => {
   const [isLocked, setisLocked] = useState(false);
   const [compteur, setCompteur] = useState(0);
   const [iterationCount, setIterationCount] = useState(0); // Nouveau compteur pour forcer la prononciation
-  //const config = useConfig();
   const { play } = usePlay(); // Utilisation de la fonction play passée en props
 
   // Ref pour suivre si l'initialisation a été effectuée
   const initializedRef = useRef(false);
   // Ref pour suivre le changement de correctAnswer
-  const previousCorrectAnswerRef = useRef('');
+  const previousCorrectAnswerRef = useRef("");
   // Effet unique pour initialiser l'exercice
   useEffect(() => {
     if (!content || !content.contenus || initializedRef.current) return;
@@ -46,7 +44,6 @@ const ExerciseTypeD = (props) => {
       shuffledAnswerContent.map((item) => item.element)
     );
     setIterationExercice(shuffledAnswerContent.length);
-
   }, [content]);
 
   // Effet pour mettre à jour isFinished quand l'itération change
@@ -85,21 +82,21 @@ const ExerciseTypeD = (props) => {
       {
         ...item,
         id: `${index}-cursive`,
-        font: 'cursive',
+        font: "cursive",
         isSelected: false,
         answer: undefined,
       },
       {
         ...item,
         id: `${index}-script`,
-        font: 'script',
+        font: "script",
         isSelected: false,
         answer: undefined,
       },
       {
         ...item,
         id: `${index}-script-uppercase`,
-        font: 'script-uppercase',
+        font: "script-uppercase",
         isSelected: false,
         answer: undefined,
       },
@@ -186,11 +183,8 @@ const ExerciseTypeD = (props) => {
       // recherche de l'élément dans contentExercise
       const currentItem = contentExercise.find(
         (item) => item.element === correctAnswer
-        );
-      if( currentItem.sons_url) {
-        //const url = `${config.audiosUrl}/${currentItem.sons_url}`;
-        //const audio = new Audio(url);
-        //audio.play();
+      );
+      if (currentItem.sons_url) {
         play(currentItem);
       } else {
         speak(correctAnswer);
@@ -284,10 +278,7 @@ const ExerciseTypeD = (props) => {
             answer: undefined,
           }))
         );
-        if( correctAnswer.sons_url ) {
-          //const url = `${config.audiosUrl}/${correctAnswer.sons_url}`;
-          //const audio = new Audio(url);
-          //audio.play();
+        if (correctAnswer.sons_url) {
           play(correctAnswer);
         } else {
           speak(correctAnswer.element);
@@ -339,7 +330,7 @@ const ExerciseTypeD = (props) => {
   const displayLabels = (contentExercise) => {
     return contentExercise.map((contenu) => {
       const text =
-        contenu.font === 'script-uppercase'
+        contenu.font === "script-uppercase"
           ? contenu.element.toUpperCase()
           : contenu.element;
       return (
@@ -347,7 +338,7 @@ const ExerciseTypeD = (props) => {
           key={contenu.id}
           text={text}
           onClick={() => handleClickOnLabel(contenu.id)}
-          font={contenu.font === 'script-uppercase' ? 'script' : contenu.font}
+          font={contenu.font === "script-uppercase" ? "script" : contenu.font}
           answer={contenu.answer}
           isSelected={contenu.isSelected}
           format={contenu.contenuFormats ?? null}
@@ -375,7 +366,7 @@ const ExerciseTypeD = (props) => {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (
-        event.key === 'Enter' &&
+        event.key === "Enter" &&
         !isLocked &&
         contentExercise.filter((item) => item.isSelected).length === 3
       ) {
@@ -388,22 +379,22 @@ const ExerciseTypeD = (props) => {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isLocked, contentExercise, isFinished]);
 
   return (
     <>
       {content ? (
-        <div className='exercices'>
+        <div className="exercices">
           {<Instruction exercice={content} />}
-          <div className='exercice__item consigne-label pt-5'>
-            {content.type !== 'D.1' && getCorrectAnswerImage(correctAnswer) ? (
+          <div className="exercice__item consigne-label pt-5">
+            {content.type !== "D.1" && getCorrectAnswerImage(correctAnswer) ? (
               <LabelImage
-                text={'?'}
+                text={"?"}
                 imageSrc={getCorrectAnswerImage(correctAnswer)}
                 sound={true}
                 voiceLine={correctAnswer}
@@ -411,15 +402,15 @@ const ExerciseTypeD = (props) => {
               />
             ) : (
               <Label
-                classe='label-sound'
-                text={'?'}
+                classe="label-sound"
+                text={"?"}
                 sound={true}
                 voiceLine={correctAnswer}
                 audioUrl={getCorrectAnswerAudio(correctAnswer)}
               />
             )}
           </div>
-          <div className='exercice__item pt-5'>
+          <div className="exercice__item pt-5">
             {Array.isArray(contentExercise) && displayLabels(contentExercise)}
           </div>
         </div>

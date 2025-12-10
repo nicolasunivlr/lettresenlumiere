@@ -1,15 +1,15 @@
-import { useCallback, useState, useEffect } from 'react';
-import useConfig from './useConfig';
-import sound1 from '../assets/sons/graphemes/in.mp3';
-import sound2 from '../assets/sons/graphemes/an.mp3';
-import sound3 from '../assets/sons/graphemes/au.mp3';
-import sound4 from '../assets/sons/graphemes/eu.mp3';
-import sound5 from '../assets/sons/graphemes/on.mp3';
-import sound6 from '../assets/sons/graphemes/ou.mp3';
-import sound7 from '../assets/sons/graphemes/oi.mp3';
-import sound8 from '../assets/sons/graphemes/eaigue.mp3';
-import sound9 from '../assets/sons/graphemes/egrave.mp3';
-import sound10 from '../assets/sons/graphemes/ien.mp3';
+import { useCallback, useState, useEffect } from "react";
+import sound1 from "../assets/sons/graphemes/in.mp3";
+import sound2 from "../assets/sons/graphemes/an.mp3";
+import sound3 from "../assets/sons/graphemes/au.mp3";
+import sound4 from "../assets/sons/graphemes/eu.mp3";
+import sound5 from "../assets/sons/graphemes/on.mp3";
+import sound6 from "../assets/sons/graphemes/ou.mp3";
+import sound7 from "../assets/sons/graphemes/oi.mp3";
+import sound8 from "../assets/sons/graphemes/eaigue.mp3";
+import sound9 from "../assets/sons/graphemes/egrave.mp3";
+import sound10 from "../assets/sons/graphemes/ien.mp3";
+import { config } from "../config";
 
 const graphemeToSoundMap = {
   in: sound1,
@@ -23,8 +23,8 @@ const graphemeToSoundMap = {
   on: sound5,
   ou: sound6,
   oi: sound7,
-  'é': sound8,
-  'è': sound9,
+  é: sound8,
+  è: sound9,
   ien: sound10,
   _ed: sound8,
   _er: sound8,
@@ -37,77 +37,77 @@ const graphemeToSoundMap = {
 };
 
 const pronunciationMap = {
-  fo: 'pheau',
-  fe: 'pheu',
-  fu: 'phu',
-  'œu': 'eu',
-  vi: 'vie',
-  ve: 'veu',
-  dre: 'dreu',
-  bre: 'breu',
-  tre: 'treu',
-  lun: 'lain',
-  lo: 'lau',
-  bus: 'busse',
-  pha: 'fa',
-  pho: 'faux',
-  phe: 'feu',
-  phy: 'fie',
-  phan: 'phant',
-  phin: 'faim',
-  'phé': 'fée',
-  choi: 'choix',
-  ple: 'pleu',
-  ar: 'arre',
-  ol: 'olle',
-  ir: 'irre',
-  jo: 'jau',
-  ja: 'jha',
-  be: 'beu',
-  che: 'cheu',
-  chu: 'shuu',
-  pa: 'pas',
-  pe: 'peu',
-  ble: 'bleu',
-  vre: 'vreu',
-  to: 'taux',
-  tra: 'trah',
-  gna: 'nia',
-  gne: 'gneu',
-  gnu: 'niu',
-  za: 'zah',
-  ze: 'zeu',
-  zi: 'zie',
-  cu: 'cul',
-  cre: 'creu',
-  ac: 'acque',
-  ca: 'k',
-  gui: 'guille',
-  gue: 'gueu',
-  ban: 'banc',
-  ven: 'vent',
-  men: 'ment',
-  line: 'lyne',
-  am: 'an',
-  em: 'an',
-  om: 'on',
-  ome: 'homme',
-  im: 'in',
-  coin: 'coing',
-  poin: 'poing',
-  join: 'joint',
-  by: 'bi',
-  my: 'mi',
-  ly: 'li',
-  'tê': 'tè',
-  rai: 'rais',
-  pei: 'pais',
-  sei: 'sais',
-  shan: 'champs',
-  ge: 'jeu',
-  gen: 'gens',
-  gi: 'ji',
-  gean: 'jean',
+  fo: "pheau",
+  fe: "pheu",
+  fu: "phu",
+  œu: "eu",
+  vi: "vie",
+  ve: "veu",
+  dre: "dreu",
+  bre: "breu",
+  tre: "treu",
+  lun: "lain",
+  lo: "lau",
+  bus: "busse",
+  pha: "fa",
+  pho: "faux",
+  phe: "feu",
+  phy: "fie",
+  phan: "phant",
+  phin: "faim",
+  phé: "fée",
+  choi: "choix",
+  ple: "pleu",
+  ar: "arre",
+  ol: "olle",
+  ir: "irre",
+  jo: "jau",
+  ja: "jha",
+  be: "beu",
+  che: "cheu",
+  chu: "shuu",
+  pa: "pas",
+  pe: "peu",
+  ble: "bleu",
+  vre: "vreu",
+  to: "taux",
+  tra: "trah",
+  gna: "nia",
+  gne: "gneu",
+  gnu: "niu",
+  za: "zah",
+  ze: "zeu",
+  zi: "zie",
+  cu: "cul",
+  cre: "creu",
+  ac: "acque",
+  ca: "k",
+  gui: "guille",
+  gue: "gueu",
+  ban: "banc",
+  ven: "vent",
+  men: "ment",
+  line: "lyne",
+  am: "an",
+  em: "an",
+  om: "on",
+  ome: "homme",
+  im: "in",
+  coin: "coing",
+  poin: "poing",
+  join: "joint",
+  by: "bi",
+  my: "mi",
+  ly: "li",
+  tê: "tè",
+  rai: "rais",
+  pei: "pais",
+  sei: "sais",
+  shan: "champs",
+  ge: "jeu",
+  gen: "gens",
+  gi: "ji",
+  gean: "jean",
 };
 
 const replacePronunciation = (text) => {
@@ -135,24 +135,25 @@ const waitForVoices = async () => {
 const useSpeak = () => {
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [defaultVoice, setDefaultVoice] = useState(null);
-  const config = useConfig();
 
   useEffect(() => {
     const loadVoices = async () => {
       const availableVoices = await waitForVoices();
 
       // Définir une voix par défaut en français
-      const fallbackVoice = availableVoices.find((v) => (v.lang === 'fr-FR' || v.lang === 'fr'));
+      const fallbackVoice = availableVoices.find(
+        (v) => v.lang === "fr-FR" || v.lang === "fr"
+      );
       setDefaultVoice(fallbackVoice || null);
 
       //console.log("Voix par défaut définie :", fallbackVoice ? fallbackVoice.name : "Aucune voix par défaut trouvée");
 
       // Ordre de priorité pour la recherche des voix
       const voicePriorities = [
-        'Microsoft Denise Online (Natural) - French (France)',
-        'Microsoft Henri Online (Natural) - French (France)',
-        'Hortense',
-        'Google français',
+        "Microsoft Denise Online (Natural) - French (France)",
+        "Microsoft Henri Online (Natural) - French (France)",
+        "Hortense",
+        "Google français",
       ];
 
       // Rechercher les voix dans l'ordre de priorité
@@ -160,7 +161,7 @@ const useSpeak = () => {
 
       for (const voiceName of voicePriorities) {
         foundVoice = availableVoices.find(
-          (v) => v.name.includes(voiceName) && v.lang.includes('fr')
+          (v) => v.name.includes(voiceName) && v.lang.includes("fr")
         );
 
         if (foundVoice) {
@@ -199,7 +200,7 @@ const useSpeak = () => {
         audio.play();
       } else {
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'fr-FR';
+        utterance.lang = "fr-FR";
         utterance.rate = 0.9; // Légèrement plus lent pour plus de clarté
         utterance.pitch = 1.0; // Ton normal
 
@@ -224,8 +225,8 @@ const useSpeak = () => {
         if (index >= items.length) return;
         let contenu, mp3;
 
-        if(typeof items[index] === 'object') {
-          mp3 = items[index].sons_url || false
+        if (typeof items[index] === "object") {
+          mp3 = items[index].sons_url || false;
           contenu = items[index].element;
         } else {
           contenu = items[index];
@@ -251,7 +252,7 @@ const useSpeak = () => {
           audio.play();
         } else {
           const utterance = new SpeechSynthesisUtterance(text);
-          utterance.lang = 'fr-FR';
+          utterance.lang = "fr-FR";
           utterance.rate = 0.9;
           utterance.pitch = 1.0;
 

@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
-import useConfig from '../useConfig.js';
+import { useCallback, useEffect, useState } from "react";
+import { config } from "../../config";
 
 const useDataExercice = (seqId) => {
   const [exerciceData, setExerciceData] = useState(null);
-  const config = useConfig();
 
   const getExercises = useCallback(
     async (seqId) => {
