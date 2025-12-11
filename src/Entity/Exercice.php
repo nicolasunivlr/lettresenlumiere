@@ -28,7 +28,7 @@ class Exercice
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['exercice:read', 'sequence:read', 'contenu:read'])]
+    #[Groups(['exercice:read', 'sequence:read', 'contenu:read', "progression:read"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -38,7 +38,7 @@ class Exercice
 
     #[ORM\ManyToOne(targetEntity: Sequence::class, inversedBy: 'exercices')]
     #[ORM\JoinColumn(name: "sequence_id", referencedColumnName: "id", nullable: false)]
-    #[Groups(['exercice:read', 'exercice:write'])]
+    #[Groups(['exercice:read', 'exercice:write', "progression:read"])]
     private ?Sequence $sequence = null;
 
     #[ORM\ManyToMany(mappedBy: 'exercices', targetEntity: Contenu::class)]

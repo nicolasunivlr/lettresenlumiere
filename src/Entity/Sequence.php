@@ -26,7 +26,7 @@ class Sequence
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['sequence:read', 'etape:read'])]
+    #[Groups(['sequence:read', 'etape:read', "progression:read"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
