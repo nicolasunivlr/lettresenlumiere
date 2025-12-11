@@ -33,13 +33,9 @@ const Label = forwardRef((props, ref) => {
   })();
 
   const { speak, speakArray } = useSpeak();
-  //const config = useConfig();
 
   const playSound = () => {
     if (audioUrl) {
-      //const url = `${config.audiosUrl}/${audioUrl}`;
-      //const audio = new Audio(url);
-      //audio.play();
       play(audioUrl);
     } else if (useArraySpeak && Array.isArray(voiceLine)) {
       speakArray(voiceLine);

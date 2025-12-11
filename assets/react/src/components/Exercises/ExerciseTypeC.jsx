@@ -28,14 +28,18 @@ function ExerciseTypeC(props) {
 
   useEffect(() => {
     if (content && content.contenus) {
+      const handler = (_content) => {
+        setContentExercise(_content);
+        setIsFinished(_content.map(() => ({ isFinished: false })));
+      };
       // Utiliser directement le contenu original sans duplication
       const duplicatedContents = content.contenus;
 
       const shuffledContents = [...duplicatedContents].sort(
         () => Math.random() - 0.5
       );
-      setContentExercise(shuffledContents);
-      setIsFinished(shuffledContents.map(() => ({ isFinished: false })));
+
+      handler(shuffledContents);
     }
     if (content.type === "C.3") {
       timeOutRef.current = 6000;

@@ -1,14 +1,14 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 
-import Label from '../UI/Label';
-import Instruction from '../Instruction';
-import ProgressBar from './ProgressBar';
-import OKButton from '../UI/OKButton';
-import urlEchec from '../../assets/sons/apprentissage/error-sound.mp3';
-import urlSucces from '../../assets/sons/apprentissage/reward-sound.mp3';
-import useSpeak from '../../hooks/useSpeak';
-import DraggableList from '../UI/DraggableList';
+import Label from "../UI/Label";
+import Instruction from "../Instruction";
+import ProgressBar from "./ProgressBar";
+import OKButton from "../UI/OKButton";
+import urlEchec from "../../assets/sons/apprentissage/error-sound.mp3";
+import urlSucces from "../../assets/sons/apprentissage/reward-sound.mp3";
+import useSpeak from "../../hooks/useSpeak";
+import DraggableList from "../UI/DraggableList";
 
 const ExerciseTypeH = (props) => {
   const { content, onDone } = props;
@@ -52,8 +52,8 @@ const ExerciseTypeH = (props) => {
     if (content && content.contenus.length > 0) {
       const contents = content.contenus; //.map((item) => item.element);
       const groups = [];
-      if (pathname.includes('alphabet')) {
-        setType('H.Alphabet');
+      if (pathname.includes("alphabet")) {
+        setType("H.Alphabet");
         for (let i = 0; i < contents.length - 6; i += 3) {
           groups.push(contents.slice(i, i + 3).sort());
         }
@@ -68,8 +68,8 @@ const ExerciseTypeH = (props) => {
         if (groups[0]) {
           setRandomizedGroup(shuffleArray(groups[0]));
         }
-      } else if (pathname.includes('graphemes')) {
-        setType('H.Graphemes');
+      } else if (pathname.includes("graphemes")) {
+        setType("H.Graphemes");
 
         // Étape 1: Créer une copie des données avec les sound_groups
         const graphemesWithSoundGroups = content.contenus.map((item) => ({
@@ -205,11 +205,13 @@ const ExerciseTypeH = (props) => {
         }
       } else {
         // Default grouping for other exercise types
-        setType('H');
+        setType("H");
 
         // Create groups of 3 elements
         for (let i = 0; i < content.contenus.length; i += 3) {
-          groups.push(content.contenus.slice(i, Math.min(i + 3, content.contenus.length)));
+          groups.push(
+            content.contenus.slice(i, Math.min(i + 3, content.contenus.length))
+          );
         }
 
         // If the last group has fewer than 3 elements, fill it with elements from previous groups
@@ -279,7 +281,7 @@ const ExerciseTypeH = (props) => {
     const validations = userElements.map((element, index) => {
       return element.toLowerCase() === correctElements[index].toLowerCase();
     });
-    if (type === 'H') {
+    if (type === "H") {
       // Comparaison élément par élément pour type H normal
       const isCorrect = validations.every((validation) => validation === true);
       if (isCorrect) {
@@ -317,10 +319,14 @@ const ExerciseTypeH = (props) => {
       .toLowerCase();
     // Modifions la manière dont correctAnswer est construit pour tenir compte des espaces
     const correctAnswer =
-      type === 'H.Alphabet'
-        ? randomizedGroup.map(item => item.element).join('').toLowerCase()
-        : type === 'H.Graphemes' ? randomizedGroup.join('').toLowerCase()
-              :randomizedGroup.join(' ').toLowerCase();
+      type === "H.Alphabet"
+        ? randomizedGroup
+            .map((item) => item.element)
+            .join("")
+            .toLowerCase()
+        : type === "H.Graphemes"
+        ? randomizedGroup.join("").toLowerCase()
+        : randomizedGroup.join(" ").toLowerCase();
 
     const isCorrect = userAnswer === correctAnswer;
 
@@ -363,19 +369,19 @@ const ExerciseTypeH = (props) => {
   // Now this useEffect can safely reference checkAnswer
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Enter' && isLetterSelected && !isButtonDisabled) {
+      if (event.key === "Enter" && isLetterSelected && !isButtonDisabled) {
         checkAnswer();
       }
     };
 
     // Only add the listener when the letter selection screen is passed
     if (isLetterSelected) {
-      document.addEventListener('keydown', handleKeyDown);
+      document.addEventListener("keydown", handleKeyDown);
     }
 
     // Clean up the event listener when the component unmounts
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isLetterSelected, isButtonDisabled, checkAnswer]);
 
@@ -391,42 +397,45 @@ const ExerciseTypeH = (props) => {
   const getCurrentGroupWord = () => {
     // Utiliser un séparateur spécial qui ne sera pas dans le contenu normal
     let newGroup;
-    if ( typeof randomizedGroup[0] === 'object' ) {
-      newGroup = randomizedGroup.map(item => item.element);
+    if (typeof randomizedGroup[0] === "object") {
+      newGroup = randomizedGroup.map((item) => item.element);
     } else {
       newGroup = randomizedGroup;
     }
-    return type === 'H'
-      ? newGroup.join('|||')
-      : newGroup.join(' ');
+    return type === "H" ? newGroup.join("|||") : newGroup.join(" ");
   };
 
   // TODO: sons_url à modifier
   return (
     <>
       {!isLetterSelected ? (
-        <div className='exercices'>
-          <Instruction exercice={{consigne:'Choisissez une écriture', sons_url:'choisissez-une-ecriture-a9f56db310f8.mp3'}} />
-          <div className='exercice__item pt-5'>
+        <div className="exercices">
+          <Instruction
+            exercice={{
+              consigne: "Choisissez une écriture",
+              sons_url: "choisissez-une-ecriture-a9f56db310f8.mp3",
+            }}
+          />
+          <div className="exercice__item pt-5">
             <Label
-              font='script'
+              font="script"
               text={content?.contenus[0]?.element}
-              onClick={() => handleLetterClick('a', 'script')}
+              onClick={() => handleLetterClick("a", "script")}
             />
             <Label
-              font='cursive'
+              font="cursive"
               text={content?.contenus[0]?.element}
-              onClick={() => handleLetterClick('a', 'cursive')}
+              onClick={() => handleLetterClick("a", "cursive")}
             />
             <Label
-              font='script'
+              font="script"
               text={content?.contenus[0]?.element.toUpperCase()}
-              onClick={() => handleLetterClick('A', 'script')}
+              onClick={() => handleLetterClick("A", "script")}
             />
             <Label
-              font='cursive'
+              font="cursive"
               text={content?.contenus[0]?.element.toUpperCase()}
-              onClick={() => handleLetterClick('A', 'cursive')}
+              onClick={() => handleLetterClick("A", "cursive")}
             />
           </div>
         </div>
@@ -434,20 +443,20 @@ const ExerciseTypeH = (props) => {
         <>
           {content ? (
             <>
-              <div className='exercices'>
+              <div className="exercices">
                 <Instruction exercice={content} />
-                <div className='exercice__item pt-5'>
+                <div className="exercice__item pt-5">
                   <Label
-                    className='label-sound'
-                    text='?'
+                    className="label-sound"
+                    text="?"
                     sound={true}
                     voiceLine={randomizedGroup}
                     useArraySpeak={true}
                   />
 
                   <div
-                    className='exercice__item pt-5'
-                    style={{ minHeight: '15rem' }}
+                    className="exercice__item pt-5"
+                    style={{ minHeight: "15rem" }}
                   >
                     <DraggableList
                       key={`${currentGroupIndex}`}
@@ -465,7 +474,7 @@ const ExerciseTypeH = (props) => {
               <ProgressBar content={progress} />
               {progress.some((item) => item.isFinished === false) && (
                 <OKButton onClick={checkAnswer} disabled={isButtonDisabled} />
-              )}{' '}
+              )}{" "}
             </>
           ) : (
             <div>

@@ -54,7 +54,6 @@ const LayoutExercices = () => {
 
   useEffect(() => {
     if (exerciceData) {
-      setSequence(exerciceData.nom);
       setExercices(
         exerciceData.exercices?.map((exercice) => ({
           ...exercice,

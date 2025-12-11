@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import Label from '../UI/Label';
-import LabelImage from '../UI/LabelImage';
-import ProgressBar from './ProgressBar';
-import Instruction from '../Instruction';
+import { useState, useEffect } from "react";
+import Label from "../UI/Label";
+import LabelImage from "../UI/LabelImage";
+import ProgressBar from "./ProgressBar";
+import Instruction from "../Instruction";
 
 const ExerciseTypeA = (props) => {
   const { content, onDone } = props;
@@ -34,10 +34,10 @@ const ExerciseTypeA = (props) => {
 
   const displayLabels = (contentExercise) => {
     return contentExercise.map((contenu, index) =>
-      contenu.image_url && content.type != 'A.1' ? (
+      contenu.image_url && content.type != "A.1" ? (
         <LabelImage
           key={`${index}-label`}
-          classe='label'
+          classe="label"
           text={contenu.element}
           sound={true}
           voiceLine={contenu.element}
@@ -50,7 +50,7 @@ const ExerciseTypeA = (props) => {
         />
       ) : (
         <Label
-          classe='label'
+          classe="label"
           key={`${index}-label`}
           text={contenu.element}
           sound={true}
@@ -68,9 +68,9 @@ const ExerciseTypeA = (props) => {
     <>
       {content ? (
         <>
-          <div className='exercices'>
+          <div className="exercices">
             <Instruction exercice={content} />
-            <div className='exercice__item pt-5'>
+            <div className="exercice__item pt-5">
               {Array.isArray(contentExercise) && displayLabels(contentExercise)}
             </div>
           </div>

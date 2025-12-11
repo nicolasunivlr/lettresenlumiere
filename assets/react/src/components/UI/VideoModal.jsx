@@ -2,8 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import camera from "../../assets/images/camera.svg";
 import { config } from "../../config";
 
-const VideoModal = (props) => {
-  const { sequence, title, isOpenOnMount } = props;
+const VideoModal = ({ title, isOpenOnMount, url }) => {
   const [isOpen, setIsOpen] = useState(isOpenOnMount ?? false);
   const videoRef = useRef(null);
   const playPromiseRef = useRef(null);
@@ -80,10 +79,10 @@ const VideoModal = (props) => {
   }, [isOpen]);
 
   useEffect(() => {
-    if (!sequence.video_url) {
+    if (!url) {
       setIsOpen(false);
     }
-  }, [sequence]);
+  }, [url]);
 
   // Définir les composants internes séparément
   const CameraButton = () => (
@@ -108,7 +107,7 @@ const VideoModal = (props) => {
       >
         <div className="videoBox h-full">
           <div className="videoBox__header">
-            <h2>{sequence?.nom ?? title}</h2>
+            <h2>{title ?? "Video sequence"}</h2>
             <span
               className="close"
               id="closeModal"
@@ -122,8 +121,8 @@ const VideoModal = (props) => {
             ref={videoRef}
             autoPlay
             width="100%"
-            src={`${config.videosUrl}${sequence?.video_url}`}
-            title={sequence?.nom ?? "Video sequence"}
+            src={`${config.videosUrl}${url}`}
+            title={title ?? "Video sequence"}
             type="video/mp4"
             controls
           />
