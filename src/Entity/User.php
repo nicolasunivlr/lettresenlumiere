@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -30,6 +32,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?AccountProfile $accountProfile = null;
+
+
+    public function __construct()
+    {
+        $this->progressions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,5 +115,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getAccountProfile(): ?AccountProfile
+    {
+        return $this->accountProfile;
+    }
+
+    public function setAccountProfile(AccountProfile $accountProfile): static
+    {
+        // set the owning side of the relation if necessary
+        if ($accountProfile->getUser() !== $this) {
+            $accountProfile->setUser($this);
+        }
+
+        $this->accountProfile = $accountProfile;
+
+        return $this;
     }
 }
