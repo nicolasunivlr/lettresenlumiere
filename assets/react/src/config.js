@@ -3,11 +3,14 @@ const defaultBaseUrl =
 
 const baseUrl = window.appConfig?.apiBaseUrl || defaultBaseUrl;
 
-export const config = {
+const config = {
   apiBaseUrl: baseUrl,
   apiEtapes: `${baseUrl}/api/etapes`,
   apiSequences: `${baseUrl}/api/sequences`,
   imagesUrl: `${baseUrl}/images`,
   videosUrl: `${baseUrl}/sequencevideos`,
   audiosUrl: `${baseUrl}/audios`,
+  accountProfiles: `${baseUrl}/api/account_profiles`,
 };
+
+export { config };
