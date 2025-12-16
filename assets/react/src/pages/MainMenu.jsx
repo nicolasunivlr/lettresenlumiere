@@ -4,6 +4,7 @@ import logoUpArrow from "../assets/images/purple-up-arrow.png";
 import logoLeL from "../assets/images/Logolettresenlumiere.png";
 import { motion } from "framer-motion";
 import RedirectButton from "../components/UI/RedirectButton";
+<<<<<<< HEAD
 import { useAccountProfile } from "../AccountProfile/AccountProfileProvider";
 
 const MainMenu = () => {
@@ -12,6 +13,17 @@ const MainMenu = () => {
   return (
     <div className="index">
       {accountProfile && <p>{accountProfile.id}</p>}
+=======
+import { useAuth } from "../Auth";
+
+const MainMenu = () => {
+  const { user } = useAuth();
+
+  return (
+    <div className="index">
+      {user && <p>Bonjour {user.username} !</p>}
+      {user && <Link to={"/logout"}>Se déconnecter</Link>}
+>>>>>>> authentification
       <img src={logoLeL} alt="Logo Brain" className="index__logo" />
       <main className={"top-negative"}>
         <motion.div

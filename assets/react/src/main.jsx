@@ -4,13 +4,14 @@ import "./index.css";
 import "./scss/main.scss";
 import App from "./App.jsx";
 import { AccountProfileProvider } from "./AccountProfile/AccountProfileProvider.jsx";
+import { AuthProvider } from "./Auth/AuthProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    {/* <AuthProvider> Etat global d'authentification */}
-    <AccountProfileProvider>
-      <App />
-    </AccountProfileProvider>
-    {/* </AuthProvider> */}
+    <AuthProvider>
+      <AccountProfileProvider>
+        <App />
+      </AccountProfileProvider>
+    </AuthProvider>
   </StrictMode>
 );
