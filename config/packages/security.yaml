@@ -14,19 +14,18 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            lazy: true
-            provider: app_user_provider
-            custom_authenticator: App\Security\LoginFormAuthenticator
-            logout:
-                path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
+            stateless: false
 
-            # activate different ways to authenticate
+            # Activate different ways to authenticate:
             # https://symfony.com/doc/current/security.html#the-firewall
+            json_login:
+                check_path: api_login
+                username_path: username
+                password_path: password
+            logout:
+                path: api_logout
+                target: api_logout_target
 
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used

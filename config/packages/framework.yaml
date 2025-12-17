@@ -4,7 +4,10 @@ framework:
     #csrf_protection: true
 
     # Note that the session will be started ONLY if you read or write from it.
-    session: true
+    session:
+        enabled: true
+        cookie_secure: true # httpOnly
+        cookie_samesite: lax
 
     #esi: true
     #fragments: true

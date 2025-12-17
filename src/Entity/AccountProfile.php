@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use App\Controller\AccountProfileController;
 use App\Repository\AccountProfileRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,8 +19,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
         new Get(),
         new GetCollection(),
     ],
+    normalizationContext: ['groups' => ['default']],
 )]
-
 #[ApiResource(
     uriTemplate: '/account_profile/{id}/progression',
     operations: [new GetCollection()],
@@ -31,13 +32,13 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
     normalizationContext: ['groups' => ['progression:read']],
 )]
-
 #[ORM\Entity(repositoryClass: AccountProfileRepository::class)]
 class AccountProfile
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['default'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(inversedBy: 'accountProfile', cascade: ['persist', 'remove'])]
