@@ -17,6 +17,7 @@ const ModalEndExercise = ({ next, redo, score }) => {
     message = "BRAVO !";
     bgc = "medal-score--bravo";
   }
+  console.log(score);
   return (
     <div className="modal-exercise">
       <div className="modal-exercise__content small">

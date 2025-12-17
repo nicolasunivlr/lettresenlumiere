@@ -1,6 +1,6 @@
 import React from "react";
 import { config } from "../../shared/config";
-import { Sequence } from "./Sequence";
+import { Sequence } from "./sequence";
 import { useParams } from "react-router-dom";
 
 /**

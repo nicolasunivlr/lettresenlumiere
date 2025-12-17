@@ -17,6 +17,7 @@ const config = {
   accountProfilesMe: `${baseUrl}/api/account_profile/me`,
   accountProfileProgress: (accountId) =>
     `${baseUrl}/api/account_profile/${accountId}/progression`,
+  progressions: `${baseUrl}/api/progressions`,
 };
 
 export { config };

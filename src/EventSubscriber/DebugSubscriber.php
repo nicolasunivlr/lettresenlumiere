@@ -12,7 +12,7 @@ class DebugSubscriber implements EventSubscriberInterface
     public function onResponseEvent(ResponseEvent $event): void
     {
         $response = $event->getResponse();
-        $response->headers->set('Symfony-Debug-Toolbar-Replace', '1');
+        // $response->headers->set('Symfony-Debug-Toolbar-Replace', '1');
     }
 
     public static function getSubscribedEvents(): array

@@ -5,13 +5,6 @@ export class AccountProfile {
     this.id = data.id;
   }
 
-  /**
-
-   const accountProfile = useAccountProfile()
-  const progress = accountProfile.getProgressForSequence(sequence.id)
-  accountProfile.updateProgressForSequence(sequence.id, newProgress)
-   */
-
   async getProgressForSequence(sequence) {
     try {
       const response = await fetch(config.accountProfileProgress(this.id), {
@@ -23,18 +16,55 @@ export class AccountProfile {
       const data = await response.json();
       // Mise au propre de la réponse du back
       const progress = data.member[0].progressions.map((p) => ({
-        exerciceId: p.exercice.id,
+        id: p.id,
+        exerciseId: p.exercice.id,
         score: p.score,
       }));
       // Pour que l'ordre des scores soit le même que celui des exercices
       return sequence.exercises.map((ex) => {
-        const score = progress.find((p) => p.exerciceId === ex.id);
+        const score = progress.find((p) => p.exerciseId === ex.id);
         return score ?? null;
       });
     } catch (error) {}
   }
 
-  updateProgressForSequence(sequenceId, newProgress) {
-    console.log("updating progress");
+  async updateProgress(progress, newScore) {
+    try {
+      const response = await fetch(`${config.progressions}/${progress.id}`, {
+        credentials: "include",
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/merge-patch+json",
+        },
+        body: JSON.stringify({
+          score: newScore,
+          exercice: `/api/exercices/${progress.exerciseId}`,
+          accountProfile: `/api/account_profiles/${this.id}`,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Error updateProgress");
+      }
+    } catch (e) {}
+  }
+
+  async createProgressForExercise(exerciseId, score) {
+    try {
+      const response = await fetch(config.progressions, {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/ld+json",
+        },
+        body: JSON.stringify({
+          score: score,
+          exercice: `/api/exercices/${exerciseId}`,
+          accountProfile: `/api/account_profiles/${this.id}`,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Error createProgressForExercise");
+      }
+    } catch (e) {}
   }
 }

@@ -10,9 +10,9 @@ const PROGRESS_STYLE_MAP = [
   { max: 100, style: { backgroundColor: "#166534", color: "white" } },
 ];
 
-const getProgressStyle = (score) => {
-  if (!score) return DEFAULT_STYLE;
-  const entry = PROGRESS_STYLE_MAP.find((e) => score <= e.max);
+const getProgressStyle = (progress) => {
+  if (!progress) return DEFAULT_STYLE;
+  const entry = PROGRESS_STYLE_MAP.find((e) => progress.score <= e.max);
   return entry ? entry.style : PROGRESS_STYLE_MAP.at(-1).style;
 };
 
@@ -28,7 +28,7 @@ export const Circle = ({ label, style, active, onClick }) => {
   );
 };
 
-export const ProgressCircles = ({ count, current, scores, onChange }) => {
+export const ProgressCircles = ({ count, current, progress, onChange }) => {
   return (
     <div className="sidebar-container">
       <div className="sidebar">
@@ -36,7 +36,7 @@ export const ProgressCircles = ({ count, current, scores, onChange }) => {
           <Circle
             key={`circle-${index}`}
             label={index + 1}
-            style={getProgressStyle(scores[index])}
+            style={getProgressStyle(progress[index])}
             active={current === index}
             onClick={() => onChange(index)}
           />

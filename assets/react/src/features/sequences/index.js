@@ -1,2 +1,2 @@
-export { SequenceProvider, useSequence } from "./SequenceProvider";
+export { SequenceProvider, useSequence } from "./sequence-provider";
 export { SequencePage } from "../../app/pages/sequence-page";
