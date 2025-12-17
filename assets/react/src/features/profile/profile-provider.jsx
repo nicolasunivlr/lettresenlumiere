@@ -2,39 +2,33 @@ import React from "react";
 import { config } from "../../shared/config";
 import { useAuth } from "../auth";
 import { AccountProfile } from "./account-profile";
-
-/*
-{
-  "@context": "/api/contexts/AccountProfile",
-  "@id": "/api/account_profiles/1",
-  "@type": "AccountProfile",
-  "id": 1,
-  "firstName": "Joe", ???
-  "lastName": "Doe", ???
-}
-
-
-
-
-*/
+import { GuestProfile } from "./guest-profile";
 
 /**
  * Contexte englobant l'état et les actions liés à l'entité métier AccountProfile.
  */
-const AccountProfileContext = React.createContext();
+const ProfileContext = React.createContext();
 
 const initialState = {
   loading: false,
   error: false,
-  accountProfile: null,
+  profile: null,
 };
 
-export const AccountProfileProvider = ({ children }) => {
+export const ProfileProvider = ({ children }) => {
   const [state, setState] = React.useState(initialState);
   const { isAuthenticated, user } = useAuth();
 
   // Au montage du provider, on récupère les données de l'utilisateur (si authentifié)
   React.useEffect(() => {
+    const getGuestProfile = () => {
+      console.debug(`[profile:guest:init]`);
+      setState({
+        ...initialState,
+        profile: new GuestProfile(),
+      });
+    };
+
     const getAccountProfile = async (userId) => {
       try {
         // On appel l'API pour récupérer les données du compte associé à cet utilisateur
@@ -52,7 +46,7 @@ export const AccountProfileProvider = ({ children }) => {
         console.debug(`[GET:api/account_profiles/${userId}:success]`, data);
         setState({
           ...initialState,
-          accountProfile: new AccountProfile(data),
+          profile: new AccountProfile(data),
         });
       } catch (error) {
         console.debug(`[GET:api/account_profiles/${userId}:error]`, error);
@@ -63,30 +57,31 @@ export const AccountProfileProvider = ({ children }) => {
       }
     };
     // Récupération des données utilisateur après l'authentification
-    if (isAuthenticated && user) {
+    if (isAuthenticated && user && user.id !== "guest") {
       getAccountProfile(user.accountId);
+    } else if (isAuthenticated && user && user.id === "guest") {
+      console.log("getting guest");
+      getGuestProfile();
     } else {
       setState(initialState);
     }
   }, [isAuthenticated, user]);
 
   return (
-    <AccountProfileContext.Provider value={{ ...state }}>
+    <ProfileContext.Provider value={{ ...state }}>
       {children}
-    </AccountProfileContext.Provider>
+    </ProfileContext.Provider>
   );
 };
 
 /**
  * Hook pour accéder au contexte de AccountProfile.
  */
-export const useAccountProfile = () => {
-  const ctx = React.useContext(AccountProfileContext);
+export const useProfile = () => {
+  const ctx = React.useContext(ProfileContext);
 
   if (!ctx) {
-    throw new Error(
-      "useAccountProfile must be used within an AccountProfileProvider"
-    );
+    throw new Error("useProfile must be used within an ProfileProvider");
   }
 
   return ctx;

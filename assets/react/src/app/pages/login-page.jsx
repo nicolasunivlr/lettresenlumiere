@@ -3,7 +3,7 @@ import { useAuth } from "../../features/auth/providers/auth-provider";
 import { LoginForm } from "../../features/auth/components/login-form";
 
 export const LoginPage = () => {
-  const { isAuthenticated, login, isLoading } = useAuth();
+  const { isAuthenticated, login, isLoading, error } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 

@@ -8,14 +8,14 @@ import { ProgressCircles } from "../../features/sequences/components/progress-ci
 import NextExerciseButton from "../../shared/components/UI/NextExerciseButton";
 import ModalEndExercise from "../../shared/components/Exercises/ModalEndExercise";
 import { useSequenceUIState } from "../../features/sequences/useSequenceUIState";
-import { useAccountProfile } from "../../features/account-profile/account-profile-provider";
+import { useProfile } from "../../features/profile/profile-provider";
 
 export const SequencePage = () => {
   // --- Logique liée à la séquence ---
   const { sequence, loading, error } = useSequence();
 
-  // --- Logique liée à l'utilisateur ---
-  const { accountProfile } = useAccountProfile();
+  // --- Logique liée au profil ---
+  const { profile } = useProfile();
   const [progress, setProgress] = React.useState([]);
   const [isProgressLoading, setIsProgressLoading] = React.useState(true);
 
@@ -40,26 +40,26 @@ export const SequencePage = () => {
   React.useEffect(() => {
     const initProgress = async () => {
       setIsProgressLoading(true);
-      const progressForSequence = await accountProfile.getProgressForSequence(
+      const progressForSequence = await profile.getProgressForSequence(
         sequence
       );
       setProgress(progressForSequence);
       showProgressCircles();
-      goToExercise(progressForSequence.findIndex((p) => p === null) || 0);
+      goToExercise(progressForSequence?.findIndex((p) => p === null) || 0);
       setIsProgressLoading(false);
     };
 
-    if (sequence && accountProfile) {
+    if (sequence && profile) {
       initProgress();
     }
-  }, [sequence, accountProfile]);
+  }, [sequence, profile]);
 
   const handleExerciseDone = (score) => {
     const progressForExercise = progress[UI.currentExerciseIndex];
     if (progressForExercise) {
-      accountProfile.updateProgress(progressForExercise, score);
+      profile.updateProgress(progressForExercise, score);
     } else {
-      accountProfile.createProgressForExercise(
+      profile.createProgressForExercise(
         sequence.exercises[UI.currentExerciseIndex].id,
         score
       );

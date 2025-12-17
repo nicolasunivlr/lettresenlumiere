@@ -5,6 +5,10 @@ export class AccountProfile {
     this.id = data.id;
   }
 
+  isGuest() {
+    return false;
+  }
+
   async getProgressForSequence(sequence) {
     try {
       const response = await fetch(config.accountProfileProgress(this.id), {

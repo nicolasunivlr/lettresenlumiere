@@ -4,17 +4,22 @@ import logoLeL from "../../assets/images/Logolettresenlumiere.png";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import RedirectButton from "../../shared/components/UI/RedirectButton";
-import { useAccountProfile } from "../../features/account-profile/account-profile-provider";
+import { useProfile } from "../../features/profile/profile-provider";
 
 export const HomePage = () => {
-  const { accountProfile, loading } = useAccountProfile();
+  const { profile, loading } = useProfile();
 
   return (
     <div className="index">
-      {accountProfile && <p>Bonjour utilisateur #{accountProfile.id} !</p>}
-      <Link to={"/logout"}>Se déconnecter</Link>
+      {profile && !profile.isGuest() && (
+        <p>Bonjour utilisateur #{profile.id} !</p>
+      )}
+      {profile && profile.isGuest() && <p>Mode libre</p>}
+      <Link to={"/logout"}>
+        {profile && profile.isGuest() ? "Quitter" : "Se déconnecter"}
+      </Link>
       <img src={logoLeL} alt="Logo Brain" className="index__logo" />
-      {accountProfile && (
+      {profile && (
         <main className={"top-negative"}>
           <motion.div
             className="part"
