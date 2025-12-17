@@ -46,7 +46,7 @@ export const useSequenceUIState = (initialState) => {
   const goToExercise = (index) => {
     setState((prev) => ({
       ...prev,
-      currentExerciseIndex: index,
+      currentExerciseIndex: Math.max(0, index),
       attemptCount: 0,
     }));
   };
