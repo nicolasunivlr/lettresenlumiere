@@ -26,10 +26,11 @@ export const LoginPage = () => {
     <Navigate to={from} />
   ) : (
     <>
-      <LoginForm onSubmit={handleSubmit} isSubmiting={isLoading} />
-      <button onClick={handleGuestMode} type="button">
-        Mode libre
-      </button>
+      <LoginForm onSubmit={handleSubmit} isSubmiting={isLoading}>
+        <button onClick={handleGuestMode} type="button">
+          Mode libre
+        </button>
+      </LoginForm>
     </>
   );
 };
