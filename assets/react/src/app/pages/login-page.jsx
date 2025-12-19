@@ -1,6 +1,7 @@
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../features/auth/providers/auth-provider";
 import { LoginForm } from "../../features/auth/components/login-form";
+import logoLeL from "../../assets/images/Logolettresenlumiere.png";
 
 export const LoginPage = () => {
   const { isAuthenticated, login, isLoading, error } = useAuth();
@@ -26,6 +27,7 @@ export const LoginPage = () => {
     <Navigate to={from} />
   ) : (
     <>
+      <img style={{ margin: "2rem auto" }} src={logoLeL} alt="Logo Brain" />
       <LoginForm onSubmit={handleSubmit} isSubmiting={isLoading}>
         <button onClick={handleGuestMode} type="button">
           Mode libre

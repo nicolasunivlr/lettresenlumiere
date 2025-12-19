@@ -7,13 +7,13 @@
   margin: 0 auto;
   gap: 2rem;
   border-radius: 1rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transform: translateY(50%);
 
   .form__title {
     font-weight: 600;
     font-size: 26px;
-    text-align:center;
+    text-align: center;
   }
 
   .form__submit {
@@ -26,7 +26,8 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease,
+      transform 0.1s ease;
     margin: 0 auto;
 
     &:hover {
@@ -72,7 +73,8 @@
     border: 1px solid #e5e5e5;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease,
+      transform 0.1s ease;
     margin: 0 auto;
 
     &:hover {

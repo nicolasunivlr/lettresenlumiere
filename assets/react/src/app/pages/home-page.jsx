@@ -5,19 +5,17 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import RedirectButton from "../../shared/components/UI/RedirectButton";
 import { useProfile } from "../../features/profile/profile-provider";
+import { LogoutButton } from "../../features/auth";
+import { ProfileBanner } from "../../features/profile/components/profile-banner";
 
 export const HomePage = () => {
-  const { profile, loading } = useProfile();
+  const { profile } = useProfile();
 
   return (
     <div className="index">
-      {profile && !profile.isGuest() && (
-        <p>Bonjour utilisateur #{profile.id} !</p>
-      )}
-      {profile && profile.isGuest() && <p>Mode libre</p>}
-      <Link to={"/logout"}>
-        {profile && profile.isGuest() ? "Quitter" : "Se déconnecter"}
-      </Link>
+      <ProfileBanner>
+        <LogoutButton />
+      </ProfileBanner>
       <img src={logoLeL} alt="Logo Brain" className="index__logo" />
       {profile && (
         <main className={"top-negative"}>

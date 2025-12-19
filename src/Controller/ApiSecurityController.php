@@ -47,8 +47,8 @@ final class ApiSecurityController extends AbstractController
     }
 
 
-    #[Route('/api/me', name: 'api_me', methods: ['GET'])]
-    public function me(#[CurrentUser] ?User $user): Response
+    #[Route('/api/check', name: 'api_check', methods: ['GET'])]
+    public function check(#[CurrentUser] ?User $user): Response
     {
         if (null === $user) {
             return $this->json(

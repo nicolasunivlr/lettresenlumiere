@@ -83,7 +83,7 @@ function ExerciseTypeC(props) {
       const score = Math.round((isFinished.length / attempt.current) * 100);
       onDone(score);
     }
-  }, [isFinished, onDone, contentExercise.length]);
+  }, [isFinished, contentExercise.length]);
 
   const handleClickOKButton = () => {
     if (isAnswerValidated === null) {
@@ -101,7 +101,7 @@ function ExerciseTypeC(props) {
   };
 
   useEffect(() => {
-    if (!isLabelVisible && contentExercise[currentIndex]) {
+    if (isLabelVisible && contentExercise[currentIndex]) {
       if (contentExercise[currentIndex].sons_url) {
         play(contentExercise[currentIndex]);
       } else {

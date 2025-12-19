@@ -1,4 +1,4 @@
-import { AuthActions } from "./constants";
+import { AuthActions } from "./auth-actions";
 
 export const authReducer = (state, action) => {
   switch (action.type) {
@@ -13,12 +13,7 @@ export const authReducer = (state, action) => {
         ...state,
         isLoading: false,
         isAuthenticated: true,
-        user: {
-          id: action.payload.id,
-          username: action.payload.username,
-          roles: action.payload.roles,
-          accountId: action.payload.accountId,
-        },
+        user: action.payload,
       };
     case AuthActions.LOGIN_ERROR:
       return {
@@ -57,19 +52,13 @@ export const authReducer = (state, action) => {
         ...state,
         isChecking: false,
         isAuthenticated: true,
-        user: {
-          id: action.payload.id,
-          username: action.payload.username,
-          roles: action.payload.roles,
-          accountId: action.payload.accountId,
-        },
+        user: action.payload,
       };
     case AuthActions.CHECK_AUTH_ERROR:
       return {
         ...state,
         isChecking: false,
         isAuthenticated: false,
-        error: action.payload,
         user: null,
       };
     default:

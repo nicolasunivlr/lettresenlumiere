@@ -1,7 +1,9 @@
 import React from "react";
 import { config } from "../../../shared/config";
-import { AuthActions } from "../constants";
+import { AuthActions } from "../auth-actions";
 import { authReducer } from "../auth-reducer";
+import { authClient } from "../auth-client";
+import { authService } from "../auth-service";
 
 export const AuthContext = React.createContext();
 
@@ -21,39 +23,23 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials, asGuest) => {
     if (asGuest) {
-      console.debug("[auth:login:guest]");
+      console.debug("[auth:login_as_guest:start]");
       dispatch({
         type: AuthActions.LOGIN_SUCCESS,
-        payload: { id: "guest", roles: [] },
+        payload: authService.createGuestUser(),
       });
+      sessionStorage.setItem(config.guestTokenKey, JSON.stringify(Date.now()));
+      console.debug("[auth:login_as_guest:success]");
       return true;
     }
 
     console.debug("[auth:login:start]");
     dispatch({ type: AuthActions.LOGIN_START });
     try {
-      const response = await fetch(config.login, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
-
-      if (!response.ok) {
-        let errorMessage = "Erreur lors de la connexion.";
-        if (response.status === 401) {
-          errorMessage = "Identifiants invalides.";
-        } else if (response.status === 404) {
-          errorMessage = "Utilisateur non trouvé.";
-        }
-        throw new Error(errorMessage);
-      }
-
-      const data = await response.json();
-      console.debug("[auth:login:success]", data);
-      dispatch({ type: AuthActions.LOGIN_SUCCESS, payload: data.data });
+      const data = await authClient.login(credentials);
+      const loggedInUser = authService.createLoggedUser(data);
+      console.debug("[auth:login:success]", loggedInUser);
+      dispatch({ type: AuthActions.LOGIN_SUCCESS, payload: loggedInUser });
       return true;
     } catch (e) {
       console.debug("[auth:login:error]", e.message);
@@ -62,17 +48,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = async () => {
-    console.debug("[auth:logout:start]");
-    try {
-      dispatch({ type: AuthActions.LOGOUT_START });
-      await fetch(config.logout, {
-        credentials: "include",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+  const logout = async (asGuest) => {
+    if (asGuest) {
+      console.debug("[auth:logout_as_guest:start]");
+      dispatch({
+        type: AuthActions.LOGOUT_START,
       });
+      sessionStorage.removeItem(config.guestTokenKey);
+      dispatch({ type: AuthActions.LOGOUT_SUCCESS });
+      console.debug("[auth:logout_as_guest:success]");
+      return;
+    }
+
+    console.debug("[auth:logout:start]");
+    dispatch({ type: AuthActions.LOGOUT_START });
+
+    try {
+      await authClient.logout();
       console.debug("[auth:logout:success]");
       dispatch({ type: AuthActions.LOGOUT_SUCCESS });
     } catch (e) {
@@ -83,25 +75,29 @@ export const AuthProvider = ({ children }) => {
 
   React.useEffect(() => {
     const checkAuth = async () => {
+      console.debug("[auth:check_guest:start]");
+      const isGuest = sessionStorage.getItem(config.guestTokenKey);
+      if (isGuest) {
+        console.debug("[auth:check_guest:success]");
+        dispatch({
+          type: AuthActions.CHECK_AUTH_SUCCESS,
+          payload: authService.createGuestUser(),
+        });
+        return;
+      }
+
       console.debug("[auth:check:start]");
       dispatch({ type: AuthActions.CHECK_AUTH_START });
 
       try {
-        const response = await fetch(config.me, {
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
+        const data = await authClient.check();
+        const loggedInUser = authService.createLoggedUser(data);
+        console.debug("[auth:check:success]", loggedInUser);
+        dispatch({
+          type: AuthActions.CHECK_AUTH_SUCCESS,
+          payload: loggedInUser,
         });
-        if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.message || "Not authenticated");
-        }
-        console.debug("[auth:check:success]");
-        const data = await response.json();
-        dispatch({ type: AuthActions.CHECK_AUTH_SUCCESS, payload: data.data });
       } catch (e) {
-        console.error(e.message);
         console.debug("[auth:check:error]", e.message);
         dispatch({ type: AuthActions.CHECK_AUTH_ERROR, payload: e.message });
       }

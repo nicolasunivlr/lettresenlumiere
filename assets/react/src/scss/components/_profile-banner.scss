@@ -1,0 +1,12 @@
+.profile-banner {
+  padding: 1em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.333);
+
+  &__title {
+    font-size: 1.8rem;
+  }
+}
