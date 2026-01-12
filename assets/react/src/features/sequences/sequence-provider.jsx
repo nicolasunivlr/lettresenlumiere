@@ -1,5 +1,5 @@
 import React from "react";
-import { config } from "../../shared/config";
+import { sequencesApi } from "../../shared/api/sequences-api";
 import { Sequence } from "./sequence";
 import { useParams } from "react-router-dom";
 
@@ -28,33 +28,8 @@ export const SequenceProvider = ({ children }) => {
       console.debug("[sequence:fetch:start]");
       setSequenceState((prev) => ({ ...prev, loading: true }));
 
-      if (!config?.apiSequences) {
-        console.debug("[sequence:fetch:error]");
-        console.error("Missing configuration for the requested ressource.");
-        setSequenceState({
-          ...initialState,
-          error: "Une erreur est survenue.",
-        });
-        return;
-      }
-
       try {
-        const response = await fetch(`${config.apiSequences}/${id}`);
-
-        if (!response.ok) {
-          console.log(response);
-          switch (response.status) {
-            case 404:
-              throw new Error(
-                "La séquence d'exercices que vous recherchez n'existe pas."
-              );
-            default:
-              throw new Error(
-                `Une erreur est survenue lors du chargement de la séquence d'exercice.`
-              );
-          }
-        }
-        const data = await response.json();
+        const data = await sequencesApi.getById(id);
         console.debug("[sequence:fetch:success]");
         setSequenceState({
           ...initialState,

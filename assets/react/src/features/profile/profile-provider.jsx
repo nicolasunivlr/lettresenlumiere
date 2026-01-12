@@ -1,5 +1,5 @@
 import React from "react";
-import { config } from "../../shared/config";
+import { profilesApi } from "../../shared/api/profiles-api";
 import { useAuth } from "../auth";
 import { AccountProfile } from "./account-profile";
 import { GuestProfile } from "./guest-profile";
@@ -34,15 +34,7 @@ export const ProfileProvider = ({ children }) => {
         // On appel l'API pour récupérer les données du compte associé à cet utilisateur
         console.debug(`[GET:api/account_profiles/${userId}:start]`);
         setState((prev) => ({ ...prev, loading: true }));
-        // --- Toute cette logique pourrait être déléguée à un service externe ---
-        const response = await fetch(config.accountProfiles + `/${userId}`);
-        if (!response.ok) {
-          throw new Error(
-            "Erreur lors de la récupération des données utilisateur."
-          );
-        }
-        const data = await response.json();
-        // ----------------------------------------------------------------------
+        const data = await profilesApi.getById(userId);
         console.debug(`[GET:api/account_profiles/${userId}:success]`, data);
         setState({
           ...initialState,
