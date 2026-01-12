@@ -1,9 +1,17 @@
+@use "../base/variables" as *;
+
 .profile-banner {
+  // position: fixed;
+  // top: 0;
+  // left: 0;
+  // right: 0;
+  margin-bottom: 1rem;
   padding: 1em 1em;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: white;
+  background-color: $violet;
+  color: $blanc;
   border-bottom: 1px solid rgba(0, 0, 0, 0.333);
 
   &__title {
