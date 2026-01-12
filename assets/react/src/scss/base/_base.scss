@@ -13,6 +13,7 @@ img {
 
 html {
   font-size: 62.5%; // Reset à 10px pour faciliter les calculs en rem
+  overscroll-behavior: none; // Empêche le "bounce"
 
   @media (max-width: 1366px) {
     font-size: 54%; // Légèrement réduit pour les écrans comme 1280x960
@@ -23,10 +24,22 @@ body {
   font-family: Helvetica, sans-serif;
   font-size: 1.6rem; // Taille de base correspondant à ~16px
   background-color: rgba(78, 137, 143, 0.28);
-  max-width: 1920px; // Utilisez 100% au lieu d'une valeur fixe
+  //max-width: 1920px; // Utilisez 100% au lieu d'une valeur fixe
   width: 100%; /* Assurez-vous que body prend toute la largeur */
-  margin: 0 auto; /* Centre le body horizontalement */
+  //margin: 0 auto; /* Centre le body horizontalement */
   overflow-x: hidden;
+
+  // Reset des marges et padding
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+main {
+  padding: 4rem;
+  max-width: 1900px;    /* largeur max */
+  margin: 0 auto;       /* centre horizontal */
+  box-sizing: border-box;
 }
 
 a,

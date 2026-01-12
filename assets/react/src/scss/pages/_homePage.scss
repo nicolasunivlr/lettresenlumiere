@@ -4,10 +4,12 @@
 
 //  fon code page accueil loane
 
+/*
 .top-negative {
-  position: relative;
-  top: -12rem;
+  //position: relative;
+  //top: -12rem;
 }
+  */
 
 .home {
   display: flex;
@@ -63,14 +65,17 @@
   }
 
   &__credits {
-    position: absolute;
-    right: 5rem;
-    padding: 1rem 1.8rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    max-width: 100%;
+    box-sizing: border-box; 
+    padding: 1.2rem 1.8rem;
     border-radius: 10px;
     font-size: f.$font-size-medium;
     background-color: #fffbfb;
     transition: 0.2s all ease-out;
-    top: 0;
     a {
       color: v.$noir;
     }
@@ -78,5 +83,8 @@
       scale: 1.17;
       transition: 0.2s all ease-out;
     }
+    
   }
+
+    
 }

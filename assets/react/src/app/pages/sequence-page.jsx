@@ -85,20 +85,6 @@ export const SequencePage = () => {
     }
   };
 
-  const handleRedo = () => {
-    // Fonction de accountProfile qu'on pourrait nommer resetProgressForExercise(exerciseId)
-    // qui réinitialiserait la progression de l'exercice en cours.
-    // Pour obtenir l'id de l'exercice en cours :
-    // const currentExerciseId = sequence.getExerciseByIndex(UI.currentExerciseIndex).id
-    setProgress((prev) => {
-      const newProgress = [...prev];
-      newProgress[UI.currentExerciseIndex] = null;
-      return newProgress;
-    });
-
-    redoExercise();
-  };
-
   if (loading || isProgressLoading) return <Loader />;
   if (error) return <Error title="Erreur" message={error} />;
 
@@ -139,7 +125,7 @@ export const SequencePage = () => {
           {UI.showModal && (
             <ModalEndExercise
               next={handleNextExercise}
-              redo={handleRedo}
+              redo={redoExercise}
               score={progress[UI.currentExerciseIndex].score}
             />
           )}
