@@ -1,4 +1,5 @@
 import React from "react";
+import { InputPassword } from "../../../shared/ui/input-password.jsx";
 
 export const LoginForm = ({
   onSubmit,
@@ -30,7 +31,7 @@ export const LoginForm = ({
       <h1 className="form__title">Connexion</h1>
       <div className="form-group">
         <label className="form__label" htmlFor="username">
-          Identifiant utilisateur :
+          👤 Identifiant utilisateur :
         </label>
         <input
           type="text"
@@ -45,16 +46,15 @@ export const LoginForm = ({
 
       <div className="form-group">
         <label htmlFor="password" className="form__label">
-          Mot de passe :
+          🔒 Mot de passe
         </label>
-        <input
-          type="password"
+        <InputPassword
+          className="form__input"
           name="password"
           id="password"
           value={credentials.password}
           onChange={handleOnChange}
           disabled={isSubmiting}
-          className="form__input form__input--password"
         />
       </div>
 

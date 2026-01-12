@@ -95,5 +95,10 @@
       border-color: #d1d5db;
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
     }
+
+    &:focus-within {
+      border-color: #d1d5db;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    }
   }
 }
