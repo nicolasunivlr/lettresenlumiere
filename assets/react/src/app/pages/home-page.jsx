@@ -11,7 +11,7 @@ export const HomePage = () => {
 
   return (
     <div className="index">
-      <img src={logoLeL} alt="Logo Brain" className="index__logo" />
+      
       {profile && (
         <div className={"top-negative"}>
           <motion.div
@@ -67,11 +67,13 @@ export const HomePage = () => {
               />
             </motion.div>
           </div>
+
           <p className="home__credits">
             <Link to="/credits">Crédits</Link>
           </p>
         </div>
       )}
+
     </div>
   );
 };
