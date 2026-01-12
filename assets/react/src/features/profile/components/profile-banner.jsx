@@ -1,7 +1,11 @@
 import { useProfile } from "../profile-provider";
 
-export const ProfileBanner = ({ children, className, ...rest }) => {
+export const ProfileBanner = ({ children, className, visible, ...rest }) => {
   const { profile } = useProfile();
+
+  if (visible === false) {
+    return null;
+  }
 
   return (
     profile && (
