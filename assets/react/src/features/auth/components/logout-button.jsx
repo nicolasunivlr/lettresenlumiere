@@ -1,5 +1,6 @@
 import React from "react";
 import { useAuth } from "../providers/auth-provider";
+import iconeLogout from "../../../assets/images/icones/logout.png";
 
 export const LogoutButton = ({ children, ...rest }) => {
   const { logout, user } = useAuth();
@@ -23,7 +24,15 @@ export const LogoutButton = ({ children, ...rest }) => {
       disabled={isLoggingOut}
       {...rest}
     >
-      {children?.(isLoggingOut) ?? <DefaultLabel isLoading={isLoggingOut} />}
+
+      <span className="logout-button__label">{children?.(isLoggingOut) ?? <DefaultLabel isLoading={isLoggingOut} />}</span>
+      
+      <img 
+        src={iconeLogout} 
+        className="logout-button__icon"
+        aria-hidden="true"
+        alt="Icone de déconnexion" 
+      />
     </button>
   );
 };

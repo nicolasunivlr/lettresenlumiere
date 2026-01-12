@@ -232,17 +232,28 @@
 }
 
 .logout-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
   font-size: 1.8rem;
   padding: 1em 1em;
   background-color: v.$rouge;
   color: white;
   border-radius: 8px;
 
-  &hover {
-    background-color: rgb(60, 60, 60);
-  }
-
   &:disabled {
     background-color: rgb(90, 90, 90);
   }
 }
+
+.logout-button:hover {
+  cursor: pointer;
+  background-color: rgb(60, 60, 60);
+}
+
+.logout-button__icon {
+  width: 1.5em;
+  height: 1.5em;
+  flex-shrink: 0;
+}
+
