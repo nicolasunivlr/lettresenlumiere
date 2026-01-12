@@ -1,9 +1,13 @@
 import { Outlet } from "react-router-dom";
+import { ProfileBanner } from "../../features/profile/components/profile-banner";
+import { LogoutButton } from "../../features/auth";
 
 export const RootLayout = () => {
   return (
     <div className="app-container">
-      <header>{/* Contenu de l'en-tête commun */}</header>
+      <ProfileBanner>
+        <LogoutButton />
+      </ProfileBanner>
       <main>
         <Outlet />
       </main>
