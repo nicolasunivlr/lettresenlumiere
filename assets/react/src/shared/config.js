@@ -5,6 +5,7 @@ const baseUrl = window.appConfig?.apiBaseUrl || defaultBaseUrl;
 
 const config = {
   guestTokenKey: "guest_session_id",
+  guestProgressTokenKey: "guest_progress_token",
   apiBaseUrl: baseUrl,
   apiEtapes: `${baseUrl}/api/etapes`,
   apiSequences: `${baseUrl}/api/sequences`,

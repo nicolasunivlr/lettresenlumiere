@@ -1,13 +1,14 @@
+import { config } from "../../shared/config";
+
 export class GuestProfile {
-  static PROGRESSION_STORAGE_KEY = "guest_progressions";
 
   isGuest() {
     return true;
   }
 
   async getProgressForSequence(sequence) {
-    const existingProgress = localStorage.getItem(
-      GuestProfile.PROGRESSION_STORAGE_KEY
+    const existingProgress = sessionStorage.getItem(
+      config.guestProgressTokenKey
     );
 
     if (!existingProgress) {
@@ -30,9 +31,9 @@ export class GuestProfile {
       "to new score:",
       newScore
     );
-    // Récupérer les progressions existantes depuis le localStorage
-    const existingProgress = localStorage.getItem(
-      GuestProfile.PROGRESSION_STORAGE_KEY
+    // Récupérer les progressions existantes depuis le sessionStorage
+    const existingProgress = sessionStorage.getItem(
+      config.guestProgressTokenKey
     );
 
     if (existingProgress) {
@@ -47,13 +48,13 @@ export class GuestProfile {
         // Mettre à jour le score
         progressions[progIndex].score = newScore;
 
-        // Sauvegarder les progressions mises à jour dans le localStorage
-        localStorage.setItem(
-          GuestProfile.PROGRESSION_STORAGE_KEY,
+        // Sauvegarder les progressions mises à jour dans le sessionStorage
+        sessionStorage.setItem(
+          config.guestProgressTokenKey,
           JSON.stringify(progressions)
         );
 
-        console.log("Progress updated in localStorage:", progressions);
+        console.log("Progress updated in sessionStorage:", progressions);
       } else {
         console.warn(
           "Progression not found for exerciseId:",
@@ -61,7 +62,7 @@ export class GuestProfile {
         );
       }
     } else {
-      console.warn("No existing progressions found in localStorage.");
+      console.warn("No existing progressions found in sessionStorage.");
     }
   }
 
@@ -73,9 +74,9 @@ export class GuestProfile {
       score
     );
 
-    // Récupérer les progressions existantes depuis le localStorage
-    const existingProgress = localStorage.getItem(
-      GuestProfile.PROGRESSION_STORAGE_KEY
+    // Récupérer les progressions existantes depuis le sessionStorage
+    const existingProgress = sessionStorage.getItem(
+      config.guestProgressTokenKey
     );
 
     // Verifier si une progression existe
@@ -87,12 +88,12 @@ export class GuestProfile {
       score: score,
     });
 
-    // Sauvegarder dans le localStorage
-    localStorage.setItem(
-      GuestProfile.PROGRESSION_STORAGE_KEY,
+    // Sauvegarder dans le sessionStorage
+    sessionStorage.setItem(
+      config.guestProgressTokenKey,
       JSON.stringify(progressions)
     );
 
-    console.log("Progress saved to localStorage:", progressions);
+    console.log("Progress saved to sessionStorage:", progressions);
   }
 }

@@ -55,6 +55,7 @@ export const AuthProvider = ({ children }) => {
         type: AuthActions.LOGOUT_START,
       });
       sessionStorage.removeItem(config.guestTokenKey);
+      sessionStorage.removeItem(config.guestProgressTokenKey);
       dispatch({ type: AuthActions.LOGOUT_SUCCESS });
       console.debug("[auth:logout_as_guest:success]");
       return;
