@@ -1,5 +1,4 @@
 export class GuestProfile {
-
   static PROGRESSION_STORAGE_KEY = "guest_progressions";
 
   isGuest() {
@@ -7,9 +6,9 @@ export class GuestProfile {
   }
 
   async getProgressForSequence(sequence) {
-    // Renvoyer objet avec tableau d'objets [null, exerciceId, score] pour chaque exercice
-
-    const existingProgress = localStorage.getItem(GuestProfile.PROGRESSION_STORAGE_KEY);
+    const existingProgress = localStorage.getItem(
+      GuestProfile.PROGRESSION_STORAGE_KEY
+    );
 
     if (!existingProgress) {
       // Pas de progression enregistrée
@@ -19,18 +18,22 @@ export class GuestProfile {
     const progress = JSON.parse(existingProgress);
 
     return sequence.exercises.map((ex) => {
-        const score = progress.find((p) => p.exerciseId === ex.id);
-        return score ?? null;
-      });
+      const score = progress.find((p) => p.exerciseId === ex.id);
+      return score ?? null;
+    });
   }
 
   async updateProgress(progress, newScore) {
-
-    console.log(progress);
-    console.log("Updating progress for exercise:", progress.exerciseId, "to new score:", newScore);
-
+    console.log(
+      "Updating progress for exercise:",
+      progress.exerciseId,
+      "to new score:",
+      newScore
+    );
     // Récupérer les progressions existantes depuis le localStorage
-    const existingProgress = localStorage.getItem(GuestProfile.PROGRESSION_STORAGE_KEY);
+    const existingProgress = localStorage.getItem(
+      GuestProfile.PROGRESSION_STORAGE_KEY
+    );
 
     if (existingProgress) {
       const progressions = JSON.parse(existingProgress);
@@ -39,8 +42,6 @@ export class GuestProfile {
       const progIndex = progressions.findIndex(
         (p) => p.exerciseId === progress.exerciseId
       );
-
-      console.log("Found progression index:", progIndex);
 
       if (progIndex !== -1) {
         // Mettre à jour le score
@@ -54,7 +55,10 @@ export class GuestProfile {
 
         console.log("Progress updated in localStorage:", progressions);
       } else {
-        console.warn("Progression not found for exerciseId:", progress.exerciseId);
+        console.warn(
+          "Progression not found for exerciseId:",
+          progress.exerciseId
+        );
       }
     } else {
       console.warn("No existing progressions found in localStorage.");
@@ -62,11 +66,17 @@ export class GuestProfile {
   }
 
   async createProgressForExercise(exerciseId, score) {
+    console.log(
+      "Creating progress for exercise:",
+      exerciseId,
+      "with score:",
+      score
+    );
 
-    console.log("Creating progress for exercise:", exerciseId, "with score:", score);
-
-    //
-    const existingProgress = localStorage.getItem(GuestProfile.PROGRESSION_STORAGE_KEY);
+    // Récupérer les progressions existantes depuis le localStorage
+    const existingProgress = localStorage.getItem(
+      GuestProfile.PROGRESSION_STORAGE_KEY
+    );
 
     // Verifier si une progression existe
     const progressions = existingProgress ? JSON.parse(existingProgress) : [];
@@ -84,6 +94,5 @@ export class GuestProfile {
     );
 
     console.log("Progress saved to localStorage:", progressions);
-
   }
 }
