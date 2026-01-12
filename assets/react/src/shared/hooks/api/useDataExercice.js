@@ -1,29 +1,28 @@
 import { useCallback, useEffect, useState } from "react";
-import { config } from "../../config";
+import { sequencesApi } from "../../api/sequences-api";
 
 const useDataExercice = (seqId) => {
   const [exerciceData, setExerciceData] = useState(null);
 
   const getExercises = useCallback(
     async (seqId) => {
-      if (!config || !seqId) return;
+      if (!seqId) return;
       try {
-        const response = await fetch(`${config.apiSequences}/${seqId}`);
-        const data = await response.json();
+        const data = await sequencesApi.getById(seqId);
         setExerciceData(data);
       } catch (error) {
         console.error("Erreur lors de la récupération de l'exercice :", error);
         throw error;
       }
     },
-    [config]
+    []
   );
 
   useEffect(() => {
-    if (config && seqId) {
+    if (seqId) {
       getExercises(seqId);
     }
-  }, [getExercises, seqId, config]);
+  }, [getExercises, seqId]);
 
   return exerciceData;
 };

@@ -1,4 +1,5 @@
-import { config } from "../../shared/config";
+import { profilesApi } from "../../shared/api/profiles-api";
+import { progressionsApi } from "../../shared/api/progressions-api";
 
 export class AccountProfile {
   constructor(data) {
@@ -11,13 +12,7 @@ export class AccountProfile {
 
   async getProgressForSequence(sequence) {
     try {
-      const response = await fetch(config.accountProfileProgress(this.id), {
-        credentials: "include",
-      });
-      if (!response.ok) {
-        throw new Error("Error accountProfileProgress");
-      }
-      const data = await response.json();
+      const data = await profilesApi.getProgress(this.id);
       // Mise au propre de la réponse du back
       const progress = data.member[0].progressions.map((p) => ({
         id: p.id,
@@ -34,41 +29,22 @@ export class AccountProfile {
 
   async updateProgress(progress, newScore) {
     try {
-      const response = await fetch(`${config.progressions}/${progress.id}`, {
-        credentials: "include",
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/merge-patch+json",
-        },
-        body: JSON.stringify({
-          score: newScore,
-          exercice: `/api/exercices/${progress.exerciseId}`,
-          accountProfile: `/api/account_profiles/${this.id}`,
-        }),
+      await progressionsApi.update({
+        id: progress.id,
+        score: newScore,
+        exerciseId: progress.exerciseId,
+        accountId: this.id,
       });
-      if (!response.ok) {
-        throw new Error("Error updateProgress");
-      }
     } catch (e) {}
   }
 
   async createProgressForExercise(exerciseId, score) {
     try {
-      const response = await fetch(config.progressions, {
-        credentials: "include",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/ld+json",
-        },
-        body: JSON.stringify({
-          score: score,
-          exercice: `/api/exercices/${exerciseId}`,
-          accountProfile: `/api/account_profiles/${this.id}`,
-        }),
+      await progressionsApi.create({
+        score: score,
+        exerciseId: exerciseId,
+        accountId: this.id,
       });
-      if (!response.ok) {
-        throw new Error("Error createProgressForExercise");
-      }
     } catch (e) {}
   }
 }

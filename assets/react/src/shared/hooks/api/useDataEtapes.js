@@ -1,27 +1,22 @@
 import { useCallback, useEffect, useState } from "react";
-import { config } from "../../config";
+import { etapesApi } from "../../api/etapes-api";
 
 const useDataEtapes = () => {
   const [etapesData, setEtapesData] = useState(null);
 
   const getEtapes = useCallback(async () => {
-    if (!config) return;
-
     try {
-      const response = await fetch(`${config.apiEtapes}`);
-      const data = await response.json();
-      setEtapesData(data.member);
+      const data = await etapesApi.getAll();
+      setEtapesData(data);
     } catch (error) {
       console.error("Erreur lors de la récupération des Etapes :", error);
       throw error;
     }
-  }, [config]);
+  }, []);
 
   useEffect(() => {
-    if (config) {
-      getEtapes();
-    }
-  }, [getEtapes, config]);
+    getEtapes();
+  }, [getEtapes]);
 
   return etapesData;
 };
