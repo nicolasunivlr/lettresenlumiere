@@ -31,7 +31,7 @@ export const LogoutButton = ({ children, ...rest }) => {
         src={iconeLogout} 
         className="logout-button__icon"
         aria-hidden="true"
-        alt="Icone de déconnexion" 
+        alt="" 
       />
     </button>
   );
