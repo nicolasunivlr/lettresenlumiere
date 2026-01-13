@@ -16,8 +16,8 @@ security:
         main:
             stateless: false
 
-            # Activate different ways to authenticate:
-            # https://symfony.com/doc/current/security.html#the-firewall
+            # Authentification uniquement via API React (JSON)
+            # Le login se fait via /api/login depuis l'application React
             json_login:
                 check_path: api_login
                 username_path: username
