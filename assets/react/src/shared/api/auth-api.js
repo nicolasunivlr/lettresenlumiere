@@ -69,4 +69,31 @@ export const authApi = {
     }
     return response.json();
   },
+
+  /**
+   * Inscription d'un nouvel utilisateur
+   * @param {Object} registrationData - Données d'inscription
+   * @returns {Promise<Object>} Données de l'utilisateur inscrit
+   */
+  register: async (registrationData) => {
+    const response = await fetch(config.register, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(registrationData),
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(
+        data.error ||
+          data.message ||
+          data.detail ||
+          "Erreur lors de l'inscription."
+      );
+    }
+
+    return response.json();
+  },
 };
