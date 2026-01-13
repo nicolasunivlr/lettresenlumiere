@@ -55,12 +55,14 @@ class AccountProfile
      * Prénom de l'utilisateur
      */
     #[ORM\Column(length: 255)]
+    #[Groups(['default'])]
     private ?string $firstname = null;
 
     /**
      * Nom de famille de l'utilisateur
      */
     #[ORM\Column(length: 255)]
+    #[Groups(['default'])]
     private ?string $lastname = null;
 
     public function __construct()
