@@ -6,6 +6,10 @@ export class GuestProfile {
     return true;
   }
 
+  isAdmin() {
+    return false;
+  }
+
   async getProgressForSequence(sequence) {
     const existingProgress = sessionStorage.getItem(
       config.guestProgressTokenKey

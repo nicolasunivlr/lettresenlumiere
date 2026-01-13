@@ -1,3 +1,4 @@
+
 class AuthService {
   createLoggedUser = (data) => {
     return {
@@ -5,6 +6,7 @@ class AuthService {
       username: data.data.username,
       roles: data.data.roles,
       accountId: data.data.accountId,
+      isAdmin: () => data.data.roles.includes("ROLE_ADMIN"),
     };
   };
 
@@ -12,6 +14,7 @@ class AuthService {
     return {
       id: "guest",
       roles: [],
+      isAdmin: () => false,
     };
   };
 }
