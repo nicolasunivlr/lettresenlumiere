@@ -34,6 +34,18 @@ final class ApiSecurityController extends AbstractController
             );
         }
 
+        $accountProfile = $user->getAccountProfile();
+        // Ne doit pas arriver car on lie un User à un AccountProfile dès la création du User
+        if (null === $accountProfile) {
+            return $this->json(
+                [
+                    'success' => false,
+                    'message' => 'Your user account is not linked to an account profile.'
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+
         return $this->json([
             'success' => true,
             'message' => 'You have been logged in',
@@ -41,7 +53,7 @@ final class ApiSecurityController extends AbstractController
                 'id' => $user->getId(),
                 'username' => $user->getUserIdentifier(),
                 'roles' => $user->getRoles(),
-                'accountId' => $user->getAccountProfile()->getId(),
+                'accountId' => $accountProfile->getId(),
             ],
         ]);
     }
@@ -88,6 +100,15 @@ final class ApiSecurityController extends AbstractController
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
-
-
+    #[Route('/api/register', name: 'api_register', methods: ['POST'])]
+    public function register(): Response
+    {
+        return $this->json(
+            [
+                'success' => false,
+                'message' => 'User registration is not allowed.'
+            ],
+            Response::HTTP_FORBIDDEN
+        );
+    }
 }
