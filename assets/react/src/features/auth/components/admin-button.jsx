@@ -1,16 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import iconeSettings from "../../../assets/images/icones/settings.png";
 import { useAuth } from "../providers/auth-provider";
 
 export const AdminButton = ({ label }) => {
 
-  const navigate = useNavigate();   
-
   const handleClick = async () => {
     // Rediriger vers la page d'administration
     try {
-      // 
       window.location.href = '/admin';
       console.log("Redirection vers la page d'administration !");
 
