@@ -105,7 +105,8 @@ final class ApiSecurityController extends AbstractController
     #[Route('/api/logout_target', name: 'api_logout_target')]
     public function logoutTarget(): Response
     {
-        return $this->json(null, Response::HTTP_NO_CONTENT);
+        // Redirection vers le formulaire de login React après déconnexion
+        return $this->redirect('/login');
     }
 
     #[Route('/api/register', name: 'api_register', methods: ['POST'])]

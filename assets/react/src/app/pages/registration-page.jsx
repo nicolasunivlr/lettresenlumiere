@@ -1,6 +1,6 @@
 import React from "react";
-import { authClient } from "../../features/auth/auth-client";
 import { RegistrationForm } from "../../features/auth/components/registration-form";
+import { authApi } from "../../shared/api/auth-api";
 
 export const RegistrationPage = () => {
   const [genericError, setGenericError] = React.useState("");
@@ -10,7 +10,7 @@ export const RegistrationPage = () => {
     setGenericError("");
     setValidationErrors([]);
     try {
-      const user = await authClient.register(registrationData);
+      const user = await authApi.register(registrationData);
 
       console.log("Inscription réussie :", user);
     } catch (e) {
@@ -28,7 +28,7 @@ export const RegistrationPage = () => {
 
   return (
     <>
-      {genericError ? <p style={{ color: "green" }}>{genericError}</p> : null}
+      {genericError ? <p style={{ color: "red" }}>{genericError}</p> : null}
       <RegistrationForm errors={validationErrors} onSubmit={register} />
     </>
   );

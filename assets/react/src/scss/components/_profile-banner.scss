@@ -19,3 +19,9 @@
 .profile-banner__logo {
   height: 70px;
 }
+
+.profile-banner__right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

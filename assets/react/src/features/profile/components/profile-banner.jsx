@@ -26,7 +26,14 @@ export const ProfileBanner = ({ children, className, visible, ...rest }) => {
       />
 
       {/* Autres éléments à droite */}
-      {children}
+      <div className="profile-banner__right">
+
+        {children}
+
+      </div>
+
+
+      {/*{children}*/}
     </div>
     )
   );

@@ -17,6 +17,7 @@ const config = {
   logout: `${baseUrl}/api/logout`,
   register: `${baseUrl}/api/register`,
   check: `${baseUrl}/api/check`, // TODO: remplacer par 'check'
+  register: `${baseUrl}/api/register`,
   accountProfilesMe: `${baseUrl}/api/account_profile/me`,
   accountProfileProgress: (accountId) =>
     `${baseUrl}/api/account_profile/${accountId}/progression`,
