@@ -1,13 +1,10 @@
 import { RegistrationForm } from "../../features/auth/components/registration-form";
 import { useAuth } from "../../features/auth";
 import { Navigate, useNavigate } from "react-router-dom";
-import Loader from "../../shared/components/UI/Loader";
 
 export const RegistrationPage = () => {
-  const { user, register, isChecking, errors, errorMessage, isAuthenticated } =
+  const { register, isChecking, errors, isLoading, isAuthenticated } =
     useAuth();
-
-  const navigate = useNavigate();
 
   const handleRegistration = async (registrationData) => {
     const registered = await register(registrationData);
@@ -18,8 +15,10 @@ export const RegistrationPage = () => {
   };
 
   /*
-  Les prochaines lignes évite l'accès à la page
-  via l'URL si l'utilisateur est déjà authentifié.
+  Les prochaines lignes redirige l'utilisateur
+  vers la page d'accueil s'il est authentifié
+  (empêche les utilisateurs connectés d'accéder à
+  la page d'inscription via l'URL).
   */
   if (isChecking) {
     return null; // Ne rien monter pendant la vérification
@@ -31,8 +30,11 @@ export const RegistrationPage = () => {
 
   return (
     <>
-      {errorMessage ? <p style={{ color: "red" }}>{errorMessage}</p> : null}
-      <RegistrationForm errors={errors} onSubmit={handleRegistration} />
+      <RegistrationForm
+        isSubmitting={isLoading}
+        errors={errors}
+        onSubmit={handleRegistration}
+      />
     </>
   );
 };
