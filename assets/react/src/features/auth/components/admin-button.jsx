@@ -5,13 +5,13 @@ import { useAuth } from "../providers/auth-provider";
 
 export const AdminButton = ({ label }) => {
 
-  const navigate = useNavigate();  
+  const navigate = useNavigate();   
 
   const handleClick = async () => {
     // Rediriger vers la page d'administration
     try {
       // 
-      navigate("/");
+      navigate("/admin");
       console.log("Redirection vers la page d'administration");
 
     } catch (error) {
