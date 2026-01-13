@@ -11,30 +11,27 @@ export const ProfileBanner = ({ children, className, visible, ...rest }) => {
   return (
     profile && (
       <div className={`profile-banner ${className ?? ""}`} {...rest}>
-      {/* Texte à gauche */}
-      <span className="profile-banner__title">
-        {profile.isGuest()
-          ? "Mode Invité"
-          : `Bienvenue, utilisateur #${profile.id}`}
-      </span>
+        {/* Texte à gauche */}
+        <span className="profile-banner__title">
+          {profile.isGuest()
+            ? "Mode Invité"
+            : `Bienvenue, ${profile
+                .getFirstname()
+                .charAt(0)}. ${profile.getLastname()}`}
+        </span>
 
-      {/* Logo centré */}
-      <img
-        src={LogoApp}
-        alt="Logo de l'application Lettres en Lumière"
-        className="profile-banner__logo"
-      />
+        {/* Logo centré */}
+        <img
+          src={LogoApp}
+          alt="Logo de l'application Lettres en Lumière"
+          className="profile-banner__logo"
+        />
 
-      {/* Autres éléments à droite */}
-      <div className="profile-banner__right">
+        {/* Autres éléments à droite */}
+        <div className="profile-banner__right">{children}</div>
 
-        {children}
-
+        {/*{children}*/}
       </div>
-
-
-      {/*{children}*/}
-    </div>
     )
   );
 };

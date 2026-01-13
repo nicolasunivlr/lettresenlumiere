@@ -36,6 +36,9 @@ export const ProfileProvider = ({ children }) => {
         setState((prev) => ({ ...prev, loading: true }));
         const data = await profilesApi.getById(userId);
         console.debug(`[GET:api/account_profiles/${userId}:success]`, data);
+        console.groupCollapsed("Données du profil");
+        console.debug(data);
+        console.groupEnd();
         setState({
           ...initialState,
           profile: new AccountProfile(data),
