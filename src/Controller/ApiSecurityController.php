@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Exception\JsonException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -110,7 +111,7 @@ final class ApiSecurityController extends AbstractController
     }
 
     #[Route('/api/register', name: 'api_register', methods: ['POST'])]
-    public function register(Request $request, UserPasswordHasherInterface $hasher, ValidatorInterface $validator, EntityManagerInterface $em, UserRepository $userRepo): Response
+    public function register(Request $request, UserPasswordHasherInterface $hasher, ValidatorInterface $validator, EntityManagerInterface $em, UserRepository $userRepo, Security $security): Response
     {
         // Obtention des données envoyées dans le corps de la requête (en traitant l'erreur de désérialisation JSON)
         try {
@@ -180,6 +181,9 @@ final class ApiSecurityController extends AbstractController
 
         $em->flush();
 
+        // On connecte automatiquement l'utilisateur après son inscription
+        $security->login($user);
+
         return $this->json(
             [
                 'success' => true,
@@ -189,7 +193,7 @@ final class ApiSecurityController extends AbstractController
                     'username' => $user->getUserIdentifier(),
                     'roles' => $user->getRoles(),
                     'accountId' => $accountProfile->getId(),
-                ],
+                ]
             ]
         );
     }

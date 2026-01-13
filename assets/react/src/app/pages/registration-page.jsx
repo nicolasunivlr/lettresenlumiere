@@ -1,35 +1,38 @@
-import React from "react";
 import { RegistrationForm } from "../../features/auth/components/registration-form";
-import { authApi } from "../../shared/api/auth-api";
+import { useAuth } from "../../features/auth";
+import { Navigate, useNavigate } from "react-router-dom";
+import Loader from "../../shared/components/UI/Loader";
 
 export const RegistrationPage = () => {
-  const [genericError, setGenericError] = React.useState("");
-  const [validationErrors, setValidationErrors] = React.useState(null);
+  const { user, register, isChecking, errors, errorMessage, isAuthenticated } =
+    useAuth();
 
-  const register = async (registrationData) => {
-    setGenericError("");
-    setValidationErrors([]);
-    try {
-      const user = await authApi.register(registrationData);
+  const navigate = useNavigate();
 
-      console.log("Inscription réussie :", user);
-    } catch (e) {
-      if (e.errors) {
-        const errorsMap = {};
-        e.errors.forEach((error) => {
-          errorsMap[error.property] = error.message;
-        });
-        setValidationErrors(errorsMap);
-      } else {
-        setGenericError(e.message || "Erreur lors de l'inscription.");
-      }
+  const handleRegistration = async (registrationData) => {
+    const registered = await register(registrationData);
+
+    if (registered) {
+      alert("Inscription réussie !");
     }
   };
 
+  /*
+  Les prochaines lignes évite l'accès à la page
+  via l'URL si l'utilisateur est déjà authentifié.
+  */
+  if (isChecking) {
+    return null; // Ne rien monter pendant la vérification
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <>
-      {genericError ? <p style={{ color: "red" }}>{genericError}</p> : null}
-      <RegistrationForm errors={validationErrors} onSubmit={register} />
+      {errorMessage ? <p style={{ color: "red" }}>{errorMessage}</p> : null}
+      <RegistrationForm errors={errors} onSubmit={handleRegistration} />
     </>
   );
 };

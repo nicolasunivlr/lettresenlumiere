@@ -8,11 +8,12 @@ import { authService } from "../auth-service";
 export const AuthContext = React.createContext();
 
 const initialState = {
-  isLoading: false,
-  isChecking: true,
-  error: false,
-  isAuthenticated: false,
-  user: null,
+  isLoading: false, // boolean
+  isChecking: true, // boolean
+  errorMessage: false, // string | false
+  errors: null, // object | null
+  isAuthenticated: false, // boolean
+  user: null, // À définir
 };
 
 /**
@@ -74,6 +75,39 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const register = async (registrationData) => {
+    console.debug("[auth:register:start]");
+    dispatch({ type: AuthActions.REGISTER_START });
+    try {
+      const registration = await authApi.register(registrationData);
+      const loggedInUser = authService.createLoggedUser(registration);
+      console.debug("[auth:register:success]", loggedInUser);
+      dispatch({
+        type: AuthActions.REGISTER_SUCCESS,
+        payload: loggedInUser,
+      });
+      return true;
+    } catch (e) {
+      let errors = null;
+
+      if (e.errors) {
+        errors = {};
+        e.errors.forEach((error) => {
+          errors[error.property] = error.message;
+        });
+      }
+      console.debug("[auth:register:error]", e.message, errors);
+      dispatch({
+        type: AuthActions.REGISTER_ERROR,
+        payload: {
+          errorMessage: e.message,
+          errors,
+        },
+      });
+      return false;
+    }
+  };
+
   React.useEffect(() => {
     const checkAuth = async () => {
       console.debug("[auth:check_guest:start]");
@@ -108,7 +142,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ ...state, login, logout }}>
+    <AuthContext.Provider value={{ ...state, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );

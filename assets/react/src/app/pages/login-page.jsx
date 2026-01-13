@@ -4,7 +4,7 @@ import { LoginForm } from "../../features/auth/components/login-form";
 import logoLeL from "../../assets/images/Logolettresenlumiere.png";
 
 export const LoginPage = () => {
-  const { isAuthenticated, login, isLoading, error } = useAuth();
+  const { isAuthenticated, login, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 

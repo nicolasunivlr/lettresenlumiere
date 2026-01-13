@@ -92,11 +92,6 @@ export const authApi = {
             message: data.message || "Données d'inscription invalides.",
             errors: data.errors || [],
           };
-        case 409:
-          throw {
-            message: data.message || "Conflit lors de l'inscription.",
-            errors: data.errors || [],
-          };
         default:
           throw new Error(
             data.error ||

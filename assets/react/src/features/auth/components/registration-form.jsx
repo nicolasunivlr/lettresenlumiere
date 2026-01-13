@@ -9,11 +9,11 @@ export const RegistrationForm = ({
   ...formProps
 }) => {
   const [registrationData, setRegistrationData] = React.useState({
-    firstname: "toto",
-    lastname: "toto",
-    username: "toto",
-    password: "toto",
-    confirmPassword: "toto",
+    firstname: "",
+    lastname: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const handleOnChange = (e) => {
