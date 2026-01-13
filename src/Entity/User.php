@@ -36,12 +36,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?AccountProfile $accountProfile = null;
 
-
-    public function __construct()
-    {
-        $this->progressions = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
