@@ -53,6 +53,41 @@ class AuthClient {
     }
     return response.json();
   };
+
+  register = async (registrationData) => {
+    const response = await fetch(config.register, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(registrationData),
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      switch (response.status) {
+        case 400:
+          throw {
+            message: data.message || "Données d'inscription invalides.",
+            errors: data.errors || [],
+          };
+        case 409:
+          throw {
+            message: data.message || "Conflit lors de l'inscription.",
+            errors: data.errors || [],
+          };
+        default:
+          throw new Error(
+            data.error ||
+              data.message ||
+              data.detail ||
+              "Erreur lors de l'inscription."
+          );
+      }
+    }
+
+    return response.json();
+  };
 }
 
 export const authClient = new AuthClient();

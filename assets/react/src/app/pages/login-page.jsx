@@ -1,4 +1,4 @@
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../features/auth/providers/auth-provider";
 import { LoginForm } from "../../features/auth/components/login-form";
 import logoLeL from "../../assets/images/Logolettresenlumiere.png";
@@ -33,6 +33,7 @@ export const LoginPage = () => {
           Mode libre
         </button>
       </LoginForm>
+      <Link to="/register">Créer un compte</Link>
     </>
   );
 };
