@@ -1,7 +1,15 @@
-import { config } from "../../shared/config";
+import { config } from "../config";
 
-class AuthClient {
-  login = async (credentials) => {
+/**
+ * API client pour l'authentification
+ */
+export const authApi = {
+  /**
+   * Connexion d'un utilisateur
+   * @param {Object} credentials - { username: string, password: string }
+   * @returns {Promise<Object>} Données de l'utilisateur connecté
+   */
+  login: async (credentials) => {
     const response = await fetch(config.login, {
       method: "POST",
       credentials: "include",
@@ -22,9 +30,13 @@ class AuthClient {
     }
 
     return response.json();
-  };
+  },
 
-  logout = async () => {
+  /**
+   * Déconnexion d'un utilisateur
+   * @returns {Promise<void>}
+   */
+  logout: async () => {
     await fetch(config.logout, {
       credentials: "include",
       method: "POST",
@@ -32,9 +44,13 @@ class AuthClient {
         "Content-Type": "application/json",
       },
     });
-  };
+  },
 
-  check = async () => {
+  /**
+   * Vérification de l'authentification de l'utilisateur
+   * @returns {Promise<Object>} Données de l'utilisateur si authentifié
+   */
+  check: async () => {
     const response = await fetch(config.check, {
       credentials: "include",
       headers: {
@@ -52,7 +68,5 @@ class AuthClient {
       );
     }
     return response.json();
-  };
-}
-
-export const authClient = new AuthClient();
+  },
+};

@@ -2,7 +2,7 @@ import React from "react";
 import { config } from "../../../shared/config";
 import { AuthActions } from "../auth-actions";
 import { authReducer } from "../auth-reducer";
-import { authClient } from "../auth-client";
+import { authApi } from "../../../shared/api/auth-api";
 import { authService } from "../auth-service";
 
 export const AuthContext = React.createContext();
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     console.debug("[auth:login:start]");
     dispatch({ type: AuthActions.LOGIN_START });
     try {
-      const data = await authClient.login(credentials);
+      const data = await authApi.login(credentials);
       const loggedInUser = authService.createLoggedUser(data);
       console.debug("[auth:login:success]", loggedInUser);
       dispatch({ type: AuthActions.LOGIN_SUCCESS, payload: loggedInUser });
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: AuthActions.LOGOUT_START });
 
     try {
-      await authClient.logout();
+      await authApi.logout();
       console.debug("[auth:logout:success]");
       dispatch({ type: AuthActions.LOGOUT_SUCCESS });
     } catch (e) {
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
       dispatch({ type: AuthActions.CHECK_AUTH_START });
 
       try {
-        const data = await authClient.check();
+        const data = await authApi.check();
         const loggedInUser = authService.createLoggedUser(data);
         console.debug("[auth:check:success]", loggedInUser);
         dispatch({
