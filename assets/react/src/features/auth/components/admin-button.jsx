@@ -11,8 +11,8 @@ export const AdminButton = ({ label }) => {
     // Rediriger vers la page d'administration
     try {
       // 
-      navigate("/admin");
-      console.log("Redirection vers la page d'administration");
+      window.location.href = '/admin';
+      console.log("Redirection vers la page d'administration !");
 
     } catch (error) {
       console.error("Erreur lors de la navigation vers la page d'administration :", error);
