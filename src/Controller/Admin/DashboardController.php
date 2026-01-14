@@ -73,6 +73,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Exercice', 'fa fa-dumbbell', Contenu::class)
             ->setController(ExerciceCrudController::class);
 
+        yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-user', Contenu::class)
+            ->setController(UserCrudController::class);    
+
         yield MenuItem::linkToCrud('Couleur', 'fa fa-palette', Contenu::class)
             ->setController(CouleurCrudController::class);
 
