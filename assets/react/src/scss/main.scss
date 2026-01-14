@@ -16,7 +16,7 @@
 @use "components/inputLabel";
 @use "components/_modalExercise";
 @use "components/form";
-@use "components/input";
+@use "components/input-password";
 @use "components/profile-banner";
 
 //Import des styles unitaires de pages
@@ -27,3 +27,4 @@
 @use "pages/layoutExercice";
 @use "pages/resultPage";
 @use "pages/etapesPage";
+@use "pages/login-page";

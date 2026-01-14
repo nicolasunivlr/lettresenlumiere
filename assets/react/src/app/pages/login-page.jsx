@@ -26,14 +26,16 @@ export const LoginPage = () => {
   return isAuthenticated ? (
     <Navigate to={from} />
   ) : (
-    <>
+    <div className="login-page">
       <img style={{ margin: "2rem auto" }} src={logoLeL} alt="Logo Brain" />
-      <LoginForm onSubmit={handleSubmit} isSubmiting={isLoading}>
-        <button onClick={handleGuestMode} type="button">
-          Mode libre
-        </button>
-      </LoginForm>
-      <Link to="/register">Créer un compte</Link>
-    </>
+      <LoginForm onSubmit={handleSubmit} isSubmiting={isLoading} />
+      <button
+        className="guest-mode-button"
+        onClick={handleGuestMode}
+        type="button"
+      >
+        Mode libre
+      </button>
+    </div>
   );
 };

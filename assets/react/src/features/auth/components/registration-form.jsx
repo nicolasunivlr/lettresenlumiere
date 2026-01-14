@@ -1,5 +1,7 @@
 import React from "react";
 import { InputPassword } from "../../../shared/ui/input-password.jsx";
+import { FormControl, Input } from "../../../shared/ui/form-control.jsx";
+import { Link } from "react-router-dom";
 
 export const RegistrationForm = ({
   errors,
@@ -33,28 +35,7 @@ export const RegistrationForm = ({
     <form {...formProps} className="form-container" onSubmit={handleOnSubmit}>
       <h1 className="form__title">Créer un compte étudiant</h1>
 
-      <div className="form-group">
-        <label className="form__label" htmlFor="username">
-          Nom :
-        </label>
-        <input
-          type="text"
-          name="lastname"
-          id="lastname"
-          value={registrationData.lastname}
-          onChange={handleOnChange}
-          disabled={isSubmitting}
-          className="form__input"
-        />
-        {errors?.["lastname"] && (
-          <p className="input__error">⚠️ {errors["lastname"]}</p>
-        )}
-      </div>
-
-      <div className="form-group">
-        <label className="form__label" htmlFor="username">
-          Prénom :
-        </label>
+      <FormControl label="Prénom" error={errors?.["firstname"]}>
         <input
           type="text"
           name="firstname"
@@ -62,17 +43,21 @@ export const RegistrationForm = ({
           value={registrationData.firstname}
           onChange={handleOnChange}
           disabled={isSubmitting}
-          className="form__input"
         />
-        {errors?.["firstname"] && (
-          <p className="input__error">⚠️ {errors["firstname"]}</p>
-        )}
-      </div>
+      </FormControl>
 
-      <div className="form-group">
-        <label className="form__label" htmlFor="username">
-          Identifiant :
-        </label>
+      <FormControl label="Nom" error={errors?.["lastname"]}>
+        <input
+          type="text"
+          name="lastname"
+          id="lastname"
+          value={registrationData.lastname}
+          onChange={handleOnChange}
+          disabled={isSubmitting}
+        />
+      </FormControl>
+
+      <FormControl label="Identifiant" error={errors?.["username"]}>
         <input
           type="text"
           name="username"
@@ -80,49 +65,32 @@ export const RegistrationForm = ({
           value={registrationData.username}
           onChange={handleOnChange}
           disabled={isSubmitting}
-          className="form__input"
         />
+      </FormControl>
 
-        {errors?.["username"] && (
-          <p className="input__error">⚠️ {errors["username"]}</p>
-        )}
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="password" className="form__label">
-          Mot de passe :
-        </label>
+      <FormControl label="Mot de passe" error={errors?.["password"]}>
         <InputPassword
-          toggle={false}
-          className="form__input"
           name="password"
           id="password"
           value={registrationData.password}
           onChange={handleOnChange}
           disabled={isSubmitting}
         />
-        {errors?.["password"] && (
-          <p className="input__error">⚠️ {errors["password"]}</p>
-        )}
-      </div>
+      </FormControl>
 
-      <div className="form-group">
-        <label htmlFor="confirmPassword" className="form__label">
-          Confirmer le mot de passe :
-        </label>
+      <FormControl
+        label="Confirmer le mot de passe"
+        error={errors?.["confirmPassword"]}
+      >
         <InputPassword
-          toggle={false}
-          className="form__input"
+          toggle
           name="confirmPassword"
           id="confirmPassword"
           value={registrationData.confirmPassword}
           onChange={handleOnChange}
           disabled={isSubmitting}
         />
-        {errors?.["confirmPassword"] && (
-          <p className="input__error">⚠️ {errors["confirmPassword"]}</p>
-        )}
-      </div>
+      </FormControl>
 
       <div className="form-group form-group--inline">
         <input
@@ -131,6 +99,7 @@ export const RegistrationForm = ({
           value={isSubmitting ? "Inscription en cours..." : "S'inscrire"}
           disabled={isSubmitting}
         />
+        <Link to="/login">Annuler</Link>
       </div>
     </form>
   );

@@ -284,3 +284,19 @@
   height: 1.5em;
   flex-shrink: 0;
 }
+
+.guest-mode-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.8rem;
+  padding: 1em 1em;
+  background-color: v.$violet;
+  color: white;
+  border-radius: 8px;
+}
+
+.guest-mode-button:hover {
+  cursor: pointer;
+  background-color: v.$violet-pale;
+}

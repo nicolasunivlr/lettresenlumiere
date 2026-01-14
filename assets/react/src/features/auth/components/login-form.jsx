@@ -1,5 +1,7 @@
 import React from "react";
 import { InputPassword } from "../../../shared/ui/input-password.jsx";
+import { FormControl } from "../../../shared/ui/form-control.jsx";
+import { Link } from "react-router-dom";
 
 export const LoginForm = ({
   onSubmit,
@@ -29,10 +31,8 @@ export const LoginForm = ({
   return (
     <form {...formProps} className="form-container" onSubmit={handleOnSubmit}>
       <h1 className="form__title">Connexion</h1>
-      <div className="form-group">
-        <label className="form__label" htmlFor="username">
-          👤 Identifiant utilisateur :
-        </label>
+
+      <FormControl label="Identifiant">
         <input
           type="text"
           name="username"
@@ -40,23 +40,19 @@ export const LoginForm = ({
           value={credentials.username}
           onChange={handleOnChange}
           disabled={isSubmiting}
-          className="form__input"
         />
-      </div>
+      </FormControl>
 
-      <div className="form-group">
-        <label htmlFor="password" className="form__label">
-          🔒 Mot de passe
-        </label>
+      <FormControl label="Mot de passe">
         <InputPassword
-          className="form__input"
+          toggle
           name="password"
           id="password"
           value={credentials.password}
           onChange={handleOnChange}
           disabled={isSubmiting}
         />
-      </div>
+      </FormControl>
 
       <div className="form-group form-group--inline">
         <input
@@ -65,7 +61,7 @@ export const LoginForm = ({
           disabled={isSubmiting}
           value={isSubmiting ? "Connexion..." : "Se connecter"}
         />
-        {children}
+        <Link to="/register">Créer un compte</Link>
       </div>
     </form>
   );
