@@ -7,10 +7,13 @@ export const authReducer = (state, action) => {
         ...state,
         isLoading: true,
         errorMessage: false,
+        errors: null,
       };
     case AuthActions.LOGIN_SUCCESS:
       return {
         ...state,
+        errorMessage: false,
+        errors: null,
         isLoading: false,
         isAuthenticated: true,
         user: action.payload,
@@ -19,7 +22,8 @@ export const authReducer = (state, action) => {
       return {
         ...state,
         isLoading: false,
-        errorMessage: action.payload,
+        errorMessage: action.payload.errorMessage,
+        errors: action.payload.errors,
       };
     case AuthActions.LOGOUT_START:
       return {

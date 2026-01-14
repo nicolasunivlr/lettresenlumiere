@@ -4,6 +4,7 @@ import { FormControl } from "../../../shared/ui/form-control.jsx";
 import { Link } from "react-router-dom";
 
 export const LoginForm = ({
+  errors,
   onSubmit,
   isSubmiting,
   className,
@@ -32,7 +33,7 @@ export const LoginForm = ({
     <form {...formProps} className="form-container" onSubmit={handleOnSubmit}>
       <h1 className="form__title">Connexion</h1>
 
-      <FormControl label="Identifiant">
+      <FormControl label="Identifiant" error={errors?.username}>
         <input
           type="text"
           name="username"
@@ -43,7 +44,7 @@ export const LoginForm = ({
         />
       </FormControl>
 
-      <FormControl label="Mot de passe">
+      <FormControl label="Mot de passe" error={errors?.password}>
         <InputPassword
           toggle
           name="password"

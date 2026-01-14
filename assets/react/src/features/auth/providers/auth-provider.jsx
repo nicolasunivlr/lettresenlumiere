@@ -44,7 +44,38 @@ export const AuthProvider = ({ children }) => {
       return true;
     } catch (e) {
       console.debug("[auth:login:error]", e.message);
-      dispatch({ type: AuthActions.LOGIN_ERROR, payload: e.message });
+      /*
+      FIXME: faire en sorte que le backend renvoie des erreurs
+      exploitables pour l'affichage dans le formulaire. En attendant
+      on fait un parsing basique du message d'erreur.
+      ------------------------------------------------
+      L'authenticator Symfony renvoie des erreurs sous cette forme :
+      ## Validation Errors (à traiter pour les présenter dans le formulaire)
+      ### The key "username" must be a non-empty string.
+      ### The key "password" must be a non-empty string.
+      ## Authentification Errors
+      ### Identifiants invalides. (ok en l'état)
+      */
+      let validationError = null;
+      const isValidationError =
+        e.message.includes("username") || e.message.includes("password");
+
+      if (isValidationError) {
+        validationError = {};
+        if (e.message.includes("username")) {
+          validationError.username = "L'identifiant est requis.";
+        }
+        if (e.message.includes("password")) {
+          validationError.password = "Le mot de passe est requis.";
+        }
+      }
+      dispatch({
+        type: AuthActions.LOGIN_ERROR,
+        payload: {
+          errorMessage: isValidationError ? null : e.message,
+          errors: validationError,
+        },
+      });
       return false;
     }
   };
