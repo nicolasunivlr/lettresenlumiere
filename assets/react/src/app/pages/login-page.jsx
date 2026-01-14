@@ -1,10 +1,10 @@
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../features/auth/providers/auth-provider";
 import { LoginForm } from "../../features/auth/components/login-form";
 import logoLeL from "../../assets/images/Logolettresenlumiere.png";
 
 export const LoginPage = () => {
-  const { isAuthenticated, login, isLoading } = useAuth();
+  const { isAuthenticated, login, isLoading, errorMessage } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
