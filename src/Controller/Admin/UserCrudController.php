@@ -23,6 +23,17 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
+    public function createEntity(string $entityFqcn): User
+    {
+        $user = new User();
+        // Créer l'AccountProfile dès la création de l'entité pour que les champs imbriqués fonctionnent
+        $accountProfile = new AccountProfile();
+        $accountProfile->setUser($user);
+        $user->setAccountProfile($accountProfile);
+        
+        return $user;
+    }
+
     // Configure les champs affichés dans les formulaires et listes
     public function configureFields(string $pageName): iterable
     {
@@ -32,6 +43,24 @@ class UserCrudController extends AbstractCrudController
                 ->setLabel('Nom d\'utilisateur')
                 ->setRequired(true),
         ];
+
+        // Champs du profil utilisateur (AccountProfile)
+        $fields[] = TextField::new('accountProfile.firstname')
+            ->setLabel('Prénom')
+            ->setRequired(true)
+            ->setHelp('Prénom de l\'utilisateur')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getAccountProfile()?->getFirstname() ?? '-';
+            });
+
+        $fields[] = TextField::new('accountProfile.lastname')
+            ->setLabel('Nom')
+            ->setRequired(true)
+            ->setHelp('Nom de famille de l\'utilisateur')
+            ->formatValue(function ($value, $entity) {
+                return $entity->getAccountProfile()?->getLastname() ?? '-';
+            });
+
 
         // Champ mot de passe différent selon la page en cours
         if ($pageName === 'new') {
@@ -43,7 +72,9 @@ class UserCrudController extends AbstractCrudController
             $fields[] = TextField::new('password')
                 ->setLabel('Nouveau mot de passe')
                 ->setRequired(false)
-                ->setHelp('Laissez vide pour ne pas modifier le mot de passe');
+                ->setHelp('Laissez vide pour ne pas modifier le mot de passe')
+                ->setFormTypeOption('mapped', false)
+                ->setFormTypeOption('attr', ['value' => ""]);
         }
 
         // Champ rôles (Administrateur/Utilisateur)
@@ -80,27 +111,39 @@ class UserCrudController extends AbstractCrudController
                 $entityManager->persist($accountProfile);
             }
         }
-
+       
         parent::persistEntity($entityManager, $entityInstance);
     }
 
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         if ($entityInstance instanceof User) {
-            // Si un nouveau mot de passe est fourni, le hasher
-            $plainPassword = $entityInstance->getPassword();
-            if (!empty($plainPassword)) {
+            // Sauvegarder le mot de passe actuel avant la mise à jour
+            $originalEntity = $entityManager->getUnitOfWork()->getOriginalEntityData($entityInstance);
+            $currentPassword = $originalEntity['password'] ?? null;
+            
+            // Récupérer le nouveau mot de passe depuis le formulaire
+            $request = $this->getContext()->getRequest();
+            $formData = $request->request->all();
+            
+            // Essayer différentes clés possibles pour le formulaire
+            $plainPassword = null;
+            if (isset($formData['User']['password']) && !empty($formData['User']['password'])) {
+                $plainPassword = $formData['User']['password'];
+            } elseif (isset($formData['password']) && !empty($formData['password'])) {
+                $plainPassword = $formData['password'];
+            }
+            
+            if ($plainPassword) {
+                // Hasher le nouveau mot de passe
                 $hashedPassword = $this->passwordHasher->hashPassword(
                     $entityInstance,
                     $plainPassword
                 );
                 $entityInstance->setPassword($hashedPassword);
-            } else {
-                // Récupérer le mot de passe actuel depuis la base de données
-                $originalEntity = $entityManager->getUnitOfWork()->getOriginalEntityData($entityInstance);
-                if (isset($originalEntity['password'])) {
-                    $entityInstance->setPassword($originalEntity['password']);
-                }
+            } elseif ($currentPassword) {
+                // Conserver le mot de passe actuel si aucun nouveau n'est fourni
+                $entityInstance->setPassword($currentPassword);
             }
 
             // S'assurer qu'un AccountProfile existe
@@ -114,4 +157,5 @@ class UserCrudController extends AbstractCrudController
 
         parent::updateEntity($entityManager, $entityInstance);
     }
+
 }
