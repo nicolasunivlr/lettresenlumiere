@@ -2,11 +2,20 @@
 
 namespace App\Controller;
 
+use App\Dto\RegistrationDto;
+use App\Entity\AccountProfile;
 use App\Entity\User;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Exception\JsonException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ApiSecurityController extends AbstractController
 {
@@ -34,6 +43,18 @@ final class ApiSecurityController extends AbstractController
             );
         }
 
+        $accountProfile = $user->getAccountProfile();
+        // Ne doit pas arriver car on lie un User à un AccountProfile dès la création du User
+        if (null === $accountProfile) {
+            return $this->json(
+                [
+                    'success' => false,
+                    'message' => 'Your user account is not linked to an account profile.'
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+
         return $this->json([
             'success' => true,
             'message' => 'You have been logged in',
@@ -41,7 +62,7 @@ final class ApiSecurityController extends AbstractController
                 'id' => $user->getId(),
                 'username' => $user->getUserIdentifier(),
                 'roles' => $user->getRoles(),
-                'accountId' => $user->getAccountProfile()->getId(),
+                'accountId' => $accountProfile->getId(),
             ],
         ]);
     }
@@ -89,6 +110,91 @@ final class ApiSecurityController extends AbstractController
         return $this->redirect('/login');
     }
 
+    #[Route('/api/register', name: 'api_register', methods: ['POST'])]
+    public function register(Request $request, UserPasswordHasherInterface $hasher, ValidatorInterface $validator, EntityManagerInterface $em, UserRepository $userRepo, Security $security): Response
+    {
+        // Obtention des données envoyées dans le corps de la requête (en traitant l'erreur de désérialisation JSON)
+        try {
+            $registrationData = $request->toArray();
+        } catch (JsonException $e) {
+            return $this->json(
+                [
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
 
+        // Transport des données dans un DTO pour validation
+        $dto = new RegistrationDto($registrationData);
+        $validationErrors = [];
 
+        // 1. Validation des données du DTO
+        $violations = $validator->validate($dto);
+
+        if (count($violations) > 0) {
+            foreach ($violations as $violation) {
+                $validationErrors[] = [
+                    'property' => $violation->getPropertyPath(),
+                    'message' => $violation->getMessage(),
+                ];
+            }
+        }
+
+        // 2. Unicité du nom d'utilisateur
+        $existingUser = $userRepo->findOneBy(['username' => $dto->getUsername()]);
+        if (null !== $existingUser) {
+            $validationErrors[] = [
+                'property' => 'username',
+                'message' => 'Ce nom d\'utilisateur est déjà pris.',
+            ];
+        }
+
+        // S'il y a des erreurs de validation, on les renvoie
+        if (count($validationErrors) > 0) {
+            return $this->json(
+                [
+                    'success' => false,
+                    'message' => 'Validation errors occurred.',
+                    'errors' => $validationErrors,
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        // On peut enfin créer l'utilisateur
+        $user = new User();
+        $user->setUsername($dto->getUsername());
+        $hashedPassword = $hasher->hashPassword($user, $dto->getPassword());
+        $user->setPassword($hashedPassword);
+
+        // On lui associe un profil de compte
+        $accountProfile = new AccountProfile();
+        $accountProfile->setFirstname($dto->getFirstname());
+        $accountProfile->setLastname($dto->getLastname());
+        $accountProfile->setUser($user);
+        $user->setAccountProfile($accountProfile);
+
+        $em->persist($user);
+        $em->persist($accountProfile);
+
+        $em->flush();
+
+        // On connecte automatiquement l'utilisateur après son inscription
+        $security->login($user);
+
+        return $this->json(
+            [
+                'success' => true,
+                'message' => "User registered successfully.",
+                'data' => [
+                    'id' => $user->getId(),
+                    'username' => $user->getUserIdentifier(),
+                    'roles' => $user->getRoles(),
+                    'accountId' => $accountProfile->getId(),
+                ]
+            ]
+        );
+    }
 }

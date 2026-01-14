@@ -5,7 +5,7 @@ import React from "react";
  *
  * Props :
  * @param {string} className - Classe CSS additionnelle pour le conteneur du composant.
- * @param {boolean} toggle - Indique si le bouton de révélation doit être affiché (par défaut : true).
+ * @param {boolean} toggle - Indique si le bouton de révélation doit être affiché (par défaut : false).
  * @param {object} inputProps - Toutes les autres props standard pour un élément input.
  *
  * Exemple d'utilisation :
@@ -21,15 +21,20 @@ import React from "react";
 export const InputPassword = ({ className, toggle, ...inputProps }) => {
   const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
 
+  // La props est facultative, on lui assigne `false` par défaut
+  const showToggle = toggle === undefined ? false : toggle;
+  // Pas encore en props, mais à envisager pour plus tard
+  const titleWhenVisible = "Cacher le mot de passe";
+  const titleWhenHidden = "Révèler le mot de passe";
+  const iconWhenVisible = <span className="default-icon" />;
+  const iconWhenHidden = <span className="default-icon" />;
+
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prev) => !prev);
   };
 
-  // La props est facultative, true par défaut
-  const showToggle = toggle !== undefined ? toggle : true;
-
   return (
-    <div className={`input-password ${className}`}>
+    <div className="input-password">
       <input
         type={isPasswordVisible ? "text" : "password"}
         className="input-password__inner"
@@ -39,14 +44,12 @@ export const InputPassword = ({ className, toggle, ...inputProps }) => {
         <button
           onClick={togglePasswordVisibility}
           type="button"
-          className="input-password__toggle"
-          title={
-            isPasswordVisible
-              ? "Cacher le mot de passe"
-              : "Révèler le mot de passe"
-          }
+          className={`input-password__toggle input-password__toggle--${
+            isPasswordVisible ? "visible" : "hidden"
+          }`}
+          title={isPasswordVisible ? titleWhenVisible : titleWhenHidden}
         >
-          {isPasswordVisible ? "🙈" : "🐵"}
+          {isPasswordVisible ? iconWhenVisible : iconWhenHidden}
         </button>
       ) : null}
     </div>

@@ -86,12 +86,20 @@ export const authApi = {
 
     if (!response.ok) {
       const data = await response.json();
-      throw new Error(
-        data.error ||
-          data.message ||
-          data.detail ||
-          "Erreur lors de l'inscription."
-      );
+      switch (response.status) {
+        case 400:
+          throw {
+            message: data.message || "Données d'inscription invalides.",
+            errors: data.errors || [],
+          };
+        default:
+          throw new Error(
+            data.error ||
+              data.message ||
+              data.detail ||
+              "Erreur lors de l'inscription."
+          );
+      }
     }
 
     return response.json();

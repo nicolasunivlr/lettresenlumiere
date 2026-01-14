@@ -4,7 +4,7 @@ import { LoginForm } from "../../features/auth/components/login-form";
 import logoLeL from "../../assets/images/Logolettresenlumiere.png";
 
 export const LoginPage = () => {
-  const { isAuthenticated, login, isLoading, error } = useAuth();
+  const { isAuthenticated, login, isLoading, errorMessage } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -26,13 +26,16 @@ export const LoginPage = () => {
   return isAuthenticated ? (
     <Navigate to={from} />
   ) : (
-    <>
+    <div className="login-page">
       <img style={{ margin: "2rem auto" }} src={logoLeL} alt="Logo Brain" />
-      <LoginForm onSubmit={handleSubmit} isSubmiting={isLoading}>
-        <button onClick={handleGuestMode} type="button">
-          Mode libre
-        </button>
-      </LoginForm>
-    </>
+      <LoginForm onSubmit={handleSubmit} isSubmiting={isLoading} />
+      <button
+        className="guest-mode-button"
+        onClick={handleGuestMode}
+        type="button"
+      >
+        Mode libre
+      </button>
+    </div>
   );
 };

@@ -6,7 +6,7 @@ export const authReducer = (state, action) => {
       return {
         ...state,
         isLoading: true,
-        error: false,
+        errorMessage: false,
       };
     case AuthActions.LOGIN_SUCCESS:
       return {
@@ -19,7 +19,7 @@ export const authReducer = (state, action) => {
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        errorMessage: action.payload,
       };
     case AuthActions.LOGOUT_START:
       return {
@@ -38,14 +38,14 @@ export const authReducer = (state, action) => {
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        errorMessage: action.payload,
       };
 
     case AuthActions.CHECK_AUTH_START:
       return {
         ...state,
         isChecking: true,
-        error: false,
+        errorMessage: false,
       };
     case AuthActions.CHECK_AUTH_SUCCESS:
       return {
@@ -60,6 +60,27 @@ export const authReducer = (state, action) => {
         isChecking: false,
         isAuthenticated: false,
         user: null,
+      };
+    case AuthActions.REGISTER_START:
+      return {
+        ...state,
+        isLoading: true,
+        errorMessage: false,
+        errors: null,
+      };
+    case AuthActions.REGISTER_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        isAuthenticated: true,
+        user: action.payload,
+      };
+    case AuthActions.REGISTER_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        errorMessage: action.payload.errorMessage,
+        errors: action.payload.errors,
       };
     default:
       return state;

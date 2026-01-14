@@ -15,6 +15,7 @@ const config = {
   accountProfiles: `${baseUrl}/api/account_profiles`,
   login: `${baseUrl}/api/login`,
   logout: `${baseUrl}/api/logout`,
+  register: `${baseUrl}/api/register`,
   check: `${baseUrl}/api/check`, // TODO: remplacer par 'check'
   register: `${baseUrl}/api/register`,
   accountProfilesMe: `${baseUrl}/api/account_profile/me`,

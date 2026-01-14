@@ -12,6 +12,7 @@ import { AccessControl } from "../features/auth";
 import { LoginPage } from "./pages/login-page";
 import { HomePage } from "./pages/home-page";
 import { RootLayout } from "./layouts/root-layout";
+import { RegistrationPage } from "./pages/registration-page";
 
 export const App = () => {
   return (
@@ -34,6 +35,7 @@ export const App = () => {
           </Route>
 
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegistrationPage />} />
 
           <Route path="/credits" element={<Credits />} />
           <Route path="*" element={<Navigate to="/" replace />} />

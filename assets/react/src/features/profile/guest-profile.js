@@ -1,13 +1,20 @@
 import { config } from "../../shared/config";
 
 export class GuestProfile {
-
   isGuest() {
     return true;
   }
 
   isAdmin() {
     return false;
+  }
+
+  getFirstname() {
+    throw new Error("Méthode non implémentée pour le profil invité.");
+  }
+
+  getLastname() {
+    throw new Error("Méthode non implémentée pour le profil invité.");
   }
 
   async getProgressForSequence(sequence) {

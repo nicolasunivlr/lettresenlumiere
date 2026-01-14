@@ -4,10 +4,20 @@ import { progressionsApi } from "../../shared/api/progressions-api";
 export class AccountProfile {
   constructor(data) {
     this.id = data.id;
+    this.firstname = data.firstname;
+    this.lastname = data.lastname;
   }
 
   isGuest() {
     return false;
+  }
+
+  getFirstname() {
+    return this.firstname;
+  }
+
+  getLastname() {
+    return this.lastname;
   }
 
   async getProgressForSequence(sequence) {
