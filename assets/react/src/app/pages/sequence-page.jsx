@@ -99,24 +99,27 @@ export const SequencePage = () => {
             videoUrl={sequence.videoUrl}
             isVideoOpenOnMount={UI.currentExerciseIndex === 0}
           />
-          {UI.showProgress && (
-            <ProgressCircles
-              count={sequence.exercises.length}
-              current={UI.currentExerciseIndex}
-              progress={progress}
-              onChange={(next) => goToExercise(next)}
-            />
-          )}
-
-          {UI.showSummary ? (
-            <div>Affichage des résultats de la séquence...</div>
-          ) : (
-            <ExerciseRenderer
-              key={`attempt-${UI.attemptCount}`}
-              exercise={sequence.exercises[UI.currentExerciseIndex]}
-              onDone={handleExerciseDone}
-            />
-          )}
+          <div className="sequence-group">
+            {UI.showProgress && (
+              <ProgressCircles
+                count={sequence.exercises.length}
+                current={UI.currentExerciseIndex}
+                progress={progress}
+                onChange={(next) => goToExercise(next)}
+              />
+            )}
+            <div className="sequence-group__content">
+            {UI.showSummary ? (
+              <div>Affichage des résultats de la séquence...</div>
+            ) : (
+              <ExerciseRenderer
+                key={`attempt-${UI.attemptCount}`}
+                exercise={sequence.exercises[UI.currentExerciseIndex]}
+                onDone={handleExerciseDone}
+              />
+            )}
+            </div>
+          </div>
 
           {UI.showNextButton && (
             <NextExerciseButton onClick={handleNextExercise} />
