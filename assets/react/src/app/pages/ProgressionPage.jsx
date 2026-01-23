@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import { useProfile } from "../../features/profile/profile-provider";
+import { useAuth } from "../../features/auth/providers/auth-provider";
 import { profilesApi } from "../../shared/api/profiles-api";
 import Loader from "../../shared/components/UI/Loader";
-import Header from "../../shared/components/Header";
+
+import GraphiqueProgressioIcon  from "../../assets/images/icones/graphique.png"
+import ZoomIcon from "../../assets/images/icones/zoom-icon.png"
+import GoldMedal from "../../assets/images/gamification/medals/goldMedal-icon.png"
+import SilverMedal from "../../assets/images/gamification/medals/silverMedal-icon.png"
+import BronzeMedal from "../../assets/images/gamification/medals/bronzeMedal-icon.png"
 
 export const ProgressionPage = () => {
+
   const { profile } = useProfile();
+  const { user } = useAuth();
   const [progressions, setProgressions] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,7 +51,6 @@ export const ProgressionPage = () => {
   if (error) {
     return (
       <div className="error-container">
-        <Header />
         <div className="p-4">
           <p className="text-red-600">Erreur: {error}</p>
         </div>
@@ -51,10 +58,17 @@ export const ProgressionPage = () => {
     );
   }
 
+  // Renvoyer la médaile adaptée au score obtenu
+  const getMedalByScore = (score) => {
+    if (score >= 80) return GoldMedal;
+    if (score >= 50) return SilverMedal;
+    if (score > 0) return BronzeMedal;
+    return null;
+  };
+    
   if (!profile || profile.isGuest()) {
     return (
       <div>
-        <Header />
         <div className="p-4">
           <p>Vous devez être connecté pour voir vos progressions.</p>
         </div>
@@ -63,55 +77,72 @@ export const ProgressionPage = () => {
   }
 
   return (
-    <div>
-      <Header />
-      <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-6">Mes Progressions</h1>
-        
-        {!progressions || progressions.length === 0 ? (
-          <p className="text-gray-600">Aucune progression disponible.</p>
-        ) : (
-          <div className="space-y-6">
-            {progressions.map((etape) => (
-              <div key={etape.id} className="border rounded-lg p-4 shadow-md">
-                <h2 className="text-2xl font-semibold mb-4">
-                  {etape.nom}
-                </h2>
-                
-                {etape.sequences.length === 0 ? (
-                  <p className="text-gray-500">Aucune séquence disponible.</p>
-                ) : (
-                  <div className="space-y-3">
-                    {etape.sequences.map((sequence) => (
-                      <div
-                        key={sequence.id}
-                        className="border-l-4 border-blue-500 pl-4 py-2"
-                      >
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h3 className="text-xl font-medium">
-                              {sequence.nom}
-                            </h3>
-                          </div>
-                          <div className="text-right">
-                            {sequence.score_moyen !== null ? (
-                              <span className="text-lg font-bold text-blue-600">
-                                {sequence.score_moyen}%
-                              </span>
-                            ) : (
-                              <span className="text-gray-400">Non commencé</span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+  <div className="container-progression">
+
+     {/* Header */}
+    <div className="container-progression__header">
+      <img
+        src={GraphiqueProgressioIcon}
+        alt="Graphique progression"
+        className="header__icon"
+      />
+      <h2 className="header__title">Mes progressions</h2>
     </div>
-  );
+
+    {/* Cartes des étapes de progressions */}
+    {!progressions || progressions.length === 0 ? (
+      <p>Aucune progression disponible.</p>
+    ) : (
+      <div className="progression-grid">
+        {progressions.map((etape) => (
+          <div key={etape.id} className="progression-card">
+            <h2 className="progression-card__title">{etape.nom}</h2>
+            <table className="progression-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {etape.sequences.map((sequence) => (
+                  <tr key={sequence.id}>
+                    {/* Nom de la séquence */}
+                    <td>{sequence.nom}</td>
+                    {/* Score moyen des exercices de la séquence et medaille */}
+                    <td>
+                      {sequence.score_moyen !== null && (
+                        <div className="score-content">
+                          {getMedalByScore(sequence.score_moyen) && (
+                            <img
+                              className="medal-icon"
+                              src={getMedalByScore(sequence.score_moyen)}
+                              alt="medal"
+                            />
+                          )}
+                          <span>{sequence.score_moyen}%</span>
+                        </div>
+                      )}
+                    </td>
+                    {/* Lien vers le détail des résultat de la séquence */}
+                    <td>
+                      <div className="col-right">
+                        {sequence.score_moyen !== null && (
+                          <img className="zoom-icon" src={ZoomIcon} alt="" />
+                        )}
+                      </div>
+                    </td>
+
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+);
+
 };
