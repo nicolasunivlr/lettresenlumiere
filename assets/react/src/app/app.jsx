@@ -13,6 +13,7 @@ import { LoginPage } from "./pages/login-page";
 import { HomePage } from "./pages/home-page";
 import { RootLayout } from "./layouts/root-layout";
 import { RegistrationPage } from "./pages/registration-page";
+import { ProgressionPage } from "./pages/ProgressionPage";
 
 export const App = () => {
   return (
@@ -24,6 +25,7 @@ export const App = () => {
             <Route path="/alphabet" element={<LayoutExercises />} />
             <Route path="/graphemes" element={<LayoutExercises />} />
             <Route path="/etapes" element={<EtapesPage />} />
+            <Route path="/progression" element={<ProgressionPage />} />
             <Route
               path="/sequence/:id"
               element={
