@@ -52,12 +52,15 @@ const ResultPage = ({ context, circleOnClick, progress }) => {
     return { scoreAvg, medalSrc, bgc };
   };
 
+  // ---------------------------------------------------------------------------
+  // TODO: à modifié en utilisant la progression stockée.
   useEffect(() => {
     const sessionScores = JSON.parse(sessionStorage.getItem("scores")) || {};
     // ajout du scoreAvg en tant qu'objet avec l'id de la séquence
     sessionScores[id] = scoreAvg;
     sessionStorage.setItem("scores", JSON.stringify(sessionScores));
   }, [context]);
+  // ---------------------------------------------------------------------------
 
   const handleOnClick = () => {
     navigate({
@@ -88,17 +91,6 @@ const ResultPage = ({ context, circleOnClick, progress }) => {
           score={scoreAvg.toFixed()}
         /> */}
       </div>
-      {/* <div className="results"> */}
-      {/* content.map((exercice, index) => (
-            <div key={index} className="result">
-              <CircleProgress
-                score={exercice.score}
-                number={index + 1}
-                onClick={() => circleOnClick(exercice.id)}
-              />
-              <p>{exercice.consigne}</p>
-            </div>
-          )) */}
       <ProgressCircles
         count={context.exercises?.length}
         containerClassName="results"
@@ -106,7 +98,6 @@ const ResultPage = ({ context, circleOnClick, progress }) => {
         labels={context.exercises.map((e) => e.consigne)}
         onChange={console.log} // WIP: Naviguer vers l'ex. correspondant (attention le cb prend l'index et pas l'id de l'exercie)
       />
-      {/* </div> */}
 
       <NextExerciseButton onClick={handleOnClick} />
     </section>
