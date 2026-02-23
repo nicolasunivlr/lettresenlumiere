@@ -9,10 +9,26 @@ import PDFModal from "../UI/PDFModal";
 import { MedalScore } from "./medal-score";
 import { ProgressCircles } from "../../../features/sequences/components/progress-circle";
 
+/**
+ * Helper pour calculer la moyennes des scores et la transférer au ResultPage.
+ *
+ * @param {array} progress
+ * @returns La moyenne des scores de la séquence, ou 0 si non applicable.
+ */
+const calcAvgScore = (progress) => {
+  if (!progress || progress.length === 0) {
+    return 0;
+  }
+  const totalScore = progress.reduce((acc, p) => acc + (p?.score || 0), 0);
+  return totalScore / progress.length;
+};
+
 const ResultPage = ({ context, circleOnClick, progress }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { exercises, etapeId } = context;
+  const { exercises, etapeId, nom } = context;
+
+  const averageScore = calcAvgScore(progress);
 
   /**
    * @deprecated Pour le mode **SEQUENCE**, le composant parent renvoit la
@@ -75,7 +91,7 @@ const ResultPage = ({ context, circleOnClick, progress }) => {
     <section className="results-container">
       <div className="header-result">
         {progress ? (
-          <MedalScore progress={progress} />
+          <MedalScore averageScore={averageScore} />
         ) : (
           /* Pour garder la compatibilité avec les autres modes d'exercices. */
           <div className={`medal-score ${bgc}`}>
@@ -83,13 +99,14 @@ const ResultPage = ({ context, circleOnClick, progress }) => {
             <p>{scoreAvg.toFixed()}%</p>
           </div>
         )}
-        {/*
-        <PDFModal
-          content={content}
-          sequence={sequence.nom}
-          etapeid={etapeid}
-          score={scoreAvg.toFixed()}
-        /> */}
+        {
+          <PDFModal
+            content={exercises}
+            sequence={nom}
+            etapeid={etapeId}
+            score={scoreAvg.toFixed()}
+            progress={progress}
+          />}
       </div>
       <ProgressCircles
         count={context.exercises?.length}
