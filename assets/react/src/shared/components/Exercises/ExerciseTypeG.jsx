@@ -7,6 +7,8 @@ import Instruction from "../Instruction";
 import ModalExerciseG from "../UI/ModalExerciseG";
 import usePlay from "../../hooks/usePlay";
 
+const TIMER_DURATION = 1; // Durée du timer en secondes
+
 const ExerciseTypeG = (props) => {
   const { content, onDone } = props;
   // Ajout d'une clé unique pour le timer
@@ -42,7 +44,7 @@ const ExerciseTypeG = (props) => {
     } else {
       // Sinon, filtrer pour n'avoir que les éléments non encore utilisés
       availableResponses = availableContent.filter(
-        (item) => !usedResponses.includes(item.element)
+        (item) => !usedResponses.includes(item.element),
       );
     }
 
@@ -80,7 +82,7 @@ const ExerciseTypeG = (props) => {
       const shuffledContent = shuffle([...content.contenus]);
       const selectedContent = shuffledContent.slice(
         0,
-        Math.min(6, shuffledContent.length)
+        Math.min(6, shuffledContent.length),
       );
 
       // Préparer les éléments pour l'affichage
@@ -105,7 +107,7 @@ const ExerciseTypeG = (props) => {
   useEffect(() => {
     if (response && exerciseStarted && timerKey > 0) {
       const currentItem = contentExercise.find(
-        (item) => item.element === response
+        (item) => item.element === response,
       );
       if (currentItem.sons_url) {
         play(currentItem);
@@ -150,7 +152,7 @@ const ExerciseTypeG = (props) => {
           return { ...item, answer: isCorrect };
         }
         return item;
-      })
+      }),
     );
   };
 
@@ -183,7 +185,7 @@ const ExerciseTypeG = (props) => {
         isTrue = !isTrue;
         setAnswerLabel(
           isTrue ? true : undefined,
-          contentExercise.findIndex((item) => item.element === response)
+          contentExercise.findIndex((item) => item.element === response),
         );
       }, 370);
 
@@ -192,7 +194,7 @@ const ExerciseTypeG = (props) => {
         setAnswerLabel(undefined, index);
         setAnswerLabel(
           undefined,
-          contentExercise.findIndex((item) => item.element === response)
+          contentExercise.findIndex((item) => item.element === response),
         );
         newResponse(); // Utilise la nouvelle fonction
         setAttempt(attempt + 1);
@@ -207,7 +209,9 @@ const ExerciseTypeG = (props) => {
 
   const memoizedTimer = useMemo(() => {
     if (!exerciseStarted) return null;
-    return <Timer key={timerKey} duration={30} onComplete={endTimer} />;
+    return (
+      <Timer key={timerKey} duration={TIMER_DURATION} onComplete={endTimer} />
+    );
   }, [timerKey, exerciseStarted]);
 
   const displayLabels = (contentExercise) => {

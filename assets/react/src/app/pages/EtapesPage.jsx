@@ -30,7 +30,7 @@ function EtapesPage() {
 
   const handleAccordionToggle = (accordionId, isOpen) => {
     if (isOpen) {
-      // Si un accordéon s'ouvre, mettre à jour l'URL avec son ID
+      // Si un accordéon s'ouvre, mettre à jour l'URL avec ID de l'étape correspondante
       setSearchParams({ id: accordionId }, { replace: true });
     } else {
       // Si un accordéon se ferme, revenir à l'URL de base
@@ -73,7 +73,7 @@ function EtapesPage() {
               const sequencesFiltrees = etape.sequences.filter(
                 (sequence) =>
                   sequence.nom.toLowerCase().includes(searchTerm) &&
-                  !sequence.nom.toLowerCase().includes("bilan")
+                  !sequence.nom.toLowerCase().includes("bilan"),
               );
 
               if (sequencesFiltrees.length > 0) {
@@ -100,7 +100,7 @@ function EtapesPage() {
         </div>
       ) : (
         <Accordion
-          defaultOpenId={searchParams.get("id")}
+          defaultOpenId={searchParams.get("id") || null}
           onToggle={handleAccordionToggle}
         >
           {etapesFiltrees.map((etape, index) => (

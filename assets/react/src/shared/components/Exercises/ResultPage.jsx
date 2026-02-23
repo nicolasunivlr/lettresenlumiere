@@ -6,21 +6,32 @@ import BronzeMedal from "../../../assets/images/gamification/medailleetapebronze
 import NextExerciseButton from "../UI/NextExerciseButton";
 import { useParams, useNavigate } from "react-router-dom";
 import PDFModal from "../UI/PDFModal";
+import { MedalScore } from "./medal-score";
+import { ProgressCircles } from "../../../features/sequences/components/progress-circle";
 
-const ResultPage = (props) => {
-  const { content, circleOnClick, sequence, etapeid } = props;
+const ResultPage = ({ context, circleOnClick, progress }) => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { exercises, etapeId } = context;
+
+  /**
+   * @deprecated Pour le mode **SEQUENCE**, le composant parent renvoit la
+   * progression correspondante. Et c'est le composant dédié à l'affichage du
+   * score (`MedalScore`) qui se charge de déterminer quelle médaille afficher
+   * en fonction du score moyen.
+   *
+   * @note Pour le mode **ALPHABET** et **GRAPHEMES** cette fonction est
+   * toujours utilisée pour le moment.
+   */
   const showScore = () => {
-    if (!content || content.length === 0) {
+    if (!exercises || exercises.length === 0) {
       return { scoreAvg: 0, medalSrc: null };
     }
-
-    const scoreTotal = content.reduce(
+    const scoreTotal = exercises.reduce(
       (acc, exercice) => acc + (exercice.score || 0),
-      0
+      0,
     );
-    const scoreAvg = Math.round((scoreTotal / content.length) * 100) / 100;
+    const scoreAvg = Math.round((scoreTotal / exercises.length) * 100) / 100;
     let medalSrc = "";
 
     let bgc;
@@ -46,10 +57,13 @@ const ResultPage = (props) => {
     // ajout du scoreAvg en tant qu'objet avec l'id de la séquence
     sessionScores[id] = scoreAvg;
     sessionStorage.setItem("scores", JSON.stringify(sessionScores));
-  }, [content]);
+  }, [context]);
 
   const handleOnClick = () => {
-    navigate(`/etapes/${sequence.etape.id}`);
+    navigate({
+      pathname: "/etapes",
+      search: `?id=${etapeId}`,
+    });
   };
 
   const { scoreAvg, medalSrc, bgc } = showScore();
@@ -57,32 +71,42 @@ const ResultPage = (props) => {
   return (
     <section className="results-container">
       <div className="header-result">
-        {
+        {progress ? (
+          <MedalScore progress={progress} />
+        ) : (
+          /* Pour garder la compatibilité avec les autres modes d'exercices. */
           <div className={`medal-score ${bgc}`}>
-            {medalSrc && <img src={medalSrc}></img>}
+            {medalSrc && <img src={medalSrc} />}
             <p>{scoreAvg.toFixed()}%</p>
           </div>
-        }
-
+        )}
+        {/*
         <PDFModal
           content={content}
           sequence={sequence.nom}
           etapeid={etapeid}
           score={scoreAvg.toFixed()}
-        />
+        /> */}
       </div>
-      <div className="results">
-        {content.map((exercice, index) => (
-          <div key={index} className="result">
-            <CircleProgress
-              score={exercice.score}
-              number={index + 1}
-              onClick={() => circleOnClick(exercice.id)}
-            />
-            <p>{exercice.consigne}</p>
-          </div>
-        ))}
-      </div>
+      {/* <div className="results"> */}
+      {/* content.map((exercice, index) => (
+            <div key={index} className="result">
+              <CircleProgress
+                score={exercice.score}
+                number={index + 1}
+                onClick={() => circleOnClick(exercice.id)}
+              />
+              <p>{exercice.consigne}</p>
+            </div>
+          )) */}
+      <ProgressCircles
+        count={context.exercises?.length}
+        containerClassName="results"
+        progress={progress}
+        labels={context.exercises.map((e) => e.consigne)}
+        onChange={console.log} // WIP: Naviguer vers l'ex. correspondant (attention le cb prend l'index et pas l'id de l'exercie)
+      />
+      {/* </div> */}
 
       <NextExerciseButton onClick={handleOnClick} />
     </section>

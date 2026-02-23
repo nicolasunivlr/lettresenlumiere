@@ -1,3 +1,5 @@
+import React from "react";
+
 const DEFAULT_STYLE = {
   backgroundColor: "white",
   color: "black",
@@ -28,17 +30,43 @@ export const Circle = ({ label, style, active, onClick }) => {
   );
 };
 
-export const ProgressCircles = ({ count, current, progress, onChange }) => {
+/**
+ *
+ * Une colonne de cercles représentant une progression à travers un séquence.
+ *
+ * @param {{
+ * count: number,
+ * current?: number,
+ * labels?: string[],
+ * containerClassName: string,
+ * progress: Array<{score: number}>,
+ * onChange?: (index: number) => void
+ * }} props
+
+ */
+export const ProgressCircles = ({
+  count,
+  current,
+  progress,
+  labels,
+  containerClassName,
+  onChange,
+}) => {
+  const isActive =
+    current !== undefined ? (index) => index === current : () => false;
   return (
-    <div className="sidebar">
+    <div className={containerClassName}>
       {Array.from({ length: count }, (_, index) => (
-        <Circle
-          key={`circle-${index}`}
-          label={index + 1}
-          style={getProgressStyle(progress[index])}
-          active={current === index}
-          onClick={() => onChange(index)}
-        />
+        <div key={`circle-container-${index}`} className="circle-container">
+          <Circle
+            key={`circle-${index}`}
+            label={index + 1}
+            style={getProgressStyle(progress[index])}
+            active={isActive(index)}
+            onClick={() => onChange?.(index)}
+          />
+          {labels && <p>{labels[index]}</p>}
+        </div>
       ))}
     </div>
   );
