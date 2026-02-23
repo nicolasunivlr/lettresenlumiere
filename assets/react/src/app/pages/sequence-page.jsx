@@ -116,9 +116,7 @@ export const SequencePage = () => {
                     ...sequence,
                   }}
                   progress={progress}
-                  // circleOnClick={handleOnClickOnCircleResultPage}
-                  // sequence={exerciceData}
-                  // etapeid={UI.currentExerciseIndex}
+                  onRetry={(index) => goToExercise(index)}
                 />
               ) : (
                 <ExerciseRenderer

@@ -46,6 +46,8 @@ export const useSequenceUIState = (initialState) => {
   const goToExercise = (index) => {
     setState((prev) => ({
       ...prev,
+      showSummary: false,
+      showProgress: true,
       currentExerciseIndex: Math.max(0, index),
       attemptCount: 0,
     }));

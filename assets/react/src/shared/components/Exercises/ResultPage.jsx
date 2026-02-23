@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import CircleProgress from "../UI/CircleProgress";
 import GoldMedal from "../../../assets/images/gamification/medailleetapeor.svg";
 import SilverMedal from "../../../assets/images/gamification/medailleetapeargent.svg";
 import BronzeMedal from "../../../assets/images/gamification/medailleetapebronze.svg";
@@ -9,9 +8,14 @@ import PDFModal from "../UI/PDFModal";
 import { MedalScore } from "./medal-score";
 import { ProgressCircles } from "../../../features/sequences/components/progress-circle";
 
-const ResultPage = ({ context, circleOnClick, progress }) => {
+const ResultPage = ({ context, circleOnClick, progress, onRetry }) => {
   const { id } = useParams();
   const navigate = useNavigate();
+  /*
+  `context` contient généralement la séquence complète, je l'appel ainsi car il
+  pourrait contenir à l'avenir d'autres infos que la séquence, c'est à dire
+  uniquement ce dont ce composant à besoin.
+  */
   const { exercises, etapeId } = context;
 
   /**
@@ -53,7 +57,8 @@ const ResultPage = ({ context, circleOnClick, progress }) => {
   };
 
   // ---------------------------------------------------------------------------
-  // TODO: à modifié en utilisant la progression stockée.
+  // TODO: à supprimer, on récupère les médailles via l'API pour les utilisateurs
+  // connectés et via LocalStorage pour le mode libre.
   useEffect(() => {
     const sessionScores = JSON.parse(sessionStorage.getItem("scores")) || {};
     // ajout du scoreAvg en tant qu'objet avec l'id de la séquence
@@ -92,11 +97,11 @@ const ResultPage = ({ context, circleOnClick, progress }) => {
         /> */}
       </div>
       <ProgressCircles
-        count={context.exercises?.length}
+        count={exercises.length}
         containerClassName="results"
         progress={progress}
-        labels={context.exercises.map((e) => e.consigne)}
-        onChange={console.log} // WIP: Naviguer vers l'ex. correspondant (attention le cb prend l'index et pas l'id de l'exercie)
+        labels={exercises.map((e) => e.consigne)}
+        onChange={(index) => onRetry(index)}
       />
 
       <NextExerciseButton onClick={handleOnClick} />
