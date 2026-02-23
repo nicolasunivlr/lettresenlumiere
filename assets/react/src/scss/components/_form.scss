@@ -8,7 +8,6 @@
   gap: 2rem;
   border-radius: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  max-width: 500px;
 
   .form__title {
     font-weight: 600;
@@ -27,7 +26,7 @@
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.2s ease, box-shadow 0.2s ease,
-      transform 0.1s ease;
+    transform 0.1s ease;
     margin: 0 auto;
 
     &:hover {
@@ -58,75 +57,12 @@
     }
   }
 
-  .form-control {
+  .form__label {
+    font-size: 18px;
+    margin-bottom: 8px;
     display: flex;
-    flex-direction: column;
-
-    &__label {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-
-    &__wrapper {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      font-size: 16px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-
-      &:focus,
-      &:focus-within {
-        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-      }
-
-      &--error {
-        background-color: hsla(0, 72%, 51%, 0.05);
-        border-color: hsla(0, 72%, 51%, 0.25);
-      }
-
-      &--error:focus,
-      &--error:focus-within {
-        box-shadow: 0 0 0 2px hsla(0, 72%, 51%, 0.2);
-      }
-    }
-
-    &__child {
-      padding: 10px 12px;
-      border-radius: 6px;
-      background-color: transparent;
-      outline: none;
-      border: none;
-      width: 100%;
-    }
-
-    &__error {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      margin-top: 0.5rem;
-      color: hsla(0, 72%, 51%, 1);
-      font-size: 90%;
-      font-weight: 500;
-    }
-
-    &__error::before {
-      content: "";
-      display: inline-block;
-      width: 1.75rem;
-      height: 1.75rem;
-      flex-shrink: 0;
-      background-color: hsla(0, 72%, 51%, 1);
-      vertical-align: middle;
-      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='size-6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z' /%3E%3C/svg%3E%0A");
-      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='size-6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z' /%3E%3C/svg%3E%0A");
-      mask-size: contain;
-      -webkit-mask-size: contain;
-      mask-repeat: no-repeat;
-      -webkit-mask-repeat: no-repeat;
-    }
+    align-items: center;
+    gap: 4px;
   }
 
   .form__mode-libre {
@@ -140,11 +76,36 @@
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.2s ease, box-shadow 0.2s ease,
-      transform 0.1s ease;
+    transform 0.1s ease;
     margin: 0 auto;
 
     &:hover {
       background-color: #e9e9e9;
     }
   }
+
+  .form__input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+      border-color: #d1d5db;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    }
+
+    &:focus-within {
+      border-color: #d1d5db;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    }
+  }
+}
+
+.input-password {
+  border: 1px solid #d1d5db;
+  margin-top: 8px;
 }
