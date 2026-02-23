@@ -9,11 +9,17 @@
 
 /* Header */
 .container-progression__header {
+  position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   padding-bottom: 3rem;
+}
+
+.hearder_headline {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .header__title {
@@ -26,6 +32,23 @@
 .header__icon {
   width: 32px;
   height: auto;
+}
+
+/* Bouton retour */
+.header__back-button {
+  position: absolute;
+  left: 0;
+}
+
+.header__back-button:hover {
+  background: #f3f4f6;
+}
+
+/* Bloc centré */
+.header__center {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* Grille 4 cartes par ligne */
@@ -112,27 +135,53 @@
 
 
 /* Tableau administrateur */
+/* Conteneur */
 .admin-content {
   margin-top: 20px;
   display: flex;
   justify-content: center;
 }
 
+/* Carte du tableau */
 .admin-table {
   width: 60%;
-  border-collapse: collapse;
-  margin-top: 20px;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
 
-  th, td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-  }
+.admin-table caption {
+  margin-bottom: 10px;
+  font-size: f.$font-size-medium;
+}
 
+/* Header */
+.admin-table th {
+  background: #f9fafb;
+  font-weight: 600;
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
 
-  th {
-    background: #f0f0f0;
-    text-align: center;
-  }
+/* Cellules */
+.admin-table td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid #f2f2f2;
+  cursor: pointer;
+}
+
+/* Supprime la bordure de la dernière ligne */
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Effet hover ligne */
+.admin-table tbody tr:hover {
+  background-color: #f8f9ff;
+  transition: background 0.2s ease;
 }

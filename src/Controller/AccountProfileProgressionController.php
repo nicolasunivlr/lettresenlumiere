@@ -79,4 +79,5 @@ class AccountProfileProgressionController extends AbstractController
         
         return $this->json($result);
     }
+
 }

@@ -16,7 +16,7 @@ export const ProgressionPage = () => {
   const { profile } = useProfile();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { accountId } = useParams(); // <-- récupère l'id si admin
+  const { accountId } = useParams(); // Récupèrer l'id si admin
 
   const [progressions, setProgressions] = useState(null);
   const [adminProfiles, setAdminProfiles] = useState(null);
@@ -100,12 +100,23 @@ export const ProgressionPage = () => {
 
       {/* Header */}
       <div className="container-progression__header">
-        <img
-          src={GraphiqueProgressioIcon}
-          alt="Graphique progression"
-          className="header__icon"
-        />
-        <h2 className="header__title">Mes progressions</h2>
+
+        <button
+          className="header__back-button return-button"
+          onClick={() => navigate(-1)}
+        >
+          Retour
+        </button>
+        
+        <div className="hearder_headline">
+          <img
+            src={GraphiqueProgressioIcon}
+            alt="Graphique progression"
+            className="header__icon"
+          />
+          <h2 className="header__title">Mes progressions</h2>
+        </div>
+        
       </div>
 
       {/* CONTENU ADMIN */}
