@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import RedirectButton from "../../shared/components/UI/RedirectButton";
 import { useProfile } from "../../features/profile/profile-provider";
 
+
 export const HomePage = () => {
   const { profile } = useProfile();
 
@@ -50,7 +51,8 @@ export const HomePage = () => {
                 transition: { duration: 1.5, repeat: Infinity },
               }}
             >
-              <img src={logoBrain} alt="Logo Brain" />
+            <img src={logoBrain} alt="Logo Brain" />
+              
             </motion.div>
 
             <motion.div
@@ -71,6 +73,11 @@ export const HomePage = () => {
           <p className="home__credits">
             <Link to="/credits">Crédits</Link>
           </p>
+
+          <p className="home_credits">
+            <Link to="/progression">Progression</Link>
+          </p>
+
         </div>
       )}
 

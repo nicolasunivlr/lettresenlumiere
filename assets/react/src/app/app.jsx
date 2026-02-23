@@ -25,7 +25,10 @@ export const App = () => {
             <Route path="/alphabet" element={<LayoutExercises />} />
             <Route path="/graphemes" element={<LayoutExercises />} />
             <Route path="/etapes" element={<EtapesPage />} />
+            
             <Route path="/progression" element={<ProgressionPage />} />
+            <Route path="/progression/:accountId" element={<ProgressionPage />} />
+
             <Route
               path="/sequence/:id"
               element={

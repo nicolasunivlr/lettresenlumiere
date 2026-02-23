@@ -50,7 +50,7 @@
   font-weight: 500;
 }
 
-/* Tableau */
+/* Tableau utilisateur*/
 .progression-table {
   width: 100%;
   border-collapse: collapse;
@@ -107,4 +107,32 @@
 .medal-icon {
   width: 18px;
   height: 18px;
+}
+
+
+
+/* Tableau administrateur */
+.admin-content {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-table {
+  width: 60%;
+  border-collapse: collapse;
+  margin-top: 20px;
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+
+  th {
+    background: #f0f0f0;
+    text-align: center;
+  }
 }

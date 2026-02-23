@@ -3,23 +3,29 @@ import { useProfile } from "../../features/profile/profile-provider";
 import { useAuth } from "../../features/auth/providers/auth-provider";
 import { profilesApi } from "../../shared/api/profiles-api";
 import Loader from "../../shared/components/UI/Loader";
+import { useNavigate, useParams } from "react-router-dom";
 
-import GraphiqueProgressioIcon  from "../../assets/images/icones/graphique.png"
-import ZoomIcon from "../../assets/images/icones/zoom-icon.png"
-import GoldMedal from "../../assets/images/gamification/medals/goldMedal-icon.png"
-import SilverMedal from "../../assets/images/gamification/medals/silverMedal-icon.png"
-import BronzeMedal from "../../assets/images/gamification/medals/bronzeMedal-icon.png"
+import GraphiqueProgressioIcon from "../../assets/images/icones/graphique.png";
+import ZoomIcon from "../../assets/images/icones/zoom-icon.png";
+import GoldMedal from "../../assets/images/gamification/medals/goldMedal-icon.png";
+import SilverMedal from "../../assets/images/gamification/medals/silverMedal-icon.png";
+import BronzeMedal from "../../assets/images/gamification/medals/bronzeMedal-icon.png";
 
 export const ProgressionPage = () => {
 
   const { profile } = useProfile();
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const { accountId } = useParams(); // <-- récupère l'id si admin
+
   const [progressions, setProgressions] = useState(null);
+  const [adminProfiles, setAdminProfiles] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProgressions = async () => {
+
       if (!profile || profile.isGuest()) {
         setLoading(false);
         return;
@@ -27,18 +33,32 @@ export const ProgressionPage = () => {
 
       try {
         setLoading(true);
-        const data = await profilesApi.getAllProgressions(profile.id);
-        setProgressions(data);
+
+        // Si admin et qu'on a un accountId -> load progression de cet account
+        if (user?.isAdmin() && accountId) {
+          const data = await profilesApi.getAllProgressions(accountId);
+          setProgressions(data);
+        } else {
+          const data = await profilesApi.getAllProgressions(profile.id);
+          setProgressions(data);
+        }
+
+        // Si admin -> liste des comptes
+        if (user?.isAdmin()) {
+          const adminData = await profilesApi.getAllAccountProfiles();
+          setAdminProfiles(adminData.member);
+        }
+
       } catch (err) {
         setError(err.message);
-        console.error("Erreur lors du chargement des progressions:", err);
+        console.error("Erreur lors du chargement :", err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProgressions();
-  }, [profile]);
+  }, [profile, user, accountId]);
 
   if (loading) {
     return (
@@ -58,14 +78,13 @@ export const ProgressionPage = () => {
     );
   }
 
-  // Renvoyer la médaile adaptée au score obtenu
   const getMedalByScore = (score) => {
     if (score >= 80) return GoldMedal;
     if (score >= 50) return SilverMedal;
     if (score > 0) return BronzeMedal;
     return null;
   };
-    
+
   if (!profile || profile.isGuest()) {
     return (
       <div>
@@ -77,72 +96,99 @@ export const ProgressionPage = () => {
   }
 
   return (
-  <div className="container-progression">
+    <div className="container-progression">
 
-     {/* Header */}
-    <div className="container-progression__header">
-      <img
-        src={GraphiqueProgressioIcon}
-        alt="Graphique progression"
-        className="header__icon"
-      />
-      <h2 className="header__title">Mes progressions</h2>
-    </div>
-
-    {/* Cartes des étapes de progressions */}
-    {!progressions || progressions.length === 0 ? (
-      <p>Aucune progression disponible.</p>
-    ) : (
-      <div className="progression-grid">
-        {progressions.map((etape) => (
-          <div key={etape.id} className="progression-card">
-            <h2 className="progression-card__title">{etape.nom}</h2>
-            <table className="progression-table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {etape.sequences.map((sequence) => (
-                  <tr key={sequence.id}>
-                    {/* Nom de la séquence */}
-                    <td>{sequence.nom}</td>
-                    {/* Score moyen des exercices de la séquence et medaille */}
-                    <td>
-                      {sequence.score_moyen !== null && (
-                        <div className="score-content">
-                          {getMedalByScore(sequence.score_moyen) && (
-                            <img
-                              className="medal-icon"
-                              src={getMedalByScore(sequence.score_moyen)}
-                              alt="medal"
-                            />
-                          )}
-                          <span>{sequence.score_moyen}%</span>
-                        </div>
-                      )}
-                    </td>
-                    {/* Lien vers le détail des résultat de la séquence */}
-                    <td>
-                      <div className="col-right">
-                        {sequence.score_moyen !== null && (
-                          <img className="zoom-icon" src={ZoomIcon} alt="" />
-                        )}
-                      </div>
-                    </td>
-
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ))}
+      {/* Header */}
+      <div className="container-progression__header">
+        <img
+          src={GraphiqueProgressioIcon}
+          alt="Graphique progression"
+          className="header__icon"
+        />
+        <h2 className="header__title">Mes progressions</h2>
       </div>
-    )}
-  </div>
-);
 
+      {/* CONTENU ADMIN */}
+      {user?.isAdmin() && !accountId ? (
+        <div className="admin-content">
+
+          <table className="admin-table">
+            <caption>Liste des utilisateurs</caption>
+            <thead>
+              <tr>
+                <th>Prénom</th>
+                <th>Nom</th>
+              </tr>
+            </thead>
+            <tbody>
+              {adminProfiles?.map((acc) => (
+                <tr
+                  key={acc.id}
+                  className="admin-row"
+                  onClick={() => navigate(`/progression/${acc.id}`)}
+                >
+                  <td>{acc.firstname || "—"}</td>
+                  <td>{acc.lastname || "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+        </div>
+      ) : (
+
+        /* CONTENU UTILISATEUR */
+        <>
+          {!progressions || progressions.length === 0 ? (
+            <p>Aucune progression disponible.</p>
+          ) : (
+            <div className="progression-grid">
+              {progressions.map((etape) => (
+                <div key={etape.id} className="progression-card">
+                  <h2 className="progression-card__title">{etape.nom}</h2>
+                  <table className="progression-table">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {etape.sequences.map((sequence) => (
+                        <tr key={sequence.id}>
+                          <td>{sequence.nom}</td>
+                          <td>
+                            {sequence.score_moyen !== null && (
+                              <div className="score-content">
+                                {getMedalByScore(sequence.score_moyen) && (
+                                  <img
+                                    className="medal-icon"
+                                    src={getMedalByScore(sequence.score_moyen)}
+                                    alt="medal"
+                                  />
+                                )}
+                                <span>{sequence.score_moyen}%</span>
+                              </div>
+                            )}
+                          </td>
+                          <td>
+                            <div className="col-right">
+                              {sequence.score_moyen !== null && (
+                                <img className="zoom-icon" src={ZoomIcon} alt="" />
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
 };
