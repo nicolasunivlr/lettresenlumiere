@@ -11,23 +11,27 @@ $exercise-colors: (
 );
 
 .sidebar-container {
-  position: absolute;
-  height: 70vh;
-  padding-right: 10px;
+  flex:1;
+  width:fit-content;
 }
 
 .sidebar {
-  margin-top: 6vh;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  height: 100%;
-  margin-left: 4vw;
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 45px);
+  grid-auto-columns: 45px;
+  grid-auto-flow: column;
+  max-height: 70svh;
   gap: 1rem;
 
+  /* FORCE le conteneur à coller aux colonnes */
+  width: min-content;
+  justify-self: start; /* Empêche l'étirement si le parent est un Grid */
+  align-self: start;   /* Empêche l'étirement si le parent est un Flex */
+
+  /* Pour éviter que le gap final ne crée un vide à droite */
+  padding-right: 0;
+
   @media (max-width: 1366px) {
-    margin-left: 2vw;
     gap: 0.7rem;
   }
 }
