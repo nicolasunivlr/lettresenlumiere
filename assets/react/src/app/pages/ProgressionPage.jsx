@@ -104,9 +104,6 @@ export const ProgressionPage = () => {
 
   /* Rediriger vers la page de résultats des exercices d'une séquence */
   if (selectedSequence) {
-      console.log("Passage vers ResultPage avec", selectedSequence);
-      console.log("1"+selectedSequence.etape.sequences);
-      console.log("2"+selectedSequence.sequence.nom)
     return (
       <div className="result-page-layout">
       {/* Bandeau en haut */}
