@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import RedirectButton from "./RedirectButton";
 import BronzMedal from "../../../assets/images/gamification/medailleetapebronze.svg";
 import SilverMedal from "../../../assets/images/gamification/medailleetapeargent.svg";
@@ -10,28 +9,10 @@ const medalsSvg = {
   gold: GoldMedal,
 };
 
-const showMedals = (medal) => {
-  const medalSrc = medalsSvg[medal];
-  return medalSrc;
-};
+const showMedals = (medal) => medalsSvg[medal];
 
 const EtapesButton = (props) => {
-  const { link, text, width, py, id } = props;
-  const [medalType, setMedalType] = useState(null);
-
-  useEffect(() => {
-    const scores = JSON.parse(sessionStorage.getItem("scores")) || {};
-    if (scores[id]) {
-      const scoreAvg = Number(scores[id]);
-      if (scoreAvg >= 80) {
-        setMedalType("gold");
-      } else if (scoreAvg >= 60) {
-        setMedalType("silver");
-      } else if (scoreAvg >= 40) {
-        setMedalType("bronze");
-      }
-    }
-  }, [id]);
+  const { link, text, width, py, medalType } = props;
 
   return medalType ? (
     <>
