@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useProfile } from "../../features/profile/profile-provider";
 import { useAuth } from "../../features/auth/providers/auth-provider";
 import { profilesApi } from "../../shared/api/profiles-api";
+import { sequencesApi } from "../../shared/api/sequences-api";
 import Loader from "../../shared/components/UI/Loader";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -10,6 +11,8 @@ import ZoomIcon from "../../assets/images/icones/zoom-icon.png";
 import GoldMedal from "../../assets/images/gamification/medals/goldMedal-icon.png";
 import SilverMedal from "../../assets/images/gamification/medals/silverMedal-icon.png";
 import BronzeMedal from "../../assets/images/gamification/medals/bronzeMedal-icon.png";
+
+import ResultPage from "../../shared/components/Exercises/ResultPage";
 
 export const ProgressionPage = () => {
 
@@ -22,6 +25,8 @@ export const ProgressionPage = () => {
   const [adminProfiles, setAdminProfiles] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [selectedSequence, setSelectedSequence] = useState(null);
 
   useEffect(() => {
     const fetchProgressions = async () => {
@@ -78,6 +83,7 @@ export const ProgressionPage = () => {
     );
   }
 
+  // Renvoyer la médaille correspondante au score
   const getMedalByScore = (score) => {
     if (score >= 80) return GoldMedal;
     if (score >= 50) return SilverMedal;
@@ -94,6 +100,24 @@ export const ProgressionPage = () => {
       </div>
     );
   }
+
+
+  /* Rediriger vers la page de résultats des exercices d'une séquence */
+  if (selectedSequence) {
+      console.log("Passage vers ResultPage avec", selectedSequence);
+      console.log("1"+selectedSequence.etape.sequences);
+      console.log("2"+selectedSequence.sequence.nom)
+    return (
+      <ResultPage
+        content={selectedSequence.exercices}
+        sequence={selectedSequence.sequence}
+        etapeid={selectedSequence.etape.id}
+        circleOnClick={(id) => console.log(id)}
+      />
+    );
+  }
+
+  
 
   return (
     <div className="container-progression">
@@ -119,7 +143,7 @@ export const ProgressionPage = () => {
         
       </div>
 
-      {/* CONTENU ADMIN */}
+      {/* Contenu admin */}
       {user?.isAdmin() && !accountId ? (
         <div className="admin-content">
 
@@ -148,7 +172,7 @@ export const ProgressionPage = () => {
         </div>
       ) : (
 
-        /* CONTENU UTILISATEUR */
+        /* Contenu utilisateur */
         <>
           {!progressions || progressions.length === 0 ? (
             <p>Aucune progression disponible.</p>
@@ -186,7 +210,37 @@ export const ProgressionPage = () => {
                           <td>
                             <div className="col-right">
                               {sequence.score_moyen !== null && (
-                                <img className="zoom-icon" src={ZoomIcon} alt="" />
+                                <img
+                                  className="zoom-icon"
+                                  src={ZoomIcon}
+                                  alt="Voir résultats"
+                                  onClick={async () => {
+                                    try {
+                                      setLoading(true);
+
+                                      // Si admin consulte un autre compte, utiliser accountId
+                                      // Sinon, utiliser le profile connecté
+                                      const currentAccountId = accountId || profile.id;
+
+                                      const exercices = await sequencesApi.getResultsForAccount(
+                                        currentAccountId,
+                                        sequence.id
+                                      );
+
+                                      setSelectedSequence({
+                                        sequence,
+                                        etape,
+                                        exercices
+                                      });
+
+                                    } catch (err) {
+                                      console.error("Erreur lors du chargement des résultats :", err);
+                                      setError("Impossible de charger les résultats de la séquence.");
+                                    } finally {
+                                      setLoading(false);
+                                    }
+                                  }}
+                                />
                               )}
                             </div>
                           </td>

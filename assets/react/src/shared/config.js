@@ -24,6 +24,8 @@ const config = {
   accountProfileAllProgressions: (accountId) =>
     `${baseUrl}/api/account-profile/${accountId}/allProgressions`,
   progressions: `${baseUrl}/api/progressions`,
+  accountProfileSequenceResults: (accountId, sequenceId) =>
+  `${baseUrl}/api/account-profile/${accountId}/sequences/${sequenceId}/results`,
 };
 
 export { config };

@@ -80,4 +80,50 @@ class AccountProfileProgressionController extends AbstractController
         return $this->json($result);
     }
 
+
+    #[Route('/api/account-profile/{idaccountprofile}/sequences/{idsequence}/results', name: 'api_account_profile_sequence_results', methods: ['GET'])]
+    public function getSequenceResults(
+        int $idaccountprofile,
+        int $idsequence,
+        AccountProfileRepository $accountProfileRepository,
+        EntityManagerInterface $em
+    ): JsonResponse {
+        // Récupérer le profil
+        $accountProfile = $accountProfileRepository->find($idaccountprofile);
+        if (!$accountProfile) {
+            return $this->json(['error' => 'Account profile not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Récupérer la séquence
+        $sequence = $em->getRepository(\App\Entity\Sequence::class)->find($idsequence);
+        if (!$sequence) {
+            return $this->json(['error' => 'Sequence not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Récupérer les exercices de la séquence
+        $exercices = $sequence->getExercices();
+
+        // Récupérer les progressions (scores) pour ce compte et ces exercices
+        $progressions = $em->getRepository(\App\Entity\Progression::class)
+            ->findBy(['accountProfile' => $accountProfile]);
+
+        // Index par exerciceId
+        $progressionsByExercice = [];
+        foreach ($progressions as $progression) {
+            $progressionsByExercice[$progression->getExercice()->getId()] = $progression->getScore();
+        }
+
+        // Préparer le résultat
+        $result = [];
+        foreach ($exercices as $exercice) {
+            $result[] = [
+                'id' => $exercice->getId(),
+                'consigne' => $exercice->getConsigne(),
+                'score' => $progressionsByExercice[$exercice->getId()] ?? null,
+            ];
+        }
+
+        return $this->json($result);
+    }
+
 }
