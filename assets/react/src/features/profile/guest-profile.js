@@ -19,8 +19,10 @@ export class GuestProfile {
 
   async getProgressForSequence(sequence) {
     const existingProgress = sessionStorage.getItem(
-      config.guestProgressTokenKey
+      config.guestProgressTokenKey,
     );
+
+    console.log("sequence:", sequence);
 
     if (!existingProgress) {
       // Pas de progression enregistrée
@@ -40,11 +42,11 @@ export class GuestProfile {
       "Updating progress for exercise:",
       progress.exerciseId,
       "to new score:",
-      newScore
+      newScore,
     );
     // Récupérer les progressions existantes depuis le sessionStorage
     const existingProgress = sessionStorage.getItem(
-      config.guestProgressTokenKey
+      config.guestProgressTokenKey,
     );
 
     if (existingProgress) {
@@ -52,7 +54,7 @@ export class GuestProfile {
 
       // Trouver la progression à mettre à jour
       const progIndex = progressions.findIndex(
-        (p) => p.exerciseId === progress.exerciseId
+        (p) => p.exerciseId === progress.exerciseId,
       );
 
       if (progIndex !== -1) {
@@ -62,14 +64,14 @@ export class GuestProfile {
         // Sauvegarder les progressions mises à jour dans le sessionStorage
         sessionStorage.setItem(
           config.guestProgressTokenKey,
-          JSON.stringify(progressions)
+          JSON.stringify(progressions),
         );
 
         console.log("Progress updated in sessionStorage:", progressions);
       } else {
         console.warn(
           "Progression not found for exerciseId:",
-          progress.exerciseId
+          progress.exerciseId,
         );
       }
     } else {
@@ -82,12 +84,12 @@ export class GuestProfile {
       "Creating progress for exercise:",
       exerciseId,
       "with score:",
-      score
+      score,
     );
 
     // Récupérer les progressions existantes depuis le sessionStorage
     const existingProgress = sessionStorage.getItem(
-      config.guestProgressTokenKey
+      config.guestProgressTokenKey,
     );
 
     // Verifier si une progression existe
@@ -102,7 +104,7 @@ export class GuestProfile {
     // Sauvegarder dans le sessionStorage
     sessionStorage.setItem(
       config.guestProgressTokenKey,
-      JSON.stringify(progressions)
+      JSON.stringify(progressions),
     );
 
     console.log("Progress saved to sessionStorage:", progressions);

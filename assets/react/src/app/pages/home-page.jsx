@@ -34,7 +34,7 @@ export const HomePage = () => {
               transition={{ duration: 0.5 }}
             >
               <RedirectButton
-                link="/alphabet"
+                link="/sequence/alphabet"
                 text=" A B C - a b c"
                 className="homeButtonGauche"
                 label="Alphabet"
@@ -59,7 +59,7 @@ export const HomePage = () => {
               transition={{ duration: 0.5 }}
             >
               <RedirectButton
-                link="/graphemes"
+                link="/sequence/graphemes"
                 text="an on in"
                 className="homeButtonDroite"
                 label="Graphèmes"

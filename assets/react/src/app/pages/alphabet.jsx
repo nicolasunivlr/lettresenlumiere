@@ -1,7 +1,7 @@
 import Header from "../../shared/components/Header.jsx";
 import OKButton from "../../shared/components/UI/OKButton.jsx";
 
-const AlphabetPage = () => {
+const Alphabet = () => {
   const alphabet = Array.from({ length: 26 }, (_, i) =>
     String.fromCharCode(i + 65),
   );
@@ -34,4 +34,4 @@ const AlphabetPage = () => {
   );
 };
 
-export default AlphabetPage;
+export default Alphabet;

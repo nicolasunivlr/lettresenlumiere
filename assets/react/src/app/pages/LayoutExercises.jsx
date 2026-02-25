@@ -134,10 +134,10 @@ const LayoutExercices = () => {
       if (exercices?.every((exercice) => exercice.done === true)) {
         return (
           <ResultPage
-            content={exercices}
+            // content={exercices}
             circleOnClick={handleOnClickOnCircleResultPage}
-            sequence={exerciceData}
-            etapeid={etapeId}
+            context={exerciceData}
+            // etapeid={etapeId}
           />
         );
       }

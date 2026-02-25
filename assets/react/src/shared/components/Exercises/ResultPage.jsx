@@ -7,6 +7,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import PDFModal from "../UI/PDFModal";
 import { MedalScore } from "./medal-score";
 import { ProgressCircles } from "../../../features/sequences/components/progress-circle";
+import Loader from "../UI/Loader";
 
 /**
  * Helper pour calculer la moyennes des scores et la transférer au ResultPage.
@@ -92,6 +93,8 @@ const ResultPage = ({ context, circleOnClick, progress }) => {
 
   const { scoreAvg, medalSrc, bgc } = showScore();
 
+  if (!exercises) return <Loader />;
+
   return (
     <section className="results-container">
       <div className="header-result">
@@ -114,6 +117,7 @@ const ResultPage = ({ context, circleOnClick, progress }) => {
           />
         }
       </div>
+      (
       <ProgressCircles
         count={exercises.length}
         containerClassName="results"
@@ -121,7 +125,7 @@ const ResultPage = ({ context, circleOnClick, progress }) => {
         labels={exercises.map((e) => e.consigne)}
         onChange={(index) => onRetry(index)}
       />
-
+      )
       <NextExerciseButton onClick={handleOnClick} />
     </section>
   );
