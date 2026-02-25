@@ -40,14 +40,14 @@ const LayoutExercices = () => {
   const isGraphemes = lastSegment === "graphemes";
 
   const apiData = useDataExercice(
-    id && !isAlphabet && !isGraphemes ? id : null
+    id && !isAlphabet && !isGraphemes ? id : null,
   );
 
   const exerciceData = isAlphabet
     ? AlphabetData
     : isGraphemes
-    ? GraphemeData
-    : apiData;
+      ? GraphemeData
+      : apiData;
 
   const [exercices, setExercices] = useState([]);
   const [currentExercice, setCurrentExercice] = useState(null);
@@ -59,7 +59,7 @@ const LayoutExercices = () => {
           ...exercice,
           score: undefined,
           done: false,
-        }))
+        })),
       );
     }
   }, [exerciceData]);
@@ -85,18 +85,18 @@ const LayoutExercices = () => {
         prevExercices.map((exercice) =>
           exercice.id === currentExercice?.id
             ? { ...exercice, score: score, done: "pending" }
-            : exercice
-        )
+            : exercice,
+        ),
       );
     },
-    [currentExercice]
+    [currentExercice],
   );
 
   const handleNextExercise = () => {
     setExercices((prevExercices) =>
       prevExercices.map((exercice) =>
-        exercice.done === "pending" ? { ...exercice, done: true } : exercice
-      )
+        exercice.done === "pending" ? { ...exercice, done: true } : exercice,
+      ),
     );
   };
 
@@ -137,7 +137,7 @@ const LayoutExercices = () => {
             content={exercices}
             circleOnClick={handleOnClickOnCircleResultPage}
             sequence={exerciceData}
-            etapeid={etapeid}
+            etapeid={etapeId}
           />
         );
       }
@@ -253,15 +253,15 @@ const LayoutExercices = () => {
           isAlphabet
             ? "Alphabet"
             : isGraphemes
-            ? "Graphèmes"
-            : `Étape ${exerciceData?.etape.id}`
+              ? "Graphèmes"
+              : `Étape ${exerciceData?.etape.id}`
         }
         sequence={
           isAlphabet || isGraphemes
             ? ""
             : exerciceData && exerciceData.nom
-            ? exerciceData.nom
-            : ""
+              ? exerciceData.nom
+              : ""
         }
         video={exerciceData}
         isVideoOpenOnMount={true}
@@ -270,11 +270,10 @@ const LayoutExercices = () => {
             prevExercices.map((exercice) => ({
               ...exercice,
               done: true,
-            }))
+            })),
           );
         }}
       />
-
 
       <div className="sequence-group">
         {exercices && exercices.length > 0 ? (
@@ -291,24 +290,24 @@ const LayoutExercices = () => {
           <Loader />
         )}
         <div className="sequence-group__content">
-        {getCurrentExercise()}
-        {exercices.find((exercice) => exercice.done === "pending") && (
-          <>
-            {currentExercice &&
-            currentExercice.type.charAt(0).toLowerCase() === "a" ? (
-              <NextExerciseButton onClick={handleNextExercise} />
-            ) : (
-              <ModalEndExercise
-                next={handleNextExercise}
-                redo={() => handleRedo(currentExercice.id)}
-                score={
-                  exercices.find((exercice) => exercice.done === "pending")
-                    ?.score
-                }
-              />
-            )}
-          </>
-        )}
+          {getCurrentExercise()}
+          {exercices.find((exercice) => exercice.done === "pending") && (
+            <>
+              {currentExercice &&
+              currentExercice.type.charAt(0).toLowerCase() === "a" ? (
+                <NextExerciseButton onClick={handleNextExercise} />
+              ) : (
+                <ModalEndExercise
+                  next={handleNextExercise}
+                  redo={() => handleRedo(currentExercice.id)}
+                  score={
+                    exercices.find((exercice) => exercice.done === "pending")
+                      ?.score
+                  }
+                />
+              )}
+            </>
+          )}
         </div>
       </div>
     </>
