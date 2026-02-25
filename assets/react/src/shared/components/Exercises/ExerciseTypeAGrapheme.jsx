@@ -81,7 +81,7 @@ const ExerciceTypeAGrapheme = (props) => {
       acc[elem.color] = acc[elem.color] || [];
       acc[elem.color].push(elem);
       return acc;
-    }, {})
+    }, {}),
   );
 
   return (
@@ -114,7 +114,7 @@ const ExerciceTypeAGrapheme = (props) => {
                 <span className="pb-6">
                   <VideoModal
                     key={el.id}
-                    sequence={el}
+                    url={el.video_url}
                     title={`Graphème "${el.element}"`}
                   />
                 </span>
