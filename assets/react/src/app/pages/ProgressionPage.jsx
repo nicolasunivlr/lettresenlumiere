@@ -108,12 +108,27 @@ export const ProgressionPage = () => {
       console.log("1"+selectedSequence.etape.sequences);
       console.log("2"+selectedSequence.sequence.nom)
     return (
-      <ResultPage
-        content={selectedSequence.exercices}
-        sequence={selectedSequence.sequence}
-        etapeid={selectedSequence.etape.id}
-        circleOnClick={(id) => console.log(id)}
-      />
+      <div className="result-page-layout">
+      {/* Bandeau en haut */}
+      <div className="result-page-layout__header">
+        <button
+          className="return-button"
+          onClick={() => setSelectedSequence(null)} // revient à la liste
+        >
+          Retour aux progressions
+        </button>
+      </div>
+
+      {/* Contenu ResultPage */}
+      <div className="result-page-layout__content">
+        <ResultPage
+          content={selectedSequence.exercices}
+          sequence={selectedSequence.sequence}
+          etapeid={selectedSequence.etape.id}
+          circleOnClick={(id) => console.log(id)}
+        />
+      </div>
+    </div>
     );
   }
 
