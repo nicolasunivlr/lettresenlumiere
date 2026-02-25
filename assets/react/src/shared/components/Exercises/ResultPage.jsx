@@ -8,6 +8,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import PDFModal from "../UI/PDFModal";
 
 const ResultPage = (props) => {
+  
   const { content, circleOnClick, sequence, etapeid } = props;
   const { id } = useParams();
   const navigate = useNavigate();
