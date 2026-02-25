@@ -14,7 +14,6 @@ import { HomePage } from "./pages/home-page";
 import { RootLayout } from "./layouts/root-layout";
 import { RegistrationPage } from "./pages/registration-page";
 import AlphabetPage from "./pages/AlphabetPage";
-import AlphabetPageNew from "./pages/alphabet-page";
 
 export const App = () => {
   return (
@@ -24,7 +23,7 @@ export const App = () => {
           <Route element={<AccessControl />}>
             <Route path="/" element={<HomePage />} />
 
-            <Route path="/alphabet" element={<AlphabetPageNew />} />
+            <Route path="/alphabet" element={<LayoutExercises />} />
             <Route path="/graphemes" element={<LayoutExercises />} />
 
             <Route path="/etapes" element={<EtapesPage />} />
