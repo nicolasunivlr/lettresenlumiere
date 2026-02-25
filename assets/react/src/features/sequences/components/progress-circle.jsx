@@ -30,18 +30,16 @@ export const Circle = ({ label, style, active, onClick }) => {
 
 export const ProgressCircles = ({ count, current, progress, onChange }) => {
   return (
-    <div className="sidebar-container">
-      <div className="sidebar">
-        {Array.from({ length: count }, (_, index) => (
-          <Circle
-            key={`circle-${index}`}
-            label={index + 1}
-            style={getProgressStyle(progress[index])}
-            active={current === index}
-            onClick={() => onChange(index)}
-          />
-        ))}
-      </div>
+    <div className="sidebar">
+      {Array.from({ length: count }, (_, index) => (
+        <Circle
+          key={`circle-${index}`}
+          label={index + 1}
+          style={getProgressStyle(progress[index])}
+          active={current === index}
+          onClick={() => onChange(index)}
+        />
+      ))}
     </div>
   );
 };

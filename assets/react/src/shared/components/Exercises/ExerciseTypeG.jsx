@@ -238,9 +238,9 @@ const ExerciseTypeG = (props) => {
 
       {content ? (
         <>
-          <div className="consigne-timer-container flex justify-center items-center">
+          <div className="consigne-timer-container flex justify-center">
             <Instruction exercice={content} />
-            <div className="timer-container fixed right-0 mr-6">
+            <div className="timer-container right-[8rem] absolute">
               {memoizedTimer}
             </div>
           </div>

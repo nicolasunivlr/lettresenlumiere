@@ -13,7 +13,6 @@ export const HomePage = () => {
 
   return (
     <div className="index">
-      
       {profile && (
         <div className={"top-negative"}>
           <motion.div
@@ -85,7 +84,6 @@ export const HomePage = () => {
 
         </div>
       )}
-
     </div>
   );
 };

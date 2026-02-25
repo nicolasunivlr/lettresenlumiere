@@ -32,9 +32,9 @@ const Timer = memo(({ duration = 30, onComplete }) => {
   }, [duration, onComplete, circumference]);
 
   return (
-    <div className='relative w-64 h-64 flex items-center justify-center rounded-full'>
+    <div className='w-64 h-64 flex items-center justify-center rounded-full'>
       <svg
-        className='absolute w-full h-full rotate-[-90deg]'
+        className='w-full h-full rotate-[-90deg]'
         viewBox='0 0 120 120'
       >
         {/* Background circle */}

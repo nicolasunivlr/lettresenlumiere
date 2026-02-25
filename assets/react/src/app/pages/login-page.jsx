@@ -38,7 +38,7 @@ export const LoginPage = () => {
     <Navigate to={from} />
   ) : (
     <div className="login-page">
-      <img style={{ margin: "2rem auto" }} src={logoLeL} alt="Logo Brain" />
+      <img style={{ margin: "0 auto" }} src={logoLeL} alt="Logo Brain" />
       {errorMessage && <Alert variant="error">{errorMessage}</Alert>}
       <LoginForm
         errors={errors}

@@ -275,7 +275,8 @@ const LayoutExercices = () => {
         }}
       />
 
-      <div className="layoutExercice">
+
+      <div className="sequence-group">
         {exercices && exercices.length > 0 ? (
           <>
             {!exercices.every((exercice) => exercice.done === true) && (
@@ -289,6 +290,7 @@ const LayoutExercices = () => {
         ) : (
           <Loader />
         )}
+        <div className="sequence-group__content">
         {getCurrentExercise()}
         {exercices.find((exercice) => exercice.done === "pending") && (
           <>
@@ -307,6 +309,7 @@ const LayoutExercices = () => {
             )}
           </>
         )}
+        </div>
       </div>
     </>
   );

@@ -434,6 +434,7 @@
 }
 
 .consigneContainerWrapper {
+  height: fit-content;
   .speaker {
     position: absolute;
     right: 1rem;
@@ -444,7 +445,6 @@
   display: flex;
   position: relative;
   width: 100%;
-  top: -20px;
   justify-content: center;
   align-content: center;
   margin: 0 auto;
@@ -457,8 +457,8 @@
 
 .consigneContainer {
   background-color: v.$kepel-transparent;
-  width: auto;
-  width: 60vw;
+  width: 60svw;
+  max-width: 100%;
   display: flex;
   justify-content: center;
   padding: 1.2rem 4rem;
@@ -483,6 +483,19 @@
     min-height: 6rem;
     padding: 0.6rem 1rem;
     top: -1.5rem;
+  }
+}
+
+.sequence-group {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  max-width: 100%;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
 }
 

@@ -4,10 +4,10 @@
 .header {
   display: flex;
   align-items: center;
-  max-width: 100%;
+  width: 100%;
   font-family: 'Satoshi', sans-serif;
-  padding: 4rem;
   justify-content: space-between;
+  margin-bottom: 1svw;
 
   @media (max-width: 1366px) {
     padding: 1rem 4rem 4rem 4rem;
