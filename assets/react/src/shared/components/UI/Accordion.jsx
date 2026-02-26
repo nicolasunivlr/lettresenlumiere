@@ -1,4 +1,9 @@
 import { useEffect, useState } from 'react';
+import BronzeMedal from '../../../assets/images/gamification/medailleetapebronze.svg';
+import SilverMedal from '../../../assets/images/gamification/medailleetapeargent.svg';
+import GoldMedal from '../../../assets/images/gamification/medailleetapeor.svg';
+
+const medalsSvg = { bronze: BronzeMedal, silver: SilverMedal, gold: GoldMedal };
 
 const Accordion = ({ children, defaultOpenId, onToggle }) => {
   const [accordionList, setAccordionList] = useState([]);
@@ -42,16 +47,27 @@ const Accordion = ({ children, defaultOpenId, onToggle }) => {
           key={accordion.accordionId}
           id={accordion.accordionId}
           title={children[index].props.title}
+          titleMedal={children[index].props.titleMedal}
           content={children[index].props.content}
           isOpen={accordion.isOpen}
           toggleAction={() => toggleAccordion(accordion.accordionId)}
+          medalsSvg={medalsSvg}
         />
       ))}
     </section>
   );
 };
 
-const AccordionContent = ({ id, title, content, isOpen, toggleAction }) => {
+const AccordionContent = ({
+  id,
+  title,
+  titleMedal,
+  content,
+  isOpen,
+  toggleAction,
+  medalsSvg,
+}) => {
+  const medalSrc = titleMedal ? medalsSvg[titleMedal] : null;
   return (
     <>
       <div className='accordion font-regular'>
@@ -63,8 +79,15 @@ const AccordionContent = ({ id, title, content, isOpen, toggleAction }) => {
           checked={isOpen}
           readOnly
         />
-        <label htmlFor={`toggle${id}`} onClick={toggleAction}>
+        <label htmlFor={`toggle${id}`} onClick={toggleAction} className='flex items-center gap-2'>
           {title}
+          {medalSrc && (
+            <img
+              src={medalSrc}
+              alt={`Médaille ${titleMedal}`}
+              className='w-20 h-20 shrink-0'
+            />
+          )}
         </label>
         <section>
           <div className='content'>{content}</div>

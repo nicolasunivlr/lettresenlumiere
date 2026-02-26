@@ -6,9 +6,40 @@ import Loader from "../../shared/components/UI/Loader"; // Ajout du composant Lo
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import useDataEtapes from "../../shared/hooks/api/useDataEtapes";
+import useProgressionScores, {
+  getMedalFromScore,
+} from "../../shared/hooks/api/useProgressionScores";
+
+/**
+ * Calcule la médaille de l'étape : moyenne des scores des séquences de l'étape.
+ */
+const getEtapeMedal = (etape, scoreBySequenceId) => {
+  if (!etape?.sequences?.length) return null;
+  let sum = 0;
+  let count = 0;
+  for (const seq of etape.sequences) {
+    const score = scoreBySequenceId[seq.id];
+    if (score != null && !Number.isNaN(score)) {
+      sum += score;
+      count++;
+    }
+  }
+  const avg = count > 0 ? sum / count : 0;
+  return getMedalFromScore(avg);
+};
+
+/**
+ * Calcule la médaille d'une séquence (son propre score).
+ */
+const getSequenceMedal = (sequenceId, scoreBySequenceId) => {
+  const score = scoreBySequenceId[sequenceId];
+  if (score == null || Number.isNaN(score)) return null;
+  return getMedalFromScore(score);
+};
 
 function EtapesPage() {
   const etapesData = useDataEtapes();
+  const { scoreBySequenceId } = useProgressionScores();
   const [searchTerm, setSearchTerm] = useState("");
 
   // --- Router --- //
@@ -82,11 +113,11 @@ function EtapesPage() {
                     key={`${etape.nom}-${sequence.id}`}
                     id={sequence.id}
                     link={`/sequence/${sequence.id}`}
-                    // Mettre en évidence le nom de l'étape et la séquence
                     text={`${etape.nom} - ${sequence.nom}`}
                     py={16}
                     width="100%"
                     className="mb-2"
+                    medalType={getSequenceMedal(sequence.id, scoreBySequenceId)}
                   />
                 ));
               }
@@ -103,28 +134,36 @@ function EtapesPage() {
           defaultOpenId={searchParams.get("id") || null}
           onToggle={handleAccordionToggle}
         >
-          {etapesFiltrees.map((etape, index) => (
-            <div
-              key={index}
-              title={etape.nom}
-              content={
-                etape.sequences && etape.sequences.length > 0 ? (
-                  etape.sequences.map((sequence) => (
-                    <EtapesButton
-                      key={sequence.id}
-                      id={sequence.id}
-                      link={`/sequence/${sequence.id}`}
-                      text={sequence.nom}
-                      py={32}
-                      width="100%"
-                    />
-                  ))
-                ) : (
-                  <div>Pas de séquence pour le moment</div>
-                )
-              }
-            />
-          ))}
+          {etapesFiltrees.map((etape, index) => {
+            const etapeMedal = getEtapeMedal(etape, scoreBySequenceId);
+            return (
+              <div
+                key={index}
+                title={etape.nom}
+                titleMedal={etapeMedal}
+                content={
+                  etape.sequences && etape.sequences.length > 0 ? (
+                    etape.sequences.map((sequence) => (
+                      <EtapesButton
+                        key={sequence.id}
+                        id={sequence.id}
+                        link={`/sequence/${sequence.id}`}
+                        text={sequence.nom}
+                        py={32}
+                        width="100%"
+                        medalType={getSequenceMedal(
+                          sequence.id,
+                          scoreBySequenceId
+                        )}
+                      />
+                    ))
+                  ) : (
+                    <div>Pas de séquence pour le moment</div>
+                  )
+                }
+              />
+            );
+          })}
         </Accordion>
       )}
       <ScrollDownArrow />
