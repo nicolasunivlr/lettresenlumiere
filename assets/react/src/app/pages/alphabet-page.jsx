@@ -11,7 +11,7 @@ import ErrorPage from "./Error";
 
 import Loader from "../../shared/components/UI/Loader";
 import { ExerciseRenderer } from "../../features/exercises";
-import ResultPage from "./ResultPage";
+import ResultPage from "../../shared/components/Exercises/ResultPage";
 
 const AlphabetPage = () => {
   const [isRetryingAfterBilan, setIsRetryingAfterBilan] = useState(false);

@@ -81,11 +81,12 @@ const PDFPage = (props) => {
           {content && content.length > 0 ? (
             content.map((exercise, index) => {
               // Prioriser le score depuis progress, sinon depuis exercise.score
-              const exerciseScore = progress && progress[index]?.score !== undefined
-                ? progress[index].score
-                : exercise.score !== undefined
-                ? exercise.score
-                : undefined;
+              const exerciseScore =
+                progress && progress[index]?.score !== undefined
+                  ? progress[index].score
+                  : exercise.score !== undefined
+                    ? exercise.score
+                    : undefined;
 
               return (
                 <View key={index} style={{ marginBottom: 5 }}>

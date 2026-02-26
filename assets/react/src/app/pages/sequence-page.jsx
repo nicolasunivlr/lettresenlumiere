@@ -9,7 +9,7 @@ import NextExerciseButton from "../../shared/components/UI/NextExerciseButton";
 import ModalEndExercise from "../../shared/components/Exercises/ModalEndExercise";
 import { useSequenceUIState } from "../../features/sequences/useSequenceUIState";
 import { useProfile } from "../../features/profile/profile-provider";
-import ResultPage from "../../shared/components/Exercises/ResultPage";
+import SequenceSummary from "../../features/sequences/components/sequence-summary";
 
 export const SequencePage = () => {
   // --- Logique liée à la séquence ---
@@ -111,7 +111,7 @@ export const SequencePage = () => {
             )}
             <div className="sequence-group__content">
               {UI.showSummary & true ? (
-                <ResultPage
+                <SequenceSummary
                   context={{
                     ...sequence,
                   }}

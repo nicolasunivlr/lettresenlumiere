@@ -7,7 +7,7 @@ import Instruction from "../Instruction";
 import ModalExerciseG from "../UI/ModalExerciseG";
 import usePlay from "../../hooks/usePlay";
 
-const TIMER_DURATION = 1; // Durée du timer en secondes
+const TIMER_DURATION = 30; // Durée du timer en secondes
 
 const ExerciseTypeG = (props) => {
   const { content, onDone } = props;
