@@ -1,6 +1,6 @@
 import { RegistrationForm } from "../../features/auth/components/registration-form";
 import { useAuth } from "../../features/auth";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 export const RegistrationPage = () => {
   const { register, isChecking, errors, isLoading, isAuthenticated } =

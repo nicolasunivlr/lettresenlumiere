@@ -3,7 +3,7 @@ import Header from "../../shared/components/Header";
 import Accordion from "../../shared/components/UI/Accordion";
 import EtapesButton from "../../shared/components/UI/EtapesButton";
 import Loader from "../../shared/components/UI/Loader"; // Ajout du composant Loader
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import useDataEtapes from "../../shared/hooks/api/useDataEtapes";
 import useProgressionScores, {

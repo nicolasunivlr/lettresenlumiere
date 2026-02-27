@@ -10,8 +10,10 @@ export const useSequenceUIState = (initialState) => {
   const showEndOfExerciseModal = () => {
     setState((prev) => ({
       ...prev,
-      showNextButton: prev.currentExerciseIndex === 0,
-      showModal: prev.currentExerciseIndex !== 0,
+      // On n'affiche plus le bouton NextExercise en dehors du modal
+      showNextButton: false,
+      // On affiche systématiquement le modal de fin d'exercice
+      showModal: true,
     }));
   };
 

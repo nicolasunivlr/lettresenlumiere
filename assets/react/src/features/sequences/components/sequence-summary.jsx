@@ -117,7 +117,6 @@ const SequenceSummary = ({ context, circleOnClick, progress }) => {
           />
         }
       </div>
-      (
       <ProgressCircles
         count={exercises.length}
         containerClassName="results"
@@ -125,7 +124,6 @@ const SequenceSummary = ({ context, circleOnClick, progress }) => {
         labels={exercises.map((e) => e.consigne)}
         onChange={(index) => onRetry(index)}
       />
-      )
       <NextExerciseButton onClick={handleOnClick} />
     </section>
   );
