@@ -101,16 +101,16 @@ const AlphabetPage = () => {
 
   const getCurrentExercise = () => {
     if (currentExercise) {
-      if (exercises?.every((exercise) => exercise.done === true)) {
-        return (
-          <ResultPage
-            content={exercises}
-            circleOnClick={handleOnClickOnCircleResultPage}
-            sequence={exerciseData}
-            etapeid={"Alphabet"}
-          />
-        );
-      }
+      // if (exercises?.every((exercise) => exercise.done === true)) {
+      return (
+        <ResultPage
+          content={exercises}
+          circleOnClick={handleOnClickOnCircleResultPage}
+          sequence={exerciseData}
+          etapeid={"Alphabet"}
+        />
+      );
+      // }
 
       return (
         <ExerciseRenderer

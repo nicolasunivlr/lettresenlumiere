@@ -4,8 +4,6 @@ import LogoApp from "../../../assets/images/Logolettresenlumiere.png";
 export const ProfileBanner = ({ children, className, visible, ...rest }) => {
   const { profile } = useProfile();
 
-  console.log("ProfileBanner rendu avec le profil :", profile);
-
   if (visible === false) {
     return null;
   }
@@ -17,8 +15,7 @@ export const ProfileBanner = ({ children, className, visible, ...rest }) => {
         <span className="profile-banner__title">
           {profile.isGuest()
             ? "Mode Invité"
-            : `Bienvenue, ${profile
-                .getFirstname()} `}
+            : `Bienvenue, ${profile.getFirstname()} `}
         </span>
 
         {/* Logo centré */}

@@ -48,18 +48,19 @@ const ResultPage = (props) => {
     }
 
     // Filtrer les exercices ayant un score non null
-    const validScores = content
-      .filter((exercice) => exercice.score !== null)
-      .map((exercice) => exercice.score);
+    // const validScores = content
+    //   .filter((exercice) => exercice.score !== null)
+    //   .map((exercice) => exercice.score)
+    //   .filter(Boolean);
 
-    console.log(validScores);
+    const validScores = [100, 70];
 
     // Calculer la moyenne uniquement sur les scores valides
     const scoreTotal = validScores.reduce((acc, score) => acc + score, 0);
     const scoreAvg =
       validScores.length > 0
         ? Math.round((scoreTotal / validScores.length) * 100) / 100
-        : null;
+        : 0;
 
     // Déterminer la médaille en fonction du score moyen
     let medalSrc = "";
