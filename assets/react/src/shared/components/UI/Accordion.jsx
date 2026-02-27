@@ -47,7 +47,10 @@ const Accordion = ({ children, defaultOpenId, onToggle }) => {
           key={accordion.accordionId}
           id={accordion.accordionId}
           title={children[index].props.title}
-          titleMedal={children[index].props.titleMedal}
+          titleMedal={
+            children[index].props.titleMedal ??
+            children[index].props.titleTrophy
+          }
           content={children[index].props.content}
           isOpen={accordion.isOpen}
           toggleAction={() => toggleAccordion(accordion.accordionId)}
