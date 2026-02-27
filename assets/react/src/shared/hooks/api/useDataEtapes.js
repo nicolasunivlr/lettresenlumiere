@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { etapesApi } from "../../api/etapes-api";
 
+/**
+ * @deprecated
+ */
 const useDataEtapes = () => {
   const [etapesData, setEtapesData] = useState(null);
 
