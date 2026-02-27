@@ -16,15 +16,18 @@ import useProgressionScores, {
 const getEtapeTrophy = (etape, scoreBySequenceId) => {
   if (!etape?.sequences?.length) return null;
   let sum = 0;
-  let count = 0;
+
+  // On n'affiche une médaille d'étape que si **toutes** les séquences
+  // ont un score valide.
   for (const seq of etape.sequences) {
     const score = scoreBySequenceId[seq.id];
-    if (score != null && !Number.isNaN(score)) {
-      sum += score;
-      count++;
+    if (score == null || Number.isNaN(score)) {
+      return null;
     }
+    sum += score;
   }
-  const avg = count > 0 ? sum / count : 0;
+
+  const avg = sum / etape.sequences.length;
   return getMedalFromScore(avg);
 };
 

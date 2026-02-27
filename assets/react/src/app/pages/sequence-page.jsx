@@ -123,11 +123,6 @@ export const SequencePage = () => {
                   key={`attempt-${UI.attemptCount}`}
                   exercise={sequence.exercises[UI.currentExerciseIndex]}
                   onDone={handleExerciseDone}
-                  alphabet={
-                    sequence.exercises[UI.currentExerciseIndex].type
-                      .charAt(0)
-                      .toLowerCase() === "a"
-                  }
                 />
               )}
             </div>
