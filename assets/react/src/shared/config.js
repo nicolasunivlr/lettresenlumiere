@@ -21,7 +21,11 @@ const config = {
   accountProfilesMe: `${baseUrl}/api/account_profile/me`,
   accountProfileProgress: (accountId) =>
     `${baseUrl}/api/account_profile/${accountId}/progression`,
+  accountProfileAllProgressions: (accountId) =>
+    `${baseUrl}/api/account-profile/${accountId}/allProgressions`,
   progressions: `${baseUrl}/api/progressions`,
+  accountProfileSequenceResults: (accountId, sequenceId) =>
+  `${baseUrl}/api/account-profile/${accountId}/sequences/${sequenceId}/results`,
 };
 
 export { config };

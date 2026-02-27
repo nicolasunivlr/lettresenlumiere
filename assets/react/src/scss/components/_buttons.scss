@@ -300,3 +300,26 @@
   cursor: pointer;
   background-color: v.$violet-pale;
 }
+
+
+/* Return button */
+.return-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.8rem;
+  padding: 1em 1em;
+  background-color: v.$rouge;
+  color: white;
+  border-radius: 8px;
+
+  &:disabled {
+    background-color: rgb(90, 90, 90);
+  }
+}
+
+.return-button:hover {
+  cursor: pointer;
+  color: v.$noir;
+  background-color: rgb(60, 60, 60);
+}

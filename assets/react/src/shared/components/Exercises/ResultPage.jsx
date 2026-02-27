@@ -5,10 +5,14 @@ import PDFModal from "../UI/PDFModal";
 import { useEffect } from "react";
 
 const ResultPage = (props) => {
+  
   const { content, circleOnClick, sequence, etapeid } = props;
   const { id } = useParams();
   const navigate = useNavigate();
-  const showScore = () => {
+
+
+
+  /*const showScore = () => {
     if (!content || content.length === 0) {
       return { scoreAvg: 0, medalSrc: null };
     }
@@ -20,6 +24,38 @@ const ResultPage = (props) => {
     const scoreAvg = Math.round((scoreTotal / content.length) * 100) / 100;
     let medalSrc = "";
 
+    let bgc;
+
+    if (scoreAvg >= 80) {
+      medalSrc = GoldMedal;
+      bgc = "medal-score--bravo";
+    } else if (scoreAvg >= 60) {
+      medalSrc = SilverMedal;
+      bgc = "medal-score--bien";
+    } else if (scoreAvg >= 40) {
+      medalSrc = BronzeMedal;
+      bgc = "medal-score--pasmal";
+    } else {
+      bgc = "medal-score--revoir";
+    }
+
+    return { scoreAvg, medalSrc, bgc };
+  };
+  */
+ const showScore = () => {
+    if (!content || content.length === 0) {
+      return { scoreAvg: 0, medalSrc: null };
+    }
+
+    // Filtrer les exercices ayant un score non null
+    const validScores = content.filter(exercice => exercice.score !== null).map(exercice => exercice.score);
+
+    // Calculer la moyenne uniquement sur les scores valides
+    const scoreTotal = validScores.reduce((acc, score) => acc + score, 0);
+    const scoreAvg = validScores.length > 0 ? Math.round((scoreTotal / validScores.length) * 100) / 100 : null;
+
+    // Déterminer la médaille en fonction du score moyen
+    let medalSrc = "";
     let bgc;
 
     if (scoreAvg >= 80) {
