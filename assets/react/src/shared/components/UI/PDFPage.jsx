@@ -96,7 +96,7 @@ const PDFPage = (props) => {
 
                   <Text style={styles.score}>
                     Score:{" "}
-                    {exerciseScore !== undefined
+                    {exerciseScore !== undefined && exerciseScore !== null
                       ? exerciseScore + " %"
                       : "Non disponible"}
                   </Text>
