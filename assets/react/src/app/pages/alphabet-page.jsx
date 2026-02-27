@@ -101,7 +101,7 @@ const AlphabetPage = () => {
 
   const getCurrentExercise = () => {
     if (currentExercise) {
-      // if (exercises?.every((exercise) => exercise.done === true)) {
+      if (exercises?.every((exercise) => exercise.done === true)) {
       return (
         <ResultPage
           content={exercises}
@@ -110,7 +110,7 @@ const AlphabetPage = () => {
           etapeid={"Alphabet"}
         />
       );
-      // }
+     }
 
       return (
         <ExerciseRenderer

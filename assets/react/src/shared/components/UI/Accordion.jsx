@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import BronzeMedal from '../../../assets/images/gamification/medailleetapebronze.svg';
-import SilverMedal from '../../../assets/images/gamification/medailleetapeargent.svg';
-import GoldMedal from '../../../assets/images/gamification/medailleetapeor.svg';
+import BronzeCoupe from '../../../assets/images/gamification/coupe_bronze.png';
+import SilverCoupe from '../../../assets/images/gamification/coupe_argent.png';
+import GoldCoupe from '../../../assets/images/gamification/coupe_or.png';
 
-const medalsSvg = { bronze: BronzeMedal, silver: SilverMedal, gold: GoldMedal };
+const medalsSvg = { bronze: BronzeCoupe, silver: SilverCoupe, gold: GoldCoupe };
 
 const Accordion = ({ children, defaultOpenId, onToggle }) => {
   const [accordionList, setAccordionList] = useState([]);

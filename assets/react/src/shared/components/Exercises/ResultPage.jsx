@@ -59,7 +59,7 @@ const ResultPage = (props) => {
     const scoreTotal = validScores.reduce((acc, score) => acc + score, 0);
     const scoreAvg =
       validScores.length > 0
-        ? Math.round((scoreTotal / validScores.length) * 100) / 100
+        ? Math.round(scoreTotal / validScores.length)
         : 0;
 
     // Déterminer la médaille en fonction du score moyen
