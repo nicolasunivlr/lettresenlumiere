@@ -11,9 +11,9 @@ import useProgressionScores, {
 } from "../../shared/hooks/api/useProgressionScores";
 
 /**
- * Calcule la médaille de l'étape : moyenne des scores des séquences de l'étape.
+ * Calcule la **Coupe** de l'étape : moyenne des scores des séquences de l'étape.
  */
-const getEtapeMedal = (etape, scoreBySequenceId) => {
+const getEtapeTrophy = (etape, scoreBySequenceId) => {
   if (!etape?.sequences?.length) return null;
   let sum = 0;
   let count = 0;
@@ -29,7 +29,7 @@ const getEtapeMedal = (etape, scoreBySequenceId) => {
 };
 
 /**
- * Calcule la médaille d'une séquence (son propre score).
+ * Calcule la **Médaille** d'une séquence (son propre score).
  */
 const getSequenceMedal = (sequenceId, scoreBySequenceId) => {
   const score = scoreBySequenceId[sequenceId];
@@ -43,7 +43,6 @@ function EtapesPage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   // --- Router --- //
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   // --- Router --- //
 
@@ -61,7 +60,7 @@ function EtapesPage() {
 
   const handleAccordionToggle = (accordionId, isOpen) => {
     if (isOpen) {
-      // Si un accordéon s'ouvre, mettre à jour l'URL avec son ID
+      // Si un accordéon s'ouvre, mettre à jour l'URL avec ID de l'étape correspondante
       setSearchParams({ id: accordionId }, { replace: true });
     } else {
       // Si un accordéon se ferme, revenir à l'URL de base
@@ -95,16 +94,11 @@ function EtapesPage() {
         <div className="etapes-list-container px-4 py-2">
           {etapesFiltrees.length > 0 ? (
             etapesFiltrees.flatMap((etape, etapeIndex) => {
-              const etapeNumberMatch = etape.nom.match(/Étape\s+(\d+)/i);
-              const etapeNumber = etapeNumberMatch
-                ? etapeNumberMatch[1]
-                : etapeIndex + 1;
-
               // Afficher uniquement les séquences qui correspondent au terme de recherche ET ne contiennent pas "bilan"
               const sequencesFiltrees = etape.sequences.filter(
                 (sequence) =>
                   sequence.nom.toLowerCase().includes(searchTerm) &&
-                  !sequence.nom.toLowerCase().includes("bilan")
+                  !sequence.nom.toLowerCase().includes("bilan"),
               );
 
               if (sequencesFiltrees.length > 0) {
@@ -131,16 +125,16 @@ function EtapesPage() {
         </div>
       ) : (
         <Accordion
-          defaultOpenId={searchParams.get("id")}
+          defaultOpenId={searchParams.get("id") || null}
           onToggle={handleAccordionToggle}
         >
           {etapesFiltrees.map((etape, index) => {
-            const etapeMedal = getEtapeMedal(etape, scoreBySequenceId);
+            const etapeMedal = getEtapeTrophy(etape, scoreBySequenceId);
             return (
               <div
                 key={index}
                 title={etape.nom}
-                titleMedal={etapeMedal}
+                titleTrophy={etapeMedal}
                 content={
                   etape.sequences && etape.sequences.length > 0 ? (
                     etape.sequences.map((sequence) => (
@@ -153,7 +147,7 @@ function EtapesPage() {
                         width="100%"
                         medalType={getSequenceMedal(
                           sequence.id,
-                          scoreBySequenceId
+                          scoreBySequenceId,
                         )}
                       />
                     ))
