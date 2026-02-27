@@ -3,14 +3,14 @@ import CircleProgress from "../UI/CircleProgress";
 import NextExerciseButton from "../UI/NextExerciseButton";
 import PDFModal from "../UI/PDFModal";
 import { useEffect } from "react";
+import GoldMedal from "../../../assets/images/gamification/medailleetapeor.svg";
+import SilverMedal from "../../../assets/images/gamification/medailleetapeargent.svg";
+import BronzeMedal from "../../../assets/images/gamification/medailleetapebronze.svg";
 
 const ResultPage = (props) => {
-  
   const { content, circleOnClick, sequence, etapeid } = props;
   const { id } = useParams();
   const navigate = useNavigate();
-
-
 
   /*const showScore = () => {
     if (!content || content.length === 0) {
@@ -42,17 +42,24 @@ const ResultPage = (props) => {
     return { scoreAvg, medalSrc, bgc };
   };
   */
- const showScore = () => {
+  const showScore = () => {
     if (!content || content.length === 0) {
       return { scoreAvg: 0, medalSrc: null };
     }
 
     // Filtrer les exercices ayant un score non null
-    const validScores = content.filter(exercice => exercice.score !== null).map(exercice => exercice.score);
+    const validScores = content
+      .filter((exercice) => exercice.score !== null)
+      .map((exercice) => exercice.score);
+
+    console.log(validScores);
 
     // Calculer la moyenne uniquement sur les scores valides
     const scoreTotal = validScores.reduce((acc, score) => acc + score, 0);
-    const scoreAvg = validScores.length > 0 ? Math.round((scoreTotal / validScores.length) * 100) / 100 : null;
+    const scoreAvg =
+      validScores.length > 0
+        ? Math.round((scoreTotal / validScores.length) * 100) / 100
+        : null;
 
     // Déterminer la médaille en fonction du score moyen
     let medalSrc = "";
@@ -87,7 +94,7 @@ const ResultPage = (props) => {
     if (sequence.nom === "Alphabet" || sequence.nom === "Graphèmes") {
       navigate(`/`);
     } else {
-      navigate(`/etapes/${sequence.etape.id}`);
+      navigate(`/etapes/${etapeid}`);
     }
   };
 
