@@ -19,7 +19,7 @@ import { ProgressionPage } from "./pages/ProgressionPage";
 
 export const App = () => {
   return (
-    <Router>
+    <Router basename="/lettresenlumiere">
       <Routes>
         <Route element={<RootLayout />}>
           <Route element={<AccessControl />}>

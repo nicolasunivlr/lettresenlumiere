@@ -7,7 +7,7 @@ export const AdminButton = ({ label }) => {
   const handleClick = async () => {
     // Rediriger vers la page d'administration
     try {
-      window.location.href = '/admin';
+      window.location.href = '/lettresenlumiere/admin';
       console.log("Redirection vers la page d'administration !");
 
     } catch (error) {
