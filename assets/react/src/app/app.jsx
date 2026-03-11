@@ -1,5 +1,5 @@
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Routes,
   Navigate,
@@ -18,9 +18,8 @@ import GraphemePage from "./pages/grapheme-page";
 import { ProgressionPage } from "./pages/ProgressionPage";
 
 export const App = () => {
-  const basename = process.env.NODE_ENV === "production" ? "/lettresenlumiere" : "/";
   return (
-    <Router basename={basename}>
+    <Router>
       <Routes>
         <Route element={<RootLayout />}>
           <Route element={<AccessControl />}>
