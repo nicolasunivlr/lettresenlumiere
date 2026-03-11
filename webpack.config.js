@@ -9,7 +9,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 if (!Encore.isProduction()) {
     // public path used by the web server to access the output path
     Encore.setOutputPath('public/build/')
-        .setPublicPath('/lettresenlumiere/build')
+        .setPublicPath('/build')
 } else {
     Encore.setOutputPath('public/build/')
         .setPublicPath('/lettresenlumiere/build')
