@@ -27,5 +27,44 @@ export const sequencesApi = {
 
     return response.json();
   },
+
+  
+  /**
+   * Récupèrer les résultats détaillés d'une séquence pour un compte utilisateur donné
+   *
+   * Cette route renvoye la liste des exercices avec leurs scores individuels.
+   *
+   * Exemple de réponse :
+   * [
+   *   {
+   *     id: 12,
+   *     consigne: "Entoure la lettre A",
+   *     score: 1
+   *   },
+   *   {
+   *     id: 13,
+   *     consigne: "Lis le mot",
+   *     score: 0
+   *   }
+   * ]
+   *
+   * @param {string|number} accountId - ID du compte utilisateur
+   * @param {string|number} sequenceId - ID de la séquence
+   * @returns {Promise<Array>} Liste des exercices avec score individuel
+   */
+  getResultsForAccount: async (accountId, sequenceId) => {
+  const response = await fetch(
+    config.accountProfileSequenceResults(accountId, sequenceId),
+    { credentials: "include" }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Erreur lors de la récupération des résultats de la séquence."
+    );
+  }
+
+  return response.json();
+},
 };
 

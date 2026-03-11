@@ -55,5 +55,40 @@ export const profilesApi = {
 
     return response.json();
   },
+
+  /**
+   * Récupère toutes les progressions structurées par étape et séquence
+   * @param {string|number} accountId - ID du compte
+   * @returns {Promise<Array>} Tableau des progressions par étape et séquence
+   */
+  getAllProgressions: async (accountId) => {
+    const response = await fetch(config.accountProfileAllProgressions(accountId), {
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération des progressions.");
+    }
+
+    return response.json();
+  },
+
+
+
+  /**
+   * Récupèrer tous les profils
+   * @returns {Promise<Array>}
+   */
+  getAllAccountProfiles: async () => {
+    const response = await fetch(config.accountProfiles, {
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération des profils.");
+    }
+
+    return response.json();
+  },
 };
 

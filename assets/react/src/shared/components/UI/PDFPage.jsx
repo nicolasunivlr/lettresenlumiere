@@ -9,7 +9,38 @@ import {
 import logo from "../../../assets/images/logo.png";
 
 const PDFPage = (props) => {
-  const { content, sequence, etapeid, score } = props;
+  const { content, sequence, etapeid, score, progress } = props;
+
+  // Calcul du score total à partir des exercices (en priorisant `progress` si présent)
+  const allScores =
+    content && content.length > 0
+      ? content
+          .map((exercise, index) => {
+            if (
+              progress &&
+              progress[index] &&
+              progress[index].score !== undefined &&
+              progress[index].score !== null
+            ) {
+              return progress[index].score;
+            }
+
+            if (exercise.score !== undefined && exercise.score !== null) {
+              return exercise.score;
+            }
+
+            return null;
+          })
+          .filter((val) => val !== null)
+      : [];
+
+  const totalScore =
+    allScores.length > 0
+      ? Math.round(
+          allScores.reduce((acc, val) => acc + val, 0) / allScores.length,
+        )
+      : score || 0;
+
   const styles = StyleSheet.create({
     page: {
       padding: 30,
@@ -76,23 +107,33 @@ const PDFPage = (props) => {
 
             <Text style={styles.header}>Séquence : {sequence}</Text>
 
-            <Text style={styles.header}>Score total : {score} %</Text>
+            <Text style={styles.header}>Score total : {totalScore} %</Text>
           </View>
           {content && content.length > 0 ? (
-            content.map((exercise, index) => (
-              <View key={index} style={{ marginBottom: 5 }}>
-                <Text style={styles.text}>
-                  {index + 1}. {exercise.consigne || "Exercice inconnu"}
-                </Text>
+            content.map((exercise, index) => {
+              // Prioriser le score depuis progress, sinon depuis exercise.score
+              const exerciseScore =
+                progress && progress[index]?.score !== undefined
+                  ? progress[index].score
+                  : exercise.score !== undefined
+                    ? exercise.score
+                    : undefined;
 
-                <Text style={styles.score}>
-                  Score:{" "}
-                  {exercise.score !== undefined
-                    ? exercise.score + " %"
-                    : "Non disponible"}
-                </Text>
-              </View>
-            ))
+              return (
+                <View key={index} style={{ marginBottom: 5 }}>
+                  <Text style={styles.text}>
+                    {index + 1}. {exercise.consigne || "Exercice inconnu"}
+                  </Text>
+
+                  <Text style={styles.score}>
+                    Score:{" "}
+                    {exerciseScore !== undefined && exerciseScore !== null
+                      ? exerciseScore + " %"
+                      : "Non disponible"}
+                  </Text>
+                </View>
+              );
+            })
           ) : (
             <Text style={styles.text}>
               Aucun exercice enregistré pour le moment.

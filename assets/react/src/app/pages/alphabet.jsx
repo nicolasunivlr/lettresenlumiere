@@ -1,9 +1,9 @@
 import Header from "../../shared/components/Header.jsx";
-import OKButton from "../../shared/components/UI/OKButton.js";
+import OKButton from "../../shared/components/UI/OKButton.jsx";
 
-function AlphabetPage() {
+const Alphabet = () => {
   const alphabet = Array.from({ length: 26 }, (_, i) =>
-    String.fromCharCode(i + 65)
+    String.fromCharCode(i + 65),
   );
   return (
     <>
@@ -32,6 +32,6 @@ function AlphabetPage() {
       </main>
     </>
   );
-}
+};
 
-export default AlphabetPage;
+export default Alphabet;

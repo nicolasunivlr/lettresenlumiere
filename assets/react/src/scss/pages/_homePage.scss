@@ -64,7 +64,15 @@
     }
   }
 
-  &__credits {
+  &__bottom-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2rem;
+  }    
+
+  &_links {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -80,11 +88,16 @@
       color: v.$noir;
     }
     &:hover {
-      scale: 1.17;
+      scale: 1.10;
       transition: 0.2s all ease-out;
     }
-    
   }
 
-    
+  &__link-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    margin-right: 5px;
+  }
+
 }

@@ -9,6 +9,7 @@ import NextExerciseButton from "../../shared/components/UI/NextExerciseButton";
 import ModalEndExercise from "../../shared/components/Exercises/ModalEndExercise";
 import { useSequenceUIState } from "../../features/sequences/useSequenceUIState";
 import { useProfile } from "../../features/profile/profile-provider";
+import SequenceSummary from "../../features/sequences/components/sequence-summary";
 
 export const SequencePage = () => {
   // --- Logique liée à la séquence ---
@@ -40,9 +41,8 @@ export const SequencePage = () => {
   React.useEffect(() => {
     const initProgress = async () => {
       setIsProgressLoading(true);
-      const progressForSequence = await profile.getProgressForSequence(
-        sequence
-      );
+      const progressForSequence =
+        await profile.getProgressForSequence(sequence);
       setProgress(progressForSequence);
       showProgressCircles();
       goToExercise(progressForSequence?.findIndex((p) => p === null) || 0);
@@ -61,7 +61,7 @@ export const SequencePage = () => {
     } else {
       profile.createProgressForExercise(
         sequence.exercises[UI.currentExerciseIndex].id,
-        score
+        score,
       );
     }
     setProgress((prev) => {
@@ -106,18 +106,25 @@ export const SequencePage = () => {
                 current={UI.currentExerciseIndex}
                 progress={progress}
                 onChange={(next) => goToExercise(next)}
+                containerClassName="sidebar"
               />
             )}
             <div className="sequence-group__content">
-            {UI.showSummary ? (
-              <div>Affichage des résultats de la séquence...</div>
-            ) : (
-              <ExerciseRenderer
-                key={`attempt-${UI.attemptCount}`}
-                exercise={sequence.exercises[UI.currentExerciseIndex]}
-                onDone={handleExerciseDone}
-              />
-            )}
+              {UI.showSummary & true ? (
+                <SequenceSummary
+                  context={{
+                    ...sequence,
+                  }}
+                  progress={progress}
+                  onRetry={(index) => goToExercise(index)}
+                />
+              ) : (
+                <ExerciseRenderer
+                  key={`attempt-${UI.attemptCount}`}
+                  exercise={sequence.exercises[UI.currentExerciseIndex]}
+                  onDone={handleExerciseDone}
+                />
+              )}
             </div>
           </div>
 

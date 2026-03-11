@@ -1,4 +1,6 @@
 import ExerciseTypeA from "../../shared/components/Exercises/ExerciseTypeA";
+import ExerciseTypeAAlphabet from "../../shared/components/Exercises/ExerciseTypeAAlphabet";
+import ExerciceTypeAGrapheme from "../../shared/components/Exercises/ExerciseTypeAGrapheme";
 import ExerciseTypeB from "../../shared/components/Exercises/ExerciseTypeB";
 import ExerciseTypeC from "../../shared/components/Exercises/ExerciseTypeC";
 import ExerciseTypeD from "../../shared/components/Exercises/ExerciseTypeD";
@@ -20,6 +22,8 @@ export class ExerciseRegistry {
     F: ExerciseTypeF,
     G: ExerciseTypeG,
     H: ExerciseTypeH,
+    ALPHABET: ExerciseTypeAAlphabet,
+    GRAPHEMES: ExerciceTypeAGrapheme,
   };
 
   static get(type) {

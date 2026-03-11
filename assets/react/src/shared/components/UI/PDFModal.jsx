@@ -4,7 +4,7 @@ import PDFPage from "./PDFPage";
 import { PDFViewer } from "@react-pdf/renderer";
 
 const PDFModal = (props) => {
-  const { content, sequence, etapeid, score } = props;
+  const { content, sequence, etapeid, score, progress } = props;
   const [showPDF, setShowPDF] = useState(false);
   return (
     <>
@@ -35,6 +35,7 @@ const PDFModal = (props) => {
               sequence={sequence}
               etapeid={etapeid}
               score={score}
+              progress={progress}
             />
           </PDFViewer>
         </div>

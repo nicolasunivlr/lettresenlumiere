@@ -1,6 +1,6 @@
-@use '../base/variables' as v;
-@use '../base/fonts' as f;
-@use 'sass:color';
+@use "../base/variables" as v;
+@use "../base/fonts" as f;
+@use "sass:color";
 
 // Définition des couleurs
 $exercise-colors: (
@@ -11,8 +11,8 @@ $exercise-colors: (
 );
 
 .sidebar-container {
-  flex:1;
-  width:fit-content;
+  flex: 1;
+  width: fit-content;
 }
 
 .sidebar {
@@ -26,7 +26,7 @@ $exercise-colors: (
   /* FORCE le conteneur à coller aux colonnes */
   width: min-content;
   justify-self: start; /* Empêche l'étirement si le parent est un Grid */
-  align-self: start;   /* Empêche l'étirement si le parent est un Flex */
+  align-self: start; /* Empêche l'étirement si le parent est un Flex */
 
   /* Pour éviter que le gap final ne crée un vide à droite */
   padding-right: 0;
@@ -58,4 +58,11 @@ $exercise-colors: (
     box-shadow: 0 0 0 3px v.$kepel;
     background-color: v.$blanc-max;
   }
+}
+
+.circle-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 2rem;
 }

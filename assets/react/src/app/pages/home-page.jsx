@@ -1,10 +1,12 @@
 import logoBrain from "../../assets/images/brainLogo.png";
 import logoUpArrow from "../../assets/images/purple-up-arrow.png";
 import logoLeL from "../../assets/images/Logolettresenlumiere.png";
+import medalIcon from "../../assets/images/gamification/medals/medal-icon.png";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import RedirectButton from "../../shared/components/UI/RedirectButton";
 import { useProfile } from "../../features/profile/profile-provider";
+
 
 export const HomePage = () => {
   const { profile } = useProfile();
@@ -34,7 +36,7 @@ export const HomePage = () => {
               transition={{ duration: 0.5 }}
             >
               <RedirectButton
-                link="/alphabet"
+                link="/sequence/alphabet"
                 text=" A B C - a b c"
                 className="homeButtonGauche"
                 label="Alphabet"
@@ -49,7 +51,8 @@ export const HomePage = () => {
                 transition: { duration: 1.5, repeat: Infinity },
               }}
             >
-              <img src={logoBrain} alt="Logo Brain" />
+            <img src={logoBrain} alt="Logo Brain"/>
+              
             </motion.div>
 
             <motion.div
@@ -59,7 +62,7 @@ export const HomePage = () => {
               transition={{ duration: 0.5 }}
             >
               <RedirectButton
-                link="/graphemes"
+                link="/sequence/graphemes"
                 text="an on in"
                 className="homeButtonDroite"
                 label="Graphèmes"
@@ -67,9 +70,18 @@ export const HomePage = () => {
             </motion.div>
           </div>
 
-          <p className="home__credits">
-            <Link to="/credits">Crédits</Link>
-          </p>
+          <div className="home__bottom-links">
+            {/* todo : cacher si mode libre */}  
+            <Link to="/progression" className="home_links">
+              <img src={medalIcon} alt="" className="home__link-icon" />
+              <span>Mes résultats</span>
+            </Link>
+          </div>
+
+          <div className="home__credits">
+            <Link to="/credits" className="home__credits-link">Crédits</Link>
+          </div>
+
         </div>
       )}
     </div>

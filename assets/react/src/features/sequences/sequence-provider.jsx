@@ -16,27 +16,23 @@ const initialState = {
 
 /**
  * Ce provider fourni le contexte `SequenceContext` à ses composants enfants.
- * Il est monté à chaque fois que la route `/sequence/:id` est demandée (voir `App.jsx`).
+ * Il est monté à chaque fois qu'une des routes `/sequence/:id` est demandée (voir `App.jsx`).
  */
 export const SequenceProvider = ({ children }) => {
   const { id } = useParams();
   const [sequenceState, setSequenceState] = React.useState(initialState);
 
   React.useEffect(() => {
-    console.debug("SequenceContext mounted");
     const fetchSequenceById = async (id) => {
-      console.debug("[sequence:fetch:start]");
       setSequenceState((prev) => ({ ...prev, loading: true }));
 
       try {
         const data = await sequencesApi.getById(id);
-        console.debug("[sequence:fetch:success]");
         setSequenceState({
           ...initialState,
-          sequence: Sequence.createDTO(data),
+          sequence: Sequence.createFromData(data),
         });
       } catch (e) {
-        console.debug("[sequence:fetch:error]");
         console.error(e.message);
         setSequenceState({
           ...initialState,
@@ -45,11 +41,12 @@ export const SequenceProvider = ({ children }) => {
       }
     };
 
-    fetchSequenceById(id);
+    // Pas de params pour 'alphabet' et 'graphemes'
+    if (!id) {
+      return;
+    }
 
-    return () => {
-      console.debug("SequenceContext unmounted");
-    };
+    fetchSequenceById(id);
   }, []);
 
   const ctx = {
