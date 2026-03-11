@@ -18,8 +18,9 @@ import GraphemePage from "./pages/grapheme-page";
 import { ProgressionPage } from "./pages/ProgressionPage";
 
 export const App = () => {
+  const basename = process.env.NODE_ENV === "production" ? "/lettresenlumiere" : "/";
   return (
-    <Router basename="/lettresenlumiere">
+    <Router basename={basename}>
       <Routes>
         <Route element={<RootLayout />}>
           <Route element={<AccessControl />}>
