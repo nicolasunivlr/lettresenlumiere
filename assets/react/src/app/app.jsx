@@ -18,7 +18,7 @@ import GraphemePage from "./pages/grapheme-page";
 import { ProgressionPage } from "./pages/ProgressionPage";
 
 export const App = () => {
-  const basename = process.env.NODE_ENV === "production" ? "/lettresenlumiere" : "/";
+  const basename = process.env.NODE_ENV === "prod" ? "/lettresenlumiere" : "/";
   return (
     <Router basename={basename}>
       <Routes>
