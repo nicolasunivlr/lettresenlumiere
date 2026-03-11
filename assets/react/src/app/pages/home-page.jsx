@@ -71,15 +71,15 @@ export const HomePage = () => {
           </div>
 
           <div className="home__bottom-links">
-            <p className="home_links">
-              <Link to="/credits">Crédits</Link>
-            </p>
-
             {/* todo : cacher si mode libre */}  
             <Link to="/progression" className="home_links">
               <img src={medalIcon} alt="" className="home__link-icon" />
               <span>Mes résultats</span>
             </Link>
+          </div>
+
+          <div className="home__credits">
+            <Link to="/credits" className="home__credits-link">Crédits</Link>
           </div>
 
         </div>
