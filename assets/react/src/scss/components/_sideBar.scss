@@ -20,7 +20,7 @@ $exercise-colors: (
   grid-template-rows: repeat(auto-fill, 45px);
   grid-auto-columns: 45px;
   grid-auto-flow: column;
-  max-height: 70svh;
+  max-height: 70vh; /* fallback pour Edge ancien et navigateurs sans support svh */
   gap: 1rem;
 
   /* FORCE le conteneur à coller aux colonnes */
