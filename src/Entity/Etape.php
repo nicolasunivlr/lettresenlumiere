@@ -8,9 +8,10 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\EtapeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 
 
@@ -37,7 +38,12 @@ class Etape
 
     #[ORM\OneToMany(mappedBy: 'etape', targetEntity: Sequence::class)]
     #[Groups(['etape:read'])]
-    private $sequences;
+    private Collection $sequences;
+
+    public function __construct()
+    {
+        $this->sequences = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

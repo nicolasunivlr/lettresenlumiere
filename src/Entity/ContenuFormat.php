@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\ContenuFormatRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Serializer\Attribute\SerializedName;
 
 #[ORM\Entity(repositoryClass: ContenuFormatRepository::class)]
 class ContenuFormat
@@ -37,8 +36,8 @@ class ContenuFormat
     {
         // Si la couleur est définie et les lettres aussi, on retourne un format plus lisible
         if ($this->couleur && $this->lettres) {
-            return sprintf('Lettres : \'%s\', Couleur: %s', 
-                $this->lettres, 
+            return sprintf('Lettres : \'%s\', Couleur: %s',
+                $this->lettres,
                 $this->couleur->getCode()
             );
         }
@@ -103,7 +102,7 @@ class ContenuFormat
     {
         return $this->bold;
     }
-    
+
     // Ajout de cette méthode pour compatibilité
     public function getBold(): ?bool
     {

@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
 use App\Repository\ProgressionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
