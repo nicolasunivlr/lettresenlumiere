@@ -61,23 +61,17 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-gauge');
 
-        yield MenuItem::linkToCrud('Etape', 'fa fa-stairs', Contenu::class)
-            ->setController(EtapeCrudController::class);
+        yield MenuItem::linkTo(EtapeCrudController::class,'Etape', 'fa fa-stairs');
 
-        yield MenuItem::linkToCrud('Contenus', 'fa fa-folder-open', Contenu::class)
-            ->setController(ContenuCrudController::class);
+        yield MenuItem::linkTo(ContenuCrudController::class,'Contenus', 'fa fa-folder-open');
 
-        yield MenuItem::linkToCrud('Séquence', 'fa fa-list-ol', Contenu::class)
-            ->setController(SequenceCrudController::class);
+        yield MenuItem::linkTo(SequenceCrudController::class, 'Séquence', 'fa fa-list-ol');
 
-        yield MenuItem::linkToCrud('Exercice', 'fa fa-dumbbell', Contenu::class)
-            ->setController(ExerciceCrudController::class);
+        yield MenuItem::linkTo(ExerciceCrudController::class, 'Exercice', 'fa fa-dumbbell');
 
-        yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-user', Contenu::class)
-            ->setController(UserCrudController::class);    
+        yield MenuItem::linkTo(UserCrudController::class, 'Utilisateurs', 'fa fa-user');
 
-        yield MenuItem::linkToCrud('Couleur', 'fa fa-palette', Contenu::class)
-            ->setController(CouleurCrudController::class);
+        yield MenuItem::linkTo(CouleurCrudController::class, 'Couleur', 'fa fa-palette');
 
         // Ajoutez un nouvel élément de menu pour l'exportation globale
         yield MenuItem::linkToRoute('Export Global', 'fa fa-download', 'admin_global_export');
