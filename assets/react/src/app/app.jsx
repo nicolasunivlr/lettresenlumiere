@@ -25,7 +25,9 @@ export const App = () => {
           <Route element={<AccessControl />}>
             <Route path="/" element={<HomePage />} />
 
-            <Route path="/etapes" element={<EtapesPage />} />
+            <Route
+                path="/etapes/:id?"
+                element={<EtapesPage />} />
             <Route path="/progression" element={<ProgressionPage />} />
             <Route
               path="/progression/:accountId"

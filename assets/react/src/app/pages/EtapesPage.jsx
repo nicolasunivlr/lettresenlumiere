@@ -3,7 +3,7 @@ import Header from "../../shared/components/Header";
 import Accordion from "../../shared/components/UI/Accordion";
 import EtapesButton from "../../shared/components/UI/EtapesButton";
 import Loader from "../../shared/components/UI/Loader"; // Ajout du composant Loader
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import useDataEtapes from "../../shared/hooks/api/useDataEtapes";
 import useProgressionScores, {
@@ -46,7 +46,8 @@ function EtapesPage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   // --- Router --- //
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { id: openId } = useParams();
+  const navigate = useNavigate();
   // --- Router --- //
 
   if (!etapesData) {
@@ -63,11 +64,9 @@ function EtapesPage() {
 
   const handleAccordionToggle = (accordionId, isOpen) => {
     if (isOpen) {
-      // Si un accordéon s'ouvre, mettre à jour l'URL avec ID de l'étape correspondante
-      setSearchParams({ id: accordionId }, { replace: true });
+      navigate(`/etapes/${accordionId}`, { replace: true });
     } else {
-      // Si un accordéon se ferme, revenir à l'URL de base
-      setSearchParams({}, { replace: true });
+      navigate("/etapes", { replace: true });
     }
   };
 
@@ -128,7 +127,7 @@ function EtapesPage() {
         </div>
       ) : (
         <Accordion
-          defaultOpenId={searchParams.get("id") || null}
+          defaultOpenId={openId || null}
           onToggle={handleAccordionToggle}
         >
           {etapesFiltrees.map((etape, index) => {
