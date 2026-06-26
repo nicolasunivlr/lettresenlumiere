@@ -35,7 +35,7 @@ class Progression
     #[Groups(['progression:read'])]
     private ?Exercice $exercice = null;
 
-    #[ORM\ManyToOne(inversedBy: 'progression')]
+    #[ORM\ManyToOne(inversedBy: 'progressions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?AccountProfile $accountProfile = null;
 
