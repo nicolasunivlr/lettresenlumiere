@@ -72,7 +72,6 @@ const AccordionContent = ({
 }) => {
   const medalSrc = titleMedal ? medalsSvg[titleMedal] : null;
   return (
-    <>
       <div className='accordion font-regular'>
         <input
           id={`toggle${id}`}
@@ -96,7 +95,6 @@ const AccordionContent = ({
           <div className='content'>{content}</div>
         </section>
       </div>
-    </>
   );
 };
 
