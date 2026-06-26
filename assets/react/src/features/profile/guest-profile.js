@@ -22,8 +22,6 @@ export class GuestProfile {
       config.guestProgressTokenKey,
     );
 
-    console.log("sequence:", sequence);
-
     if (!existingProgress) {
       // Pas de progression enregistrée
       return sequence.exercises.map(() => null);
@@ -38,12 +36,6 @@ export class GuestProfile {
   }
 
   async updateProgress(progress, newScore) {
-    console.log(
-      "Updating progress for exercise:",
-      progress.exerciseId,
-      "to new score:",
-      newScore,
-    );
     // Récupérer les progressions existantes depuis le sessionStorage
     const existingProgress = sessionStorage.getItem(
       config.guestProgressTokenKey,
@@ -67,7 +59,6 @@ export class GuestProfile {
           JSON.stringify(progressions),
         );
 
-        console.log("Progress updated in sessionStorage:", progressions);
       } else {
         console.warn(
           "Progression not found for exerciseId:",
@@ -80,12 +71,6 @@ export class GuestProfile {
   }
 
   async createProgressForExercise(exerciseId, score) {
-    console.log(
-      "Creating progress for exercise:",
-      exerciseId,
-      "with score:",
-      score,
-    );
 
     // Récupérer les progressions existantes depuis le sessionStorage
     const existingProgress = sessionStorage.getItem(
@@ -107,6 +92,5 @@ export class GuestProfile {
       JSON.stringify(progressions),
     );
 
-    console.log("Progress saved to sessionStorage:", progressions);
   }
 }

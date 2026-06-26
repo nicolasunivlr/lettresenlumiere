@@ -90,7 +90,6 @@ const ResultPage = (props) => {
   }, [content]);
 
   const handleOnClick = () => {
-    console.log(sequence);
 
     if (sequence.nom === "Alphabet" || sequence.nom === "Graphèmes") {
       navigate(`/`);

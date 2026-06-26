@@ -15,13 +15,6 @@ export const ExerciseRenderer = ({ grapheme, alphabet, exercise, onDone }) => {
     ExerciseComponent = ExerciseRegistry.get(normalizeType(exercise.type));
   }
 
-  console.log(
-    "Rendering exercise of type:",
-    exercise.type,
-    "with component:",
-    ExerciseComponent,
-  );
-
   if (!ExerciseComponent) {
     return <div>Type d'exercice inconnu : {exercise.type}</div>;
   }

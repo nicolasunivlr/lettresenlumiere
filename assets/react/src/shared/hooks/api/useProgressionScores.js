@@ -37,6 +37,7 @@ const useProgressionScores = () => {
       // progressions pour la même séquence (ex. plusieurs exercices/tentatives).
       const sumBySequence = {};
       const countBySequence = {};
+      const nbExercicesBySequence = {};
 
       for (const p of progressions) {
         const sequenceId = p?.exercice?.sequence?.id;
@@ -46,13 +47,20 @@ const useProgressionScores = () => {
 
         sumBySequence[sequenceId] = (sumBySequence[sequenceId] ?? 0) + score;
         countBySequence[sequenceId] = (countBySequence[sequenceId] ?? 0) + 1;
+        nbExercicesBySequence[sequenceId] = p?.exercice?.sequence?.nbExercices ?? 0;
       }
 
       const nextScoreBySequenceId = {};
       for (const seqId of Object.keys(sumBySequence)) {
         const total = sumBySequence[seqId];
         const count = countBySequence[seqId];
-        nextScoreBySequenceId[Number(seqId)] = count > 0 ? total / count : 0;
+        const nbExercices = nbExercicesBySequence[seqId];
+        if (nbExercices === count) {
+          nextScoreBySequenceId[Number(seqId)] = count > 0 ? total / count : 0;
+        } else {
+          nextScoreBySequenceId[Number(seqId)] = 0;
+        }
+
       }
 
       setScoreBySequenceId(nextScoreBySequenceId);

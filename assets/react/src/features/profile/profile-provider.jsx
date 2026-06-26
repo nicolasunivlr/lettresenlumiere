@@ -53,7 +53,6 @@ export const ProfileProvider = ({ children }) => {
     };
     // Récupération des données utilisateur après l'authentification
     if (isAuthenticated && user && user.id !== "guest") {
-      console.log(user);
       getAccountProfile(user.accountId);
     } else if (isAuthenticated && user && user.id === "guest") {
       getGuestProfile();

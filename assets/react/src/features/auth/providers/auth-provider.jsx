@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: AuthActions.REGISTER_START });
     try {
       console.debug("---");
-      console.log(registrationData);
+      console.debug(registrationData);
       console.debug("---");
       const registration = await authApi.register(registrationData);
       const loggedInUser = authService.createLoggedUser(registration);

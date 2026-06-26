@@ -92,6 +92,12 @@ class Sequence
         return $this->exercices;
     }
 
+    #[Groups(['etape:read', 'progression:read'])]
+    public function getNbExercices(): ?int
+    {
+        return count($this->exercices);
+    }
+
     public function getContenus(): Collection{
         return $this->contenus;
     }
