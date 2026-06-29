@@ -25,7 +25,7 @@ export const LogoutButton = ({ children, ...rest }) => {
       {...rest}
     >
 
-      <span className="logout-button__label">{children?.(isLoggingOut) ?? <DefaultLabel isLoading={isLoggingOut} />}</span>
+      <span className="logout-button__label">{children?.(isLoggingOut) ?? <DefaultLabel isLoading={isLoggingOut} asGuest={asGuest} />}</span>
       
       <img 
         src={iconeLogout} 
@@ -37,6 +37,10 @@ export const LogoutButton = ({ children, ...rest }) => {
   );
 };
 
-const DefaultLabel = ({ isLoading }) => {
-  return <span>{isLoading ? "Déconnexion..." : "Se déconnecter"}</span>;
+const DefaultLabel = ({ isLoading, asGuest }) => {
+  if (asGuest) {
+    return <span>{isLoading ? "connexion..." : "Se connecter"}</span>;
+  } else {
+    return <span>{isLoading ? "Déconnexion..." : "Se déconnecter"}</span>;
+  }
 };

@@ -1,15 +1,21 @@
 import logoBrain from "../../assets/images/brainLogo.png";
 import logoUpArrow from "../../assets/images/purple-up-arrow.png";
-import logoLeL from "../../assets/images/Logolettresenlumiere.png";
 import medalIcon from "../../assets/images/gamification/medals/medal-icon.png";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import RedirectButton from "../../shared/components/UI/RedirectButton";
 import { useProfile } from "../../features/profile/profile-provider";
+import { useAuth } from "../../features/auth";
+import React from "react";
 
 
 export const HomePage = () => {
   const { profile } = useProfile();
+  const { user } = useAuth();
+
+  const asGuest = React.useMemo(() => {
+    return user?.id === "guest";
+  }, [user]);
 
   return (
     <div className="index">
@@ -70,13 +76,14 @@ export const HomePage = () => {
             </motion.div>
           </div>
 
-          <div className="home__bottom-links">
-            {/* todo : cacher si mode libre */}  
-            <Link to="/progression" className="home_links">
-              <img src={medalIcon} alt="" className="home__link-icon" />
-              <span>Mes résultats</span>
-            </Link>
-          </div>
+          {!asGuest && (
+            <div className="home__bottom-links">
+              <Link to="/progression" className="home_links">
+                <img src={medalIcon} alt="" className="home__link-icon" />
+                <span>Mes résultats</span>
+              </Link>
+            </div>
+          )}
 
           <div className="home__credits">
             <Link to="/credits" className="home__credits-link">Crédits</Link>
