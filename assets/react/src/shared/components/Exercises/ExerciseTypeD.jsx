@@ -278,10 +278,14 @@ const ExerciseTypeD = (props) => {
             answer: undefined,
           }))
         );
-        if (correctAnswer.sons_url) {
-          play(correctAnswer);
+        // recherche de l'élément dans contentExercise
+        const currentItem = contentExercise.find(
+            (item) => item.element === correctAnswer
+        );
+        if (currentItem.sons_url) {
+          play(currentItem);
         } else {
-          speak(correctAnswer.element);
+          speak(correctAnswer);
         }
         setisLocked(false);
       }, 2000);
