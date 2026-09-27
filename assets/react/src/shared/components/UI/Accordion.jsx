@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import BronzeCoupe from '../../../assets/images/gamification/coupe_bronze.png';
 import SilverCoupe from '../../../assets/images/gamification/coupe_argent.png';
 import GoldCoupe from '../../../assets/images/gamification/coupe_or.png';
@@ -71,8 +71,45 @@ const AccordionContent = ({
   medalsSvg,
 }) => {
   const medalSrc = titleMedal ? medalsSvg[titleMedal] : null;
+  const containerRef = useRef(null);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (!isOpen || !containerRef.current) return;
+
+    const scrollToTitle = () => {
+      containerRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    };
+
+    // On attend la fin réelle de l'animation d'ouverture (transition
+    // "max-height" du contenu) avant de scroller, afin que le calcul de
+    // position tienne compte de la fermeture des autres accordéons et de
+    // l'ouverture de celui-ci. Un timeout de secours couvre le cas où
+    // l'évènement ne se déclencherait pas (ex. accordéon déjà ouvert).
+    const sectionEl = sectionRef.current;
+    let fallbackId;
+
+    const handleTransitionEnd = (event) => {
+      if (event.target === sectionEl && event.propertyName === 'max-height') {
+        clearTimeout(fallbackId);
+        scrollToTitle();
+      }
+    };
+
+    sectionEl?.addEventListener('transitionend', handleTransitionEnd);
+    fallbackId = setTimeout(scrollToTitle, 900);
+
+    return () => {
+      sectionEl?.removeEventListener('transitionend', handleTransitionEnd);
+      clearTimeout(fallbackId);
+    };
+  }, [isOpen]);
+
   return (
-      <div className='accordion font-regular'>
+      <div className='accordion font-regular' ref={containerRef}>
         <input
           id={`toggle${id}`}
           type='checkbox'
@@ -91,7 +128,7 @@ const AccordionContent = ({
             />
           )}
         </label>
-        <section>
+        <section ref={sectionRef}>
           <div className='content'>{content}</div>
         </section>
       </div>
