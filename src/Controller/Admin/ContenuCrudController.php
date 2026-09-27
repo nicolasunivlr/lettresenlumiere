@@ -62,7 +62,7 @@ class ContenuCrudController extends AbstractCrudController
                 },
                 'attr' => ['class' => 'exercice-checkboxes'],
                 'group_by' => function ($exercice) {
-                    return $exercice->getSequence()->getNom();
+                    return $exercice->getSequence()?->getNom();
                 },
             ])
             ->setRequired(true);
