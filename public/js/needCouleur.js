@@ -35,9 +35,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       : data.label.split(' ')[1];
 
   // Remove this redeclaration of selectValue
-  existingColor.style.display = 'none';
-  createColor.style.display = 'none';
-  console.log(createColorInput);
+  if (existingColor) {
+    existingColor.style.display = 'none';
+  }
+  if (createColor) {
+    createColor.style.display = 'none';
+  }
 
   if (!selectValue) return;
 

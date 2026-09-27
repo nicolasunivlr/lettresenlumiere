@@ -1,4 +1,3 @@
-document.addEventListener('DOMContentLoaded', function () {
   // Fonction pour maintenir les styles de couleur sur les sélecteurs
   function updateColorSelectStyles() {
     // Cibler tous les sélecteurs avec la classe couleur-select
@@ -51,4 +50,3 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Initialiser les styles au chargement de la page
   updateColorSelectStyles();
-});

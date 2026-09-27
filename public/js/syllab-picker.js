@@ -1,4 +1,4 @@
-const contentInput = document.getElementById('Contenu_contenu');
+const contentInputSyl = document.getElementById('Contenu_contenu');
 const syllabInput = document.getElementById('Contenu_syllabes');
 // Cache le champ Syllabe
 const backgroundColor = '#ff9090';
@@ -12,7 +12,7 @@ if (syllabInput) {
 }
 
 // Recupere le container des rows du form
-const rowForm = contentInput.closest('.row');
+const rowForm = contentInputSyl.closest('.row');
 const row5 = rowForm.children[5];
 // Créer le nouveau champ
 const syllabPickerContainer = document.createElement('div');
@@ -152,7 +152,7 @@ let number = false;
  */
 const createCellsAndApplySyllables = () => {
   lettersContainer.innerHTML = '';
-  cellObjects = Array.from(contentInput.value).map((letterValue, index) => ({
+  cellObjects = Array.from(contentInputSyl.value).map((letterValue, index) => ({
     letter: letterValue,
     id: index,
   }));
@@ -197,7 +197,7 @@ const createCellsAndApplySyllables = () => {
 createCellsAndApplySyllables();
 
 // Gérer l'affichage des cells à chaque input
-contentInput.addEventListener('input', () => {
+contentInputSyl.addEventListener('input', () => {
   // Réinitialiser l'état puisque le contenu change
   clicked = false;
   firstLetter = undefined;

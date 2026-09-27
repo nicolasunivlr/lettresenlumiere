@@ -1,114 +1,113 @@
 import BASE_ROUTE from './env.js';
-document.addEventListener('DOMContentLoaded', () => {
-  const sequenceField = document.querySelector(
-    'select[name="Contenu[sequence]"]'
-  );
-  const exerciceContainer = document.querySelector('.exercice-checkboxes');
 
-  const updateExercices = async () => {
-    const sequenceId = sequenceField.value;
+const sequenceField = document.querySelector(
+  'select[name="Contenu[sequence]"]'
+);
+const exerciceContainer = document.querySelector('.exercice-checkboxes');
 
-    exerciceContainer.innerHTML = '';
+const updateExercices = async () => {
+  const sequenceId = sequenceField.value;
 
-    if (!sequenceId) {
-      return;
-    }
+  exerciceContainer.innerHTML = '';
 
-    try {
-      const response = await fetch(
-        `${BASE_ROUTE}/api/sequences/${sequenceId}`
-      );
-      const data = await response.json();
+  if (!sequenceId) {
+    return;
+  }
 
-      if (data && Array.isArray(data.exercices)) {
-        // Ajout de la checkbox "Tous cocher"
-        const selectAllDiv = document.createElement('div');
-        selectAllDiv.className = 'form-check';
+  try {
+    const response = await fetch(
+      `${BASE_ROUTE}/api/sequences/${sequenceId}`
+    );
+    const data = await response.json();
 
-        const selectAllInput = document.createElement('input');
-        selectAllInput.type = 'checkbox';
-        selectAllInput.className = 'form-check-input';
-        selectAllInput.id = 'select-all-exercices';
+    if (data && Array.isArray(data.exercices)) {
+      // Ajout de la checkbox "Tous cocher"
+      const selectAllDiv = document.createElement('div');
+      selectAllDiv.className = 'form-check';
 
-        const selectAllLabel = document.createElement('label');
-        selectAllLabel.className = 'form-check-label';
-        selectAllLabel.htmlFor = 'select-all-exercices';
-        selectAllLabel.textContent = 'Sélectionner tous les exercices';
+      const selectAllInput = document.createElement('input');
+      selectAllInput.type = 'checkbox';
+      selectAllInput.className = 'form-check-input';
+      selectAllInput.id = 'select-all-exercices';
 
-        selectAllDiv.appendChild(selectAllInput);
-        selectAllDiv.appendChild(selectAllLabel);
-        exerciceContainer.appendChild(selectAllDiv);
+      const selectAllLabel = document.createElement('label');
+      selectAllLabel.className = 'form-check-label';
+      selectAllLabel.htmlFor = 'select-all-exercices';
+      selectAllLabel.textContent = 'Sélectionner tous les exercices';
 
-        const exercices = data.exercices;
+      selectAllDiv.appendChild(selectAllInput);
+      selectAllDiv.appendChild(selectAllLabel);
+      exerciceContainer.appendChild(selectAllDiv);
 
-        const contenuInput = document.getElementById('Contenu_contenu');
-        contenuInput.focus();
+      const exercices = data.exercices;
 
-        const contenuValue = contenuInput.value;
+      const contenuInput = document.getElementById('Contenu_contenu');
+      contenuInput.focus();
 
-        exercices.forEach((exercice) => {
-          const div = document.createElement('div');
-          div.className = 'form-check';
+      const contenuValue = contenuInput.value;
 
-          const input = document.createElement('input');
-          input.type = 'checkbox';
-          input.className = 'form-check-input';
-          input.name = 'Contenu[exercices][]';
-          input.value = exercice.id;
-          input.id = `exercice_${exercice.id}`;
-          if (exercice.contenus.length > 0) {
-            if (
-              exercice.contenus.find(
-                (contenu) => contenu.element === contenuValue
-              )
-            ) {
-              input.checked = true;
-            }
+      exercices.forEach((exercice) => {
+        const div = document.createElement('div');
+        div.className = 'form-check';
+
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.className = 'form-check-input';
+        input.name = 'Contenu[exercices][]';
+        input.value = exercice.id;
+        input.id = `exercice_${exercice.id}`;
+        if (exercice.contenus.length > 0) {
+          if (
+            exercice.contenus.find(
+              (contenu) => contenu.element === contenuValue
+            )
+          ) {
+            input.checked = true;
           }
+        }
 
-          const label = document.createElement('label');
-          label.className = 'form-check-label';
-          label.htmlFor = `exercice_${exercice.id}`;
-          label.textContent = exercice.type;
+        const label = document.createElement('label');
+        label.className = 'form-check-label';
+        label.htmlFor = `exercice_${exercice.id}`;
+        label.textContent = exercice.type;
 
-          div.appendChild(input);
-          div.appendChild(label);
-          exerciceContainer.appendChild(div);
+        div.appendChild(input);
+        div.appendChild(label);
+        exerciceContainer.appendChild(div);
+      });
+
+      // Ajouter les événements pour la checkbox "Tout cocher"
+      selectAllInput.addEventListener('change', (e) => {
+        const checkboxes = exerciceContainer.querySelectorAll(
+          'input[name="Contenu[exercices][]"]'
+        );
+        checkboxes.forEach((checkbox) => {
+          checkbox.checked = e.target.checked;
         });
+      });
 
-        // Ajouter les événements pour la checkbox "Tout cocher"
-        selectAllInput.addEventListener('change', (e) => {
+      // Ajouter les événements pour les checkboxes individuelles
+      exerciceContainer.addEventListener('change', (e) => {
+        if (e.target.name === 'Contenu[exercices][]') {
           const checkboxes = exerciceContainer.querySelectorAll(
             'input[name="Contenu[exercices][]"]'
           );
-          checkboxes.forEach((checkbox) => {
-            checkbox.checked = e.target.checked;
-          });
-        });
-
-        // Ajouter les événements pour les checkboxes individuelles
-        exerciceContainer.addEventListener('change', (e) => {
-          if (e.target.name === 'Contenu[exercices][]') {
-            const checkboxes = exerciceContainer.querySelectorAll(
-              'input[name="Contenu[exercices][]"]'
-            );
-            const allChecked = Array.from(checkboxes).every(
-              (checkbox) => checkbox.checked
-            );
-            selectAllInput.checked = allChecked;
-          }
-        });
-      }
-    } catch (error) {
-      console.error('Erreur lors du chargement des exercices :', error);
+          const allChecked = Array.from(checkboxes).every(
+            (checkbox) => checkbox.checked
+          );
+          selectAllInput.checked = allChecked;
+        }
+      });
     }
-  };
-
-  if (sequenceField && exerciceContainer) {
-    updateExercices();
-
-    sequenceField.addEventListener('change', async () => {
-      updateExercices();
-    });
+  } catch (error) {
+    console.error('Erreur lors du chargement des exercices :', error);
   }
-});
+};
+
+if (sequenceField && exerciceContainer) {
+  updateExercices();
+
+  sequenceField.addEventListener('change', async () => {
+    updateExercices();
+  });
+}
