@@ -23,7 +23,7 @@ function ExerciseTypeC(props) {
   const { speak } = useSpeak();
   const attempt = useRef(0);
   const currentAttempt = useRef(0);
-  const timeOutRef = useRef(4000);
+  const timeOutRef = useRef(1000);
   const inputRef = useRef(null);
   const { play } = usePlay();
 
