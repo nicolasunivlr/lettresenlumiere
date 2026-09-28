@@ -8,16 +8,28 @@ import OKButton from "../UI/OKButton";
 import usePlay, { play } from "../../hooks/usePlay";
 import urlSucces from "../../../assets/sounds/ui/reward-sound.mp3";
 import urlEchec from "../../../assets/sounds/ui/error-sound.mp3";
+import {
+  MAX_ATTEMPTS,
+  ITEM_STATUS,
+  getItemStatus,
+  computeExerciseScore,
+} from "../../constants/exerciseAttempts";
 
 function ExerciseTypeE(props) {
   const { content, onDone } = props;
   const [contentExercise, setContentExercise] = useState([]);
-  const [isFinished, setIsFinished] = useState([{ isFinished: false }]);
+  const [isFinished, setIsFinished] = useState([
+    { status: ITEM_STATUS.PENDING },
+  ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [isLabelVisible, setIsLabelVisible] = useState(false);
   const [isAnswerValidated, setIsAnswerValidated] = useState(null);
   const [isLocked, setIsLocked] = useState(false);
+  // true quand l'item courant a épuisé ses MAX_ATTEMPTS essais : on attend
+  // une validation manuelle (OK) pour passer au suivant, sans révéler la
+  // bonne réponse (au-delà de la révélation existante avant le dernier essai).
+  const [isItemLocked, setIsItemLocked] = useState(false);
   const { play } = usePlay();
   const attempt = useRef(0);
   const currentAttempt = useRef(0);
@@ -34,7 +46,7 @@ function ExerciseTypeE(props) {
         () => Math.random() - 0.5
       );
       setContentExercise(shuffledContents);
-      setIsFinished(shuffledContents.map(() => ({ isFinished: false })));
+      setIsFinished(shuffledContents.map(() => ({ status: ITEM_STATUS.PENDING })));
     }
     if (content.type === "E.3") {
       timeOutRef.current = 6000;
@@ -58,38 +70,49 @@ function ExerciseTypeE(props) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isLocked, contentExercise, userInput]);
+  }, [isLocked, contentExercise, userInput, isItemLocked]);
 
   useEffect(() => {
-    if (isFinished.every((item) => item.isFinished === true)) {
-      const score = Math.round((isFinished.length / attempt.current) * 100);
-      onDone(score);
+    if (isFinished.every((item) => item.status !== ITEM_STATUS.PENDING)) {
+      onDone(computeExerciseScore(isFinished));
     }
   }, [isFinished]);
 
+  const goToNextItem = () => {
+    const isAllFinished = contentExercise.every(
+      (_, index) => isFinished[index]?.status !== ITEM_STATUS.PENDING
+    );
+
+    if (!isAllFinished) {
+      setCurrentIndex((prev) => prev + 1);
+      setUserInput("");
+      setIsLabelVisible(false); // Changed from true to false to reset for next question
+      setIsAnswerValidated(null);
+      setCorrectAnswerGiven(false); // Reset for the next question
+      currentAttempt.current = 0;
+      setIsItemLocked(false);
+    }
+  };
+
   const handleClickOKButton = () => {
+    if (isItemLocked) {
+      // Essais épuisés : on marque l'item en échec et on passe manuellement
+      // au suivant, sans révéler la bonne réponse.
+      setIsFinished((prev) => {
+        const updated = [...prev];
+        updated[currentIndex] = { status: ITEM_STATUS.FAILED };
+        return updated;
+      });
+      goToNextItem();
+      return;
+    }
+
     if (isAnswerValidated === null) {
       handleAnswer();
     }
 
     if (isAnswerValidated) {
-      setIsFinished((prev) => {
-        const updated = [...prev];
-        updated[currentIndex] = { isFinished: true };
-        return updated;
-      });
-
-      const isAllFinished = contentExercise.every(
-        (_, index) => isFinished[index]?.isFinished
-      );
-
-      if (!isAllFinished) {
-        setCurrentIndex((prev) => prev + 1);
-        setUserInput("");
-        setIsLabelVisible(false); // Changed from true to false to reset for next question
-        setIsAnswerValidated(null);
-        setCorrectAnswerGiven(false); // Reset for the next question
-      }
+      goToNextItem();
     }
   };
 
@@ -163,19 +186,29 @@ function ExerciseTypeE(props) {
     if (isCorrect) {
       new Audio(urlSucces).play();
       setIsAnswerValidated(true);
+      const attemptsUsed = currentAttempt.current + 1;
       currentAttempt.current = 0;
       setIsLabelVisible(true);
       setCorrectAnswerGiven(true); // Mark that a correct answer was given
 
       setIsFinished((prev) => {
         const updated = [...prev];
-        updated[currentIndex] = { isFinished: true };
+        updated[currentIndex] = {
+          status: getItemStatus(attemptsUsed, true),
+        };
         return updated;
       });
     } else {
       currentAttempt.current += 1;
       new Audio(urlEchec).play();
       setIsAnswerValidated(false);
+
+      if (currentAttempt.current >= MAX_ATTEMPTS) {
+        // Essais épuisés : on verrouille l'item, l'utilisateur devra
+        // valider manuellement (OK) pour passer au suivant.
+        setIsItemLocked(true);
+        return;
+      }
 
       setTimeout(() => {
         setUserInput("");
@@ -265,7 +298,7 @@ function ExerciseTypeE(props) {
 
       <ProgressBar content={isFinished} />
       <div>
-        {!isFinished.every((item) => item.isFinished) && (
+        {!isFinished.every((item) => item.status !== ITEM_STATUS.PENDING) && (
           <OKButton onClick={handleClickOKButton} />
         )}
       </div>

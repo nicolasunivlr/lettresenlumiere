@@ -8,6 +8,12 @@ import urlEchec from "../../../assets/sounds/ui/error-sound.mp3";
 import urlSucces from "../../../assets/sounds/ui/reward-sound.mp3";
 import useSpeak from "../../hooks/useSpeak";
 import usePlay from "../../hooks/usePlay";
+import {
+  MAX_ATTEMPTS,
+  ITEM_STATUS,
+  getItemStatus,
+  computeExerciseScore,
+} from "../../constants/exerciseAttempts";
 
 const ExerciseTypeD = (props) => {
   const { content, onDone } = props;
@@ -21,6 +27,8 @@ const ExerciseTypeD = (props) => {
   const [isLocked, setisLocked] = useState(false);
   const [compteur, setCompteur] = useState(0);
   const [iterationCount, setIterationCount] = useState(0); // Nouveau compteur pour forcer la prononciation
+  // Nombre d'essais (clics OK) consommés sur le round courant.
+  const attemptsForCurrentRoundRef = useRef(0);
   const { play } = usePlay(); // Utilisation de la fonction play passée en props
 
   // Ref pour suivre si l'initialisation a été effectuée
@@ -49,7 +57,9 @@ const ExerciseTypeD = (props) => {
   // Effet pour mettre à jour isFinished quand l'itération change
   useEffect(() => {
     if (iterationExercice > 0) {
-      setIsFinished(Array(iterationExercice).fill({ isFinished: false }));
+      setIsFinished(
+        Array(iterationExercice).fill({ status: ITEM_STATUS.PENDING })
+      );
     }
   }, [iterationExercice]);
 
@@ -59,7 +69,7 @@ const ExerciseTypeD = (props) => {
     if (!availableCorrectAnswer || availableCorrectAnswer.length === 0) {
       if (availableCorrectAnswer && availableCorrectAnswer.length === 0) {
         setisLocked(true);
-        onDone(score);
+        onDone(computeExerciseScore(isFinished));
       }
       return;
     }
@@ -71,6 +81,8 @@ const ExerciseTypeD = (props) => {
     if (previousCorrectAnswerRef.current !== newCorrectAnswer) {
       previousCorrectAnswerRef.current = newCorrectAnswer;
       setCorrectAnswer(newCorrectAnswer);
+      // Nouveau round : on réinitialise le compteur d'essais.
+      attemptsForCurrentRoundRef.current = 0;
     } else {
       // Même réponse, mais incrémenter le compteur pour forcer la prononciation
       setIterationCount((prev) => prev + 1);
@@ -198,14 +210,23 @@ const ExerciseTypeD = (props) => {
       return;
     }
 
-    const correctAnswersCount = contentExercise.filter(
-      (item) => item.answer === true
-    ).length;
+    const selectedItems = contentExercise.filter((item) => item.isSelected);
 
     // Vérifier si 3 éléments sont sélectionnés
-    if (contentExercise.filter((item) => item.isSelected).length !== 3) {
+    if (selectedItems.length !== 3) {
       return;
     }
+
+    // Chaque validation (clic OK) sur ce round compte comme un essai.
+    attemptsForCurrentRoundRef.current += 1;
+
+    // Nombre de bonnes réponses parmi la sélection de CE clic. On le calcule
+    // directement depuis la sélection courante (et non depuis le champ
+    // `answer` de contentExercise, qui ne sera commité qu'au rendu suivant),
+    // sinon la réussite au premier essai n'est détectée qu'au clic suivant.
+    const correctAnswersCount = selectedItems.filter(
+      (item) => item.element === correctAnswer
+    ).length;
 
     // Vérifier si les éléments sélectionnés sont corrects
     setContentExercise((prev) =>
@@ -222,6 +243,7 @@ const ExerciseTypeD = (props) => {
     if (correctAnswersCount === 3) {
       setisLocked(true);
       setCompteur(0);
+      const attemptsUsed = attemptsForCurrentRoundRef.current;
       // Attendre que le verrouillage soit effectif avant de poursuivre
       setTimeout(() => {
         // Mettre à jour les réponses correctes
@@ -238,8 +260,8 @@ const ExerciseTypeD = (props) => {
         // Mettre à jour le progrès
         setIsFinished((prev) =>
           prev.map((item, index) =>
-            index === prev.findIndex((item) => !item.isFinished)
-              ? { ...item, isFinished: true }
+            index === prev.findIndex((item) => item.status === ITEM_STATUS.PENDING)
+              ? { status: getItemStatus(attemptsUsed, true) }
               : item
           )
         );
@@ -260,8 +282,8 @@ const ExerciseTypeD = (props) => {
       }, 500);
     }
 
-    const hasIncorrectAnswer = contentExercise.filter(
-      (item) => item.isSelected && item.element !== correctAnswer
+    const hasIncorrectAnswer = selectedItems.filter(
+      (item) => item.element !== correctAnswer
     ).length;
 
     if (hasIncorrectAnswer > 0) {
@@ -269,6 +291,9 @@ const ExerciseTypeD = (props) => {
       setScore((prev) => prev - 5 * hasIncorrectAnswer);
       const audio = new Audio(urlEchec);
       audio.play();
+
+      const attemptsExhausted =
+        attemptsForCurrentRoundRef.current >= MAX_ATTEMPTS;
 
       setTimeout(() => {
         setContentExercise((prev) =>
@@ -288,6 +313,44 @@ const ExerciseTypeD = (props) => {
           speak(correctAnswer);
         }
         setisLocked(false);
+        if (attemptsExhausted) {
+          // Essais épuisés : on marque le round en échec et on passe
+          // automatiquement à la lettre suivante (comme en cas de réussite),
+          // sans révéler la bonne réponse ni exiger de clic supplémentaire.
+          setisLocked(true);
+          setCompteur(0);
+          setTimeout(() => {
+            setAvailableCorrectAnswer((prev) => {
+              const idx = prev.findIndex((answer) => answer === correctAnswer);
+              if (idx !== -1) {
+                const newAvailableCorrectAnswer = [...prev];
+                newAvailableCorrectAnswer.splice(idx, 1);
+                return newAvailableCorrectAnswer;
+              }
+              return prev;
+            });
+
+            setIsFinished((prev) =>
+              prev.map((item, index) =>
+                index ===
+                prev.findIndex((item) => item.status === ITEM_STATUS.PENDING)
+                  ? { status: ITEM_STATUS.FAILED }
+                  : item
+              )
+            );
+
+            setContentExercise((prev) =>
+              prev
+                .map((item) => ({
+                  ...item,
+                  isSelected: false,
+                  answer: undefined,
+                }))
+                .sort(() => Math.random() - 0.5)
+            );
+            setisLocked(false);
+          }, 500);
+        }
       }, 2000);
     }
 
@@ -297,8 +360,8 @@ const ExerciseTypeD = (props) => {
       setCompteur(compteur + 1);
     }
 
-    if (isFinished.every((item) => item.isFinished)) {
-      onDone();
+    if (isFinished.every((item) => item.status !== ITEM_STATUS.PENDING)) {
+      onDone(computeExerciseScore(isFinished));
     }
   };
 

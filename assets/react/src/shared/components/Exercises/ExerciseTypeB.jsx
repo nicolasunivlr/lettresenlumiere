@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import Label from "../UI/Label";
 import OKButton from "../UI/OKButton";
@@ -9,13 +9,26 @@ import useSpeak from "../../hooks/useSpeak";
 import LabelImage from "../UI/LabelImage";
 import usePlay from "../../hooks/usePlay";
 import Instruction from "../Instruction";
+import {
+  MAX_ATTEMPTS,
+  ITEM_STATUS,
+  getItemStatus,
+  computeExerciseScore,
+} from "../../constants/exerciseAttempts";
 
 const ExerciseTypeB = ({ content, onDone }) => {
   const [contentExercise, setContentExercise] = useState([]);
-  const [isFinished, setIsFinished] = useState([{ isFinished: false }]);
+  const [isFinished, setIsFinished] = useState([
+    { status: ITEM_STATUS.PENDING },
+  ]);
   const [tabResponses, setTabResponses] = useState([]);
   const [attempt, setAttempt] = useState(0);
   const [isLocked, setisLocked] = useState(false);
+  // Nombre d'essais consommés sur l'item courant (plafonné à MAX_ATTEMPTS).
+  const attemptsForCurrentItemRef = useRef(0);
+  // true quand l'item courant a épuisé ses essais : on attend une validation
+  // manuelle (OK) pour passer au suivant, sans révéler la bonne réponse.
+  const [itemFailed, setItemFailed] = useState(false);
   const location = useLocation();
 
   const { speak } = useSpeak();
@@ -135,7 +148,9 @@ const ExerciseTypeB = ({ content, onDone }) => {
       const firstContent = generateContentExercise(shuffledResponses[0]);
       setContentExercise(firstContent);
       setIsFinished(
-        new Array(shuffledResponses.length).fill({ isFinished: false })
+        new Array(shuffledResponses.length).fill({
+          status: ITEM_STATUS.PENDING,
+        })
       );
     }
   }, [content]);
@@ -143,10 +158,14 @@ const ExerciseTypeB = ({ content, onDone }) => {
   useEffect(() => {
     if (
       tabResponses.length > 0 &&
-      !isFinished.every((item) => item.isFinished)
+      !isFinished.every((item) => item.status !== ITEM_STATUS.PENDING)
     ) {
       const firstNonDone = tabResponses.find((response) => !response.done);
       if (firstNonDone) {
+        // Nouvel item : on réinitialise le compteur d'essais et le
+        // verrouillage éventuel de l'item précédent.
+        attemptsForCurrentItemRef.current = 0;
+        setItemFailed(false);
         const newContent = generateContentExercise(firstNonDone);
         setContentExercise(newContent);
         if (firstNonDone.sons_url) {
@@ -162,35 +181,52 @@ const ExerciseTypeB = ({ content, onDone }) => {
   }, [tabResponses, generateContentExercise, /*speak,*/ isFinished]);
 
   useEffect(() => {
-    if (isFinished.every((item) => item.isFinished)) {
-      const totalQuestions = tabResponses.length;
-      const score = Math.round((totalQuestions / attempt) * 100);
-      onDone(score);
+    if (isFinished.every((item) => item.status !== ITEM_STATUS.PENDING)) {
+      onDone(computeExerciseScore(isFinished));
     }
-  }, [isFinished, attempt, tabResponses.length]);
+  }, [isFinished]);
 
-  const handleFinish = (index) => {
+  const handleFinish = (index, status) => {
     setIsFinished((prev) =>
-      prev.map((item, i) =>
-        i === index ? { ...item, isFinished: true } : item
-      )
+      prev.map((item, i) => (i === index ? { ...item, status } : item))
     );
   };
 
   const handleClickOKButton = () => {
+    const index = tabResponses.findIndex((response) => !response.done);
+    if (index === -1) return;
+
+    if (itemFailed) {
+      // Essais épuisés : on passe manuellement au suivant sans révéler la
+      // bonne réponse.
+      setTabResponses((prevResponses) =>
+        prevResponses.map((response, i) =>
+          i === index ? { ...response, done: true } : response
+        )
+      );
+      handleFinish(index, ITEM_STATUS.FAILED);
+      setItemFailed(false);
+      setContentExercise((prevContent) =>
+        prevContent.map((item) => ({ ...item, answer: undefined }))
+      );
+      return;
+    }
+
     const correctAnswer = () =>
       contentExercise.find((item) => {
         if (item.answer === true) return true;
       });
 
     if (correctAnswer()) {
-      const index = tabResponses.findIndex((response) => !response.done);
       setTabResponses((prevResponses) =>
         prevResponses.map((response, i) =>
           i === index ? { ...response, done: true } : response
         )
       );
-      handleFinish(index);
+      handleFinish(
+        index,
+        getItemStatus(attemptsForCurrentItemRef.current, true)
+      );
       setContentExercise((prevContent) =>
         prevContent.map((item) =>
           item.answer === true ? { ...item, answer: undefined } : item
@@ -212,6 +248,8 @@ const ExerciseTypeB = ({ content, onDone }) => {
 
   const handleLabelClick = useCallback(
     (index, element) => {
+      if (itemFailed) return;
+
       const isClicked = () =>
         contentExercise.find((item) => {
           if (item.answer !== undefined) return true;
@@ -222,6 +260,8 @@ const ExerciseTypeB = ({ content, onDone }) => {
       const firstNonDone = tabResponses.find((response) => !response.done);
       const isCorrect = element === firstNonDone.element;
 
+      attemptsForCurrentItemRef.current += 1;
+
       if (isCorrect) {
         new Audio(urlSucces).play();
         setAnswerLabel(true, index);
@@ -230,6 +270,14 @@ const ExerciseTypeB = ({ content, onDone }) => {
         new Audio(urlEchec).play();
         setAnswerLabel(false, index);
         setAttempt((prev) => prev + 1);
+
+        if (attemptsForCurrentItemRef.current >= MAX_ATTEMPTS) {
+          // Essais épuisés : on verrouille l'item, l'utilisateur devra
+          // valider manuellement (OK) pour passer au suivant.
+          setItemFailed(true);
+          return;
+        }
+
         setTimeout(() => {
           setAnswerLabel(undefined, index);
           if (firstNonDone.sons_url) {
@@ -243,7 +291,7 @@ const ExerciseTypeB = ({ content, onDone }) => {
         }, 2000);
       }
     },
-    [contentExercise, tabResponses, setAnswerLabel, /*speak,*/ setAttempt]
+    [contentExercise, tabResponses, setAnswerLabel, /*speak,*/ setAttempt, itemFailed]
   );
 
   const displayLabels = useMemo(() => {
@@ -319,7 +367,8 @@ const ExerciseTypeB = ({ content, onDone }) => {
           </div>
 
           <ProgressBar content={isFinished} />
-          {contentExercise.some((item) => item.answer === true) && (
+          {(itemFailed ||
+            contentExercise.some((item) => item.answer === true)) && (
             <OKButton onClick={handleClickOKButton} />
           )}
         </>

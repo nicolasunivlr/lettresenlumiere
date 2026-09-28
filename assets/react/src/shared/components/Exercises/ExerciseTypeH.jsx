@@ -9,6 +9,12 @@ import urlEchec from "../../../assets/sounds/ui/error-sound.mp3";
 import urlSucces from "../../../assets/sounds/ui/reward-sound.mp3";
 import useSpeak from "../../hooks/useSpeak";
 import DraggableList from "../UI/DraggableList";
+import {
+  MAX_ATTEMPTS,
+  ITEM_STATUS,
+  getItemStatus,
+  computeExerciseScore,
+} from "../../constants/exerciseAttempts";
 
 const ExerciseTypeH = (props) => {
   const { content, onDone } = props;
@@ -26,6 +32,12 @@ const ExerciseTypeH = (props) => {
   const location = useLocation();
   const pathname = location.pathname;
   const [elementValidations, setElementValidations] = useState([]);
+  // Nombre d'essais consommés sur le groupe courant.
+  const attemptsForCurrentGroupRef = useRef(0);
+  // true quand le groupe courant a épuisé ses MAX_ATTEMPTS essais : on
+  // attend une validation manuelle (OK) pour passer au groupe suivant, sans
+  // révéler la bonne réponse.
+  const [isGroupFailed, setIsGroupFailed] = useState(false);
 
   const draggableListRef = useRef();
   const { speakArray } = useSpeak();
@@ -45,6 +57,8 @@ const ExerciseTypeH = (props) => {
       setCurrentGroupIndex(nextGroupIndex);
       setRandomizedGroup(shuffleArray(groupedContent[nextGroupIndex]));
       setIsValidated(null);
+      attemptsForCurrentGroupRef.current = 0;
+      setIsGroupFailed(false);
     }
   };
 
@@ -63,7 +77,7 @@ const ExerciseTypeH = (props) => {
         groups.push(lastGroup.slice(3).sort());
 
         setGroupedContent(groups);
-        setProgress(groups.map(() => ({ isFinished: false })));
+        setProgress(groups.map(() => ({ status: ITEM_STATUS.PENDING })));
 
         if (groups[0]) {
           setRandomizedGroup(shuffleArray(groups[0]));
@@ -198,7 +212,7 @@ const ExerciseTypeH = (props) => {
           group.map((item) => item.grapheme)
         );
         setGroupedContent(finalGroups);
-        setProgress(finalGroups.map(() => ({ isFinished: false })));
+        setProgress(finalGroups.map(() => ({ status: ITEM_STATUS.PENDING })));
 
         if (finalGroups[0]) {
           setRandomizedGroup(shuffleArray(finalGroups[0]));
@@ -232,7 +246,7 @@ const ExerciseTypeH = (props) => {
         }
 
         setGroupedContent(groups);
-        setProgress(groups.map(() => ({ isFinished: false })));
+        setProgress(groups.map(() => ({ status: ITEM_STATUS.PENDING })));
 
         if (groups[0]) {
           setRandomizedGroup(shuffleArray(groups[0]));
@@ -251,11 +265,10 @@ const ExerciseTypeH = (props) => {
 
   useEffect(() => {
     if (
-      progress.every((item) => item.isFinished === true) &&
+      progress.every((item) => item.status !== ITEM_STATUS.PENDING) &&
       currentGroupIndex === groupedContent.length - 1
     ) {
-      const score = Math.round((groupedContent.length / attempt) * 100);
-      onDone(score);
+      onDone(computeExerciseScore(progress));
     }
   }, [progress, currentGroupIndex]);
 
@@ -269,6 +282,20 @@ const ExerciseTypeH = (props) => {
       return;
     }
 
+    if (isGroupFailed) {
+      // Essais épuisés : on marque le groupe en échec et on passe
+      // manuellement au suivant, sans révéler la bonne réponse.
+      setProgress((prev) => {
+        const updatedProgress = [...prev];
+        updatedProgress[currentGroupIndex] = { status: ITEM_STATUS.FAILED };
+        return updatedProgress;
+      });
+      setElementValidations([]);
+      setIsValidated(null);
+      goToNextGroup();
+      return;
+    }
+
     // Get user's answer elements
     const userElements = draggableListRef.current.getAnswerElements();
     const correctElements = draggableListRef.current.getCorrectElements();
@@ -276,6 +303,9 @@ const ExerciseTypeH = (props) => {
     if (userElements.length !== correctElements.length) {
       return;
     }
+
+    // Chaque validation (clic OK) sur ce groupe compte comme un essai.
+    attemptsForCurrentGroupRef.current += 1;
 
     // Compare each element and create validations array
     const validations = userElements.map((element, index) => {
@@ -293,7 +323,9 @@ const ExerciseTypeH = (props) => {
 
         setProgress((prev) => {
           const updatedProgress = [...prev];
-          updatedProgress[currentGroupIndex] = { isFinished: true };
+          updatedProgress[currentGroupIndex] = {
+            status: getItemStatus(attemptsForCurrentGroupRef.current, true),
+          };
           return updatedProgress;
         });
       } else {
@@ -301,6 +333,13 @@ const ExerciseTypeH = (props) => {
         setAttempt((prev) => prev + 1);
         setIsValidated(false);
         setElementValidations(validations);
+
+        if (attemptsForCurrentGroupRef.current >= MAX_ATTEMPTS) {
+          // Essais épuisés : on laisse le dernier essai visible et on
+          // attend une validation manuelle (OK) pour continuer.
+          setIsGroupFailed(true);
+          return;
+        }
 
         setIsButtonDisabled(true);
         setTimeout(() => {
@@ -339,7 +378,9 @@ const ExerciseTypeH = (props) => {
 
       setProgress((prev) => {
         const updatedProgress = [...prev];
-        updatedProgress[currentGroupIndex] = { isFinished: true };
+        updatedProgress[currentGroupIndex] = {
+          status: getItemStatus(attemptsForCurrentGroupRef.current, true),
+        };
         return updatedProgress;
       });
     } else {
@@ -347,6 +388,13 @@ const ExerciseTypeH = (props) => {
       setAttempt((prev) => prev + 1);
       setIsValidated(false);
       setElementValidations(validations); // Set which elements are correct/incorrect
+
+      if (attemptsForCurrentGroupRef.current >= MAX_ATTEMPTS) {
+        // Essais épuisés : on laisse le dernier essai visible et on
+        // attend une validation manuelle (OK) pour continuer.
+        setIsGroupFailed(true);
+        return;
+      }
 
       setIsButtonDisabled(true);
       setTimeout(() => {
@@ -359,6 +407,7 @@ const ExerciseTypeH = (props) => {
   }, [
     isButtonDisabled,
     isCorrectAnswer,
+    isGroupFailed,
     type,
     randomizedGroup,
     currentGroupIndex,
@@ -472,7 +521,7 @@ const ExerciseTypeH = (props) => {
                 </div>
               </div>
               <ProgressBar content={progress} />
-              {progress.some((item) => item.isFinished === false) && (
+              {progress.some((item) => item.status === ITEM_STATUS.PENDING) && (
                 <OKButton onClick={checkAnswer} disabled={isButtonDisabled} />
               )}{" "}
             </>

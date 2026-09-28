@@ -8,10 +8,18 @@ import LabelImage from "../UI/LabelImage";
 import urlSucces from "../../../assets/sounds/ui/reward-sound.mp3";
 import urlEchec from "../../../assets/sounds/ui/error-sound.mp3";
 import usePlay from "../../hooks/usePlay";
+import {
+  MAX_ATTEMPTS,
+  ITEM_STATUS,
+  getItemStatus,
+  computeExerciseScore,
+} from "../../constants/exerciseAttempts";
 
 const ExerciseTypeF = (props) => {
   const { content, onDone } = props;
-  const [isFinished, setIsFinished] = useState([{ isFinished: false }]);
+  const [isFinished, setIsFinished] = useState([
+    { status: ITEM_STATUS.PENDING },
+  ]);
   const [tabResponses, setTabResponses] = useState([]);
   const [currentResponse, setCurrentResponse] = useState(null);
   const [isValidated, setIsValidated] = useState(undefined);
@@ -25,6 +33,12 @@ const ExerciseTypeF = (props) => {
   const [isDraggableListVisible, setIsDraggableListVisible] = useState(false);
   const draggableListRef = useRef();
   const displayTimeRef = useRef(2000); // Temps d'affichage par défaut
+  // Nombre d'essais consommés sur l'item courant.
+  const attemptsForCurrentItemRef = useRef(0);
+  // true quand l'item courant a épuisé ses MAX_ATTEMPTS essais : on attend
+  // une validation manuelle (OK) pour passer au suivant, sans révéler la
+  // bonne réponse.
+  const [isItemFailed, setIsItemFailed] = useState(false);
 
   const shuffle = (array) => {
     array.sort(() => Math.random() - 0.5);
@@ -46,7 +60,9 @@ const ExerciseTypeF = (props) => {
       // On utilise toujours responses1 sans duplication, peu importe le nombre d'éléments
       const finalResponses = [...responses1];
       setIsFinished(
-        new Array(content.contenus.length).fill({ isFinished: false })
+        new Array(content.contenus.length).fill({
+          status: ITEM_STATUS.PENDING,
+        })
       );
 
       setTabResponses(shuffle(finalResponses));
@@ -85,6 +101,10 @@ const ExerciseTypeF = (props) => {
     if (currentResponse) {
       setShowLabel(true);
       setIsDraggableListVisible(false);
+      // Nouvel item : on réinitialise le compteur d'essais et le
+      // verrouillage éventuel de l'item précédent.
+      attemptsForCurrentItemRef.current = 0;
+      setIsItemFailed(false);
       const timer = setTimeout(() => {
         setShowLabel(false);
       }, displayTimeRef.current);
@@ -92,11 +112,9 @@ const ExerciseTypeF = (props) => {
     }
   }, [currentResponse]);
 
-  const handleFinish = (index) => {
+  const handleFinish = (index, status) => {
     setIsFinished((prev) =>
-      prev.map((item, i) =>
-        i === index ? { ...item, isFinished: true } : item
-      )
+      prev.map((item, i) => (i === index ? { ...item, status } : item))
     );
   };
 
@@ -160,23 +178,44 @@ const ExerciseTypeF = (props) => {
   const handleClickOKButton = useCallback(() => {
     if (isValidated === undefined) {
       if (currentResponse) {
+        attemptsForCurrentItemRef.current += 1;
         const isCorrect = checkAnswer();
         setIsValidated(isCorrect);
 
         if (!isCorrect) {
-          setTimeout(() => {
-            setIsValidated(undefined);
-          }, 3000);
+          if (attemptsForCurrentItemRef.current >= MAX_ATTEMPTS) {
+            // Essais épuisés : on verrouille l'item, l'utilisateur devra
+            // valider manuellement (OK) pour passer au suivant.
+            setIsItemFailed(true);
+          } else {
+            setTimeout(() => {
+              setIsValidated(undefined);
+            }, 3000);
+          }
         } else {
-          handleFinish(tabResponses.findIndex((response) => !response.done));
+          handleFinish(
+            tabResponses.findIndex((response) => !response.done),
+            getItemStatus(attemptsForCurrentItemRef.current, true)
+          );
         }
       }
-    } else if (isValidated === true) {
+    } else if (isValidated === true || isItemFailed) {
+      const index = tabResponses.findIndex(
+        (response) =>
+          !response.done && response.element === currentResponse.element
+      );
+      if (isItemFailed) {
+        handleFinish(index, ITEM_STATUS.FAILED);
+      }
+      // `isFinished` peut être périmé ici (setIsFinished ci-dessus n'a pas
+      // encore été commité) : on fusionne manuellement le statut FAILED
+      // pour calculer un score exact dès ce même clic.
+      const updatedIsFinished = isItemFailed
+        ? isFinished.map((item, i) =>
+            i === index ? { status: ITEM_STATUS.FAILED } : item
+          )
+        : isFinished;
       setTabResponses((prevResponses) => {
-        const index = prevResponses.findIndex(
-          (response) =>
-            !response.done && response.element === currentResponse.element
-        );
         const newResponses = [...prevResponses];
         if (index !== -1) {
           newResponses[index] = { ...newResponses[index], done: true };
@@ -186,15 +225,21 @@ const ExerciseTypeF = (props) => {
           setCurrentResponse(nextUndone || null);
         }, 0);
         if (!nextUndone) {
-          const totalQuestions = tabResponses.length;
-          const score = Math.round((totalQuestions / attempt) * 100);
-          onDone(score);
+          onDone(computeExerciseScore(updatedIsFinished));
         }
         return newResponses;
       });
       setIsValidated(undefined);
+      setIsItemFailed(false);
     }
-  }, [isValidated, currentResponse, tabResponses, attempt, onDone]);
+  }, [
+    isValidated,
+    isItemFailed,
+    currentResponse,
+    tabResponses,
+    isFinished,
+    onDone,
+  ]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {

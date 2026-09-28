@@ -10,16 +10,28 @@ import urlSucces from "../../../assets/sounds/ui/reward-sound.mp3";
 import urlEchec from "../../../assets/sounds/ui/error-sound.mp3";
 import useSpeak from "../../hooks/useSpeak";
 import usePlay from "../../hooks/usePlay";
+import {
+  MAX_ATTEMPTS,
+  ITEM_STATUS,
+  getItemStatus,
+  computeExerciseScore,
+} from "../../constants/exerciseAttempts";
 
 function ExerciseTypeC(props) {
   const { content, onDone } = props;
   const [contentExercise, setContentExercise] = useState([]);
-  const [isFinished, setIsFinished] = useState([{ isFinished: false }]);
+  const [isFinished, setIsFinished] = useState([
+    { status: ITEM_STATUS.PENDING },
+  ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [isLabelVisible, setIsLabelVisible] = useState(true);
   const [isAnswerValidated, setIsAnswerValidated] = useState(null);
   const [isLocked, setIsLocked] = useState(false);
+  // true quand l'item courant a épuisé ses MAX_ATTEMPTS essais : on attend
+  // une validation manuelle (OK) pour passer au suivant, sans révéler la
+  // bonne réponse (au-delà de la révélation existante avant le dernier essai).
+  const [isItemLocked, setIsItemLocked] = useState(false);
   const { speak } = useSpeak();
   const attempt = useRef(0);
   const currentAttempt = useRef(0);
@@ -31,7 +43,7 @@ function ExerciseTypeC(props) {
     if (content && content.contenus) {
       const handler = (_content) => {
         setContentExercise(_content);
-        setIsFinished(_content.map(() => ({ isFinished: false })));
+        setIsFinished(_content.map(() => ({ status: ITEM_STATUS.PENDING })));
       };
       // Utiliser directement le contenu original sans duplication
       const duplicatedContents = content.contenus;
@@ -71,6 +83,7 @@ function ExerciseTypeC(props) {
     currentIndex,
     isAnswerValidated,
     isFinished,
+    isItemLocked,
   ]);
 
   useEffect(() => {
@@ -78,25 +91,41 @@ function ExerciseTypeC(props) {
       isFinished.length > 0 &&
       contentExercise.length > 0 &&
       isFinished.length === contentExercise.length &&
-      isFinished.every((item) => item.isFinished === true)
+      isFinished.every((item) => item.status !== ITEM_STATUS.PENDING)
     ) {
-      const score = Math.round((isFinished.length / attempt.current) * 100);
-      onDone(score);
+      onDone(computeExerciseScore(isFinished));
     }
   }, [isFinished, contentExercise.length]);
 
+  const goToNextItem = () => {
+    const nextIndex = currentIndex + 1;
+    if (nextIndex < contentExercise.length) {
+      setCurrentIndex(nextIndex);
+      setUserInput("");
+      setIsLabelVisible(true);
+      setIsAnswerValidated(null);
+      currentAttempt.current = 0;
+      setIsItemLocked(false);
+    }
+  };
+
   const handleClickOKButton = () => {
+    if (isItemLocked) {
+      // Essais épuisés : on marque l'item en échec et on passe manuellement
+      // au suivant, sans révéler la bonne réponse.
+      setIsFinished((prev) => {
+        const updated = [...prev];
+        updated[currentIndex] = { status: ITEM_STATUS.FAILED };
+        return updated;
+      });
+      goToNextItem();
+      return;
+    }
+
     if (isAnswerValidated === null) {
       handleAnswer();
     } else if (isAnswerValidated === true) {
-      const nextIndex = currentIndex + 1;
-      if (nextIndex < contentExercise.length) {
-        setCurrentIndex(nextIndex);
-        setUserInput("");
-        setIsLabelVisible(true);
-        setIsAnswerValidated(null);
-        currentAttempt.current = 0;
-      }
+      goToNextItem();
     }
   };
 
@@ -163,13 +192,23 @@ function ExerciseTypeC(props) {
 
       setIsFinished((prev) => {
         const updated = [...prev];
-        updated[currentIndex] = { isFinished: true };
+        updated[currentIndex] = {
+          status: getItemStatus(currentAttempt.current + 1, true),
+        };
         return updated;
       });
     } else {
       currentAttempt.current += 1;
       new Audio(urlEchec).play();
       setIsAnswerValidated(false);
+
+      if (currentAttempt.current >= MAX_ATTEMPTS) {
+        // Essais épuisés : on verrouille l'item, l'utilisateur devra
+        // valider manuellement (OK) pour passer au suivant.
+        setIsItemLocked(true);
+        return;
+      }
+
       setTimeout(() => {
         setIsLabelVisible(true);
         setIsAnswerValidated(null);
@@ -296,7 +335,7 @@ function ExerciseTypeC(props) {
       <ProgressBar content={isFinished} />
       <div>
         {contentExercise.length > 0 &&
-          !isFinished.every((item) => item.isFinished) && (
+          !isFinished.every((item) => item.status !== ITEM_STATUS.PENDING) && (
             <OKButton onClick={handleClickOKButton} />
           )}
       </div>

@@ -407,7 +407,16 @@
 .progress__part--false {
   margin-left: 0;
   background-image: url('../../assets/images/layoutexercices/false.svg');
-  background-color: rgba(255, 166, 41, 0.56);
+  background-color: rgba(242, 72, 34, 0.56);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 15px;
+}
+
+.progress__part--partial {
+  margin-left: 0;
+  background-image: url('../../assets/images/layoutexercices/true.svg');
+  background-color: rgba(255, 200, 0, 0.56);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 15px;
