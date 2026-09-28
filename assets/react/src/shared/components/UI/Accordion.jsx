@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import BronzeCoupe from '../../../assets/images/gamification/coupe_bronze.png';
-import SilverCoupe from '../../../assets/images/gamification/coupe_argent.png';
-import GoldCoupe from '../../../assets/images/gamification/coupe_or.png';
+import BronzeCoupe from '../../../assets/images/gamification/coupe_bronze.svg';
+import SilverCoupe from '../../../assets/images/gamification/coupe_argent.svg';
+import GoldCoupe from '../../../assets/images/gamification/coupe_or.svg';
 
 const medalsSvg = { bronze: BronzeCoupe, silver: SilverCoupe, gold: GoldCoupe };
 
@@ -124,7 +124,7 @@ const AccordionContent = ({
             <img
               src={medalSrc}
               alt={`Médaille ${titleMedal}`}
-              className='w-20 h-20 shrink-0'
+              className='w-28 h-28 shrink-0'
             />
           )}
         </label>
