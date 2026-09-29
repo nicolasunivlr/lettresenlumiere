@@ -42,7 +42,7 @@ class Sequence
     #[Groups(['sequence:read', 'sequence:write', 'etape:read'])]
     private ?int $ordre = null;
 
-    #[ORM\OneToMany(mappedBy: "sequence", targetEntity: Exercice::class)]
+    #[ORM\OneToMany(mappedBy: "sequence", targetEntity: Exercice::class, cascade: ["remove"])]
     #[Groups(['sequence:read', 'exercice:read'])]
     #[ORM\OrderBy(['ordre' => 'ASC'])]
     private Collection $exercices;

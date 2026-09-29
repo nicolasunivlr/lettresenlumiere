@@ -41,7 +41,7 @@ class Exercice
     #[Groups(['exercice:read', 'exercice:write', "progression:read"])]
     private ?Sequence $sequence = null;
 
-    #[ORM\ManyToMany(mappedBy: 'exercices', targetEntity: Contenu::class)]
+    #[ORM\ManyToMany(mappedBy: 'exercices', targetEntity: Contenu::class, cascade: ["remove"])]
     #[Groups(['exercice:read', 'sequence:read'])]
     private Collection $contenus;
 

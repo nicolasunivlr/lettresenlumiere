@@ -69,7 +69,7 @@ class SequenceCrudController extends AbstractCrudController
         yield AssociationField::new('etape')->setLabel('Étape');
         yield NumberField::new('ordre')->setLabel('Ordre')
             ->setHelp('Ordre d\'affichage de la séquence dans l\'étape');
-
+        yield TextField::new('video_url')->setLabel('Vidéo')->hideOnForm();
         yield AssociationField::new('exercices')
             ->setLabel('Exercices')
             ->setFormTypeOption('by_reference', false)
