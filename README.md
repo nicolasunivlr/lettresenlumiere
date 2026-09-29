@@ -105,9 +105,17 @@ Pour mettre à jour l'application, suivez ces étapes :
 
 ### Technologies Utilisées
 
-*   **Backend :** PHP sous Symfony 7
+*   **Backend :** PHP sous Symfony 7.4
 *   **Frontend :** React.js 19
 *   **Builder :** Webpack Encore
 *   **Framework CSS :** Tailwind CSS
 *   **Base de données :** MariaDB
 *   **Serveur Web :** Apache (inclus dans Wamp)
+
+### Collaboration et Contributions
+
+- Pour lancer l'application en local à la main, il faut placer un fichier env.js dans le dossier public/js avec le contenu suivant :
+```javascript
+const BASE_ROUTE = ''; // Remplacer par /dossier_installation si l'application est dans un sous-dossier
+export default BASE_ROUTE;
+```

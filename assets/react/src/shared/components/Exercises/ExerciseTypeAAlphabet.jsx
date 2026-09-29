@@ -1,0 +1,79 @@
+import { useState, useEffect } from "react";
+import Label from "../UI/Label";
+import Instruction from "../Instruction";
+import VideoModal from "../UI/VideoModal";
+
+const ExerciseTypeAAlphabet = (props) => {
+  const { content, onDone } = props;
+
+  const [contentExercise, setContentExercise] = useState([]);
+
+  useEffect(() => {
+    if (content && content.contenus) {
+      setContentExercise(content.contenus);
+    }
+    onDone(100);
+  }, [content]);
+
+  const displayLabels = (contentExercise) => {
+    return (
+      <div className="exercice__item--type-a">
+        {contentExercise.map((contenu, index) => (
+          <div className="labelContainer" key={index}>
+            <div className="watch-button">
+              <VideoModal
+                url={contenu.video_url}
+                title={`Lettre ${contenu.element}`}
+              />
+            </div>
+            <Label
+              key={`${index}-script`}
+              text={contenu.element}
+              sound={true}
+              font={"script"}
+              audioUrl={contenu.sons_url}
+            />
+            <Label
+              key={`${index}-cursive`}
+              text={contenu.element}
+              sound={true}
+              font={"cursive"}
+              audioUrl={contenu.sons_url}
+            />
+            <Label
+              key={`${index}-script-upp`}
+              text={contenu.element.toUpperCase()}
+              sound={true}
+              font={"script"}
+              audioUrl={contenu.sons_url}
+            />
+            <Label
+              key={`${index}-cursive-upp`}
+              text={contenu.element.toUpperCase()}
+              sound={true}
+              font={"cursiveupp"}
+              audioUrl={contenu.sons_url}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <>
+      {content ? (
+        <>
+          <Instruction exercice={content} />
+          <div className="exercice pt-5">
+            {Array.isArray(contentExercise) && displayLabels(contentExercise)}
+          </div>
+        </>
+      ) : (
+        <div>Erreur dans le chargement du contenu de l'exercice...</div>
+      )}
+    </>
+  );
+};
+
+export default ExerciseTypeAAlphabet;

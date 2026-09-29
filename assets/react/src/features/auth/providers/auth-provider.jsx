@@ -1,0 +1,193 @@
+import React from "react";
+import { config } from "../../../shared/config";
+import { AuthActions } from "../auth-actions";
+import { authReducer } from "../auth-reducer";
+import { authApi } from "../../../shared/api/auth-api";
+import { authService } from "../auth-service";
+
+export const AuthContext = React.createContext();
+
+const initialState = {
+  isLoading: false, // boolean
+  isChecking: true, // boolean
+  errorMessage: false, // string | false
+  errors: null, // object | null
+  isAuthenticated: false, // boolean
+  user: null, // À définir
+};
+
+/**
+ * Ce provider fourni le contexte `AuthContext` à ses composants enfants.
+ */
+export const AuthProvider = ({ children }) => {
+  const [state, dispatch] = React.useReducer(authReducer, initialState);
+
+  const login = async (credentials, asGuest) => {
+    if (asGuest) {
+      console.debug("[auth:login_as_guest:start]");
+      dispatch({
+        type: AuthActions.LOGIN_SUCCESS,
+        payload: authService.createGuestUser(),
+      });
+      sessionStorage.setItem(config.guestTokenKey, JSON.stringify(Date.now()));
+      console.debug("[auth:login_as_guest:success]");
+      return true;
+    }
+
+    console.debug("[auth:login:start]");
+    dispatch({ type: AuthActions.LOGIN_START });
+    try {
+      const data = await authApi.login(credentials);
+      const loggedInUser = authService.createLoggedUser(data);
+      console.debug("[auth:login:success]", loggedInUser);
+      dispatch({ type: AuthActions.LOGIN_SUCCESS, payload: loggedInUser });
+      return true;
+    } catch (e) {
+      console.debug("[auth:login:error]", e.message);
+      /*
+      FIXME: faire en sorte que le backend renvoie des erreurs
+      exploitables pour l'affichage dans le formulaire. En attendant
+      on fait un parsing basique du message d'erreur.
+      ------------------------------------------------
+      L'authenticator Symfony renvoie des erreurs sous cette forme :
+      ## Validation Errors (à traiter pour les présenter dans le formulaire)
+      ### The key "username" must be a non-empty string.
+      ### The key "password" must be a non-empty string.
+      ## Authentification Errors
+      ### Identifiants invalides. (ok en l'état)
+      */
+      let validationError = null;
+      const isValidationError =
+        e.message.includes("username") || e.message.includes("password");
+
+      if (isValidationError) {
+        validationError = {};
+        if (e.message.includes("username")) {
+          validationError.username = "L'identifiant est requis.";
+        }
+        if (e.message.includes("password")) {
+          validationError.password = "Le mot de passe est requis.";
+        }
+      }
+      dispatch({
+        type: AuthActions.LOGIN_ERROR,
+        payload: {
+          errorMessage: isValidationError ? null : e.message,
+          errors: validationError,
+        },
+      });
+      return false;
+    }
+  };
+
+  const logout = async (asGuest) => {
+    if (asGuest) {
+      console.debug("[auth:logout_as_guest:start]");
+      dispatch({
+        type: AuthActions.LOGOUT_START,
+      });
+      sessionStorage.removeItem(config.guestTokenKey);
+      sessionStorage.removeItem(config.guestProgressTokenKey);
+      dispatch({ type: AuthActions.LOGOUT_SUCCESS });
+      console.debug("[auth:logout_as_guest:success]");
+      return;
+    }
+
+    console.debug("[auth:logout:start]");
+    dispatch({ type: AuthActions.LOGOUT_START });
+
+    try {
+      await authApi.logout();
+      console.debug("[auth:logout:success]");
+      dispatch({ type: AuthActions.LOGOUT_SUCCESS });
+    } catch (e) {
+      console.debug("[auth:logout:error]");
+      dispatch({ type: "LOGOUT_ERROR", payload: e.message });
+    }
+  };
+
+  const register = async (registrationData) => {
+    console.debug("[auth:register:start]");
+    dispatch({ type: AuthActions.REGISTER_START });
+    try {
+      console.debug("---");
+      console.debug(registrationData);
+      console.debug("---");
+      const registration = await authApi.register(registrationData);
+      const loggedInUser = authService.createLoggedUser(registration);
+      console.debug("[auth:register:success]", loggedInUser);
+      dispatch({
+        type: AuthActions.REGISTER_SUCCESS,
+        payload: loggedInUser,
+      });
+      return true;
+    } catch (e) {
+      let errors = null;
+
+      if (e.errors) {
+        errors = {};
+        e.errors.forEach((error) => {
+          errors[error.property] = error.message;
+        });
+      }
+      console.debug("[auth:register:error]", e.message, errors);
+      dispatch({
+        type: AuthActions.REGISTER_ERROR,
+        payload: {
+          errorMessage: e.message,
+          errors,
+        },
+      });
+      return false;
+    }
+  };
+
+  React.useEffect(() => {
+    const checkAuth = async () => {
+      console.debug("[auth:check_guest:start]");
+      const isGuest = sessionStorage.getItem(config.guestTokenKey);
+      if (isGuest) {
+        console.debug("[auth:check_guest:success]");
+        dispatch({
+          type: AuthActions.CHECK_AUTH_SUCCESS,
+          payload: authService.createGuestUser(),
+        });
+        return;
+      }
+
+      console.debug("[auth:check:start]");
+      dispatch({ type: AuthActions.CHECK_AUTH_START });
+
+      try {
+        const data = await authApi.check();
+        const loggedInUser = authService.createLoggedUser(data);
+        console.debug("[auth:check:success]", loggedInUser);
+        dispatch({
+          type: AuthActions.CHECK_AUTH_SUCCESS,
+          payload: loggedInUser,
+        });
+      } catch (e) {
+        console.debug("[auth:check:error]", e.message);
+        dispatch({ type: AuthActions.CHECK_AUTH_ERROR, payload: e.message });
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ ...state, login, logout, register }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => {
+  const ctx = React.useContext(AuthContext);
+
+  if (!ctx) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+
+  return ctx;
+};

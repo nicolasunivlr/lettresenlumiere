@@ -1,0 +1,27 @@
+@use "../base/variables" as *;
+
+.profile-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 1rem 2rem;
+  background-color: $blanc;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.333);
+
+}
+
+.profile-banner__title {
+  font-size: 1.8rem;
+  z-index: 1;
+}
+
+.profile-banner__logo {
+  height: 70px;
+}
+
+.profile-banner__right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

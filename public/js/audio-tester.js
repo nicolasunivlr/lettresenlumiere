@@ -10,7 +10,6 @@ allAudios.forEach( img => {
     }
 });
 
-console.log('allAudios', allAudios);
 
 // Créez un nouveau bouton
 const newButton = document.createElement('button');

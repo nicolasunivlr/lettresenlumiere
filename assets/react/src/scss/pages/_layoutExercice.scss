@@ -407,7 +407,16 @@
 .progress__part--false {
   margin-left: 0;
   background-image: url('../../assets/images/layoutexercices/false.svg');
-  background-color: rgba(255, 166, 41, 0.56);
+  background-color: rgba(242, 72, 34, 0.56);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 15px;
+}
+
+.progress__part--partial {
+  margin-left: 0;
+  background-image: url('../../assets/images/layoutexercices/true.svg');
+  background-color: rgba(255, 200, 0, 0.56);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 15px;
@@ -434,6 +443,7 @@
 }
 
 .consigneContainerWrapper {
+  height: fit-content;
   .speaker {
     position: absolute;
     right: 1rem;
@@ -444,7 +454,6 @@
   display: flex;
   position: relative;
   width: 100%;
-  top: -20px;
   justify-content: center;
   align-content: center;
   margin: 0 auto;
@@ -457,8 +466,8 @@
 
 .consigneContainer {
   background-color: v.$kepel-transparent;
-  width: auto;
-  width: 60vw;
+  width: 60svw;
+  max-width: 100%;
   display: flex;
   justify-content: center;
   padding: 1.2rem 4rem;
@@ -483,6 +492,19 @@
     min-height: 6rem;
     padding: 0.6rem 1rem;
     top: -1.5rem;
+  }
+}
+
+.sequence-group {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  max-width: 100%;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
 }
 

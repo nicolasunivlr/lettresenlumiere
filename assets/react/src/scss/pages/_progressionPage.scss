@@ -1,0 +1,187 @@
+@use '../base/variables' as v;
+@use '../base/fonts' as f;
+
+.container-progression {
+  border-radius: 8px;
+  padding: 3rem;
+  border: 3px solid v.$kepel;
+}
+
+/* Header */
+.container-progression__header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 3rem;
+}
+
+.hearder_headline {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header__title {
+  text-align: center;
+  font-size: f.$font-size-large;
+  font-weight: 700;
+  margin: 2rem 0 2rem 0;
+}
+
+.header__icon {
+  width: 32px;
+  height: auto;
+}
+
+/* Bouton retour */
+.header__back-button {
+  position: absolute;
+  left: 0;
+}
+
+.header__back-button:hover {
+  background: #f3f4f6;
+}
+
+/* Bloc centré */
+.header__center {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Grille 4 cartes par ligne */
+.progression-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+}
+
+/* Carte */
+.progression-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.progression-card__title {
+  text-align: center;
+  font-size: f.$font-size-small;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+/* Tableau utilisateur*/
+.progression-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  table-layout: fixed;
+}
+
+.progression-table th,
+.progression-table td {
+  padding: 10px 0;
+  border-bottom: 1px solid #9a9595;
+}
+
+/* Colonne 1 plus grande */
+.progression-table th:nth-child(1),
+.progression-table td:nth-child(1) {
+  width: 50%;
+  text-align: left;
+  padding-left: 1rem;
+}
+
+.progression-table th:nth-child(2),
+.progression-table td:nth-child(2) {
+  width: 25%;
+  text-align: center;
+}
+
+.progression-table th:nth-child(3),
+.progression-table td:nth-child(3) {
+  width: 25%;
+  text-align: right;
+}
+
+.col-right {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+
+.zoom-icon {
+  width: 20px;
+  height: auto;
+  cursor: pointer;
+}
+
+.score-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  justify-content: center;
+}
+
+.medal-icon {
+  width: 18px;
+  height: 18px;
+}
+
+
+
+/* Tableau administrateur */
+/* Conteneur */
+.admin-content {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Carte du tableau */
+.admin-table {
+  width: 60%;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.admin-table caption {
+  margin-bottom: 10px;
+  font-size: f.$font-size-medium;
+}
+
+/* Header */
+.admin-table th {
+  background: #f9fafb;
+  font-weight: 600;
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+/* Cellules */
+.admin-table td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid #f2f2f2;
+  cursor: pointer;
+}
+
+/* Supprime la bordure de la dernière ligne */
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Effet hover ligne */
+.admin-table tbody tr:hover {
+  background-color: #f8f9ff;
+  transition: background 0.2s ease;
+}

@@ -1,6 +1,6 @@
-@use '../base/variables' as v;
-@use '../base/fonts' as f;
-@use 'sass:color';
+@use "../base/variables" as v;
+@use "../base/fonts" as f;
+@use "sass:color";
 
 .button {
   display: flex;
@@ -229,4 +229,97 @@
       max-height: 2.5rem;
     }
   }
+}
+
+/* Logout button */
+.logout-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.8rem;
+  padding: 1em 1em;
+  background-color: v.$rouge;
+  color: white;
+  border-radius: 8px;
+
+  &:disabled {
+    background-color: rgb(90, 90, 90);
+  }
+}
+
+.logout-button:hover {
+  cursor: pointer;
+  background-color: rgb(60, 60, 60);
+}
+
+.logout-button__icon {
+  width: 1.5em;
+  height: 1.5em;
+  flex-shrink: 0;
+}
+
+/* Admin button */
+.admin-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.8rem;
+  padding: 1em 1em;
+  background-color: v.$orange;
+  color: white;
+  border-radius: 8px;
+
+  &:disabled {
+    background-color: rgb(90, 90, 90);
+  }
+}
+
+.admin-button:hover {
+  cursor: pointer;
+  background-color: rgb(60, 60, 60);
+}
+
+.admin-button__icon {
+  width: 1.5em;
+  height: 1.5em;
+  flex-shrink: 0;
+}
+
+.guest-mode-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.8rem;
+  padding: 1em 1em;
+  background-color: v.$violet;
+  color: white;
+  border-radius: 8px;
+}
+
+.guest-mode-button:hover {
+  cursor: pointer;
+  background-color: v.$violet-pale;
+}
+
+
+/* Return button */
+.return-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.8rem;
+  padding: 1em 1em;
+  background-color: v.$rouge;
+  color: white;
+  border-radius: 8px;
+
+  &:disabled {
+    background-color: rgb(90, 90, 90);
+  }
+}
+
+.return-button:hover {
+  cursor: pointer;
+  color: v.$noir;
+  background-color: rgb(60, 60, 60);
 }

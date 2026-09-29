@@ -1,4 +1,5 @@
 @use '../base/variables' as v;
+@use '../base/fonts' as f;
 
 .contenuPrincipal {
   display: flex;
@@ -8,6 +9,8 @@
 }
 
 .index {
+  position: relative;
+
   &__header {
     display: flex;
     justify-content: space-between;
@@ -45,6 +48,69 @@
       max-width: 70%;
       /* Assurez-vous que l'image ne dépasse pas la taille du conteneur */
       /* Assurez-vous que l'image conserve son ratio hauteur/largeur */
+    }
+  }
+}
+
+.home {
+  &__bottom-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  &_links {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 1.2rem 1.8rem;
+    border-radius: 10px;
+    font-size: f.$font-size-medium;
+    background-color: #fffbfb;
+    transition: 0.2s all ease-out;
+    color: v.$noir;
+    text-decoration: none;
+
+    &:hover {
+      scale: 1.10;
+      transition: 0.2s all ease-out;
+    }
+  }
+
+  &__link-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    margin-right: 5px;
+  }
+
+  &__credits {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 1000;
+  }
+
+  &__credits-link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    color: v.$noir;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 1);
+      transform: scale(1.05);
+      transition: all 0.2s ease-out;
     }
   }
 }

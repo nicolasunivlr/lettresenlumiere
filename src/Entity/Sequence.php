@@ -22,11 +22,10 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: SequenceRepository::class)]
 class Sequence
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['sequence:read', 'etape:read'])]
+    #[Groups(['sequence:read', 'etape:read', "progression:read"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -39,7 +38,11 @@ class Sequence
     #[Groups(['sequence:read'])]
     private ?Etape $etape = null;
 
-    #[ORM\OneToMany(mappedBy: "sequence", targetEntity: Exercice::class)]
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['sequence:read', 'sequence:write', 'etape:read'])]
+    private ?int $ordre = null;
+
+    #[ORM\OneToMany(mappedBy: "sequence", targetEntity: Exercice::class, cascade: ["remove"])]
     #[Groups(['sequence:read', 'exercice:read'])]
     #[ORM\OrderBy(['ordre' => 'ASC'])]
     private Collection $exercices;
@@ -87,9 +90,27 @@ class Sequence
         return $this;
     }
 
+    public function getOrdre(): ?int
+    {
+        return $this->ordre;
+    }
+
+    public function setOrdre(?int $ordre): static
+    {
+        $this->ordre = $ordre;
+
+        return $this;
+    }
+
     public function getExercices(): Collection
     {
         return $this->exercices;
+    }
+
+    #[Groups(['etape:read', 'progression:read'])]
+    public function getNbExercices(): ?int
+    {
+        return count($this->exercices);
     }
 
     public function getContenus(): Collection{
