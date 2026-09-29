@@ -32,9 +32,9 @@ Un compte administrateur de la machine est nécessaire.
 2. On copie colle le fichier lettresenlumiere.zip de la clé usb sur le bureau.  
 ![Capture 2](images/image-02.png)
 
-3. ![Capture 3](images/image-03.png)  
-On dézippe le fichier lettresenlumiere.zip dans le dossier c:\\wamp64\\www\\lettresenlumiere. Clic droit Nouveau dossier  
+3. On dézippe le fichier lettresenlumiere.zip dans le dossier c:\\wamp64\\www\\lettresenlumiere. Clic droit Nouveau dossier
 
+![Capture 3](images/image-03.png)
 
 4. Une fois les fichiers du zip copiés(environ 2 minutes), il suffit de lancer l’installation des données en double cliquant sur installation.bat
 
@@ -44,10 +44,9 @@ On dézippe le fichier lettresenlumiere.zip dans le dossier c:\\wamp64\\www\\let
 Notez bien l’adresse IP qui s’affiche, il servira pour proposer l’application à tous les postes d'une salle informatique.
 
 6. Il ne reste plus qu’à redémarrer les services de wamp. On peut également fermer wamp et le relancer.
+![Capture 5](images/image-05.png)
 
-7. ![Capture 5](images/image-05.png)
-
-L’application est disponible sur le poste en ouvrant un navigateur internet (edge, firefox ou chrome) et en allant sur [http://localhost/lettresenlumiere](http://localhost/lettresenlumiere) sur le poste serveur pour vérifier que tout fonctionne correctement.
+7. L’application est disponible sur le poste en ouvrant un navigateur internet (edge, firefox ou chrome) et en allant sur [http://localhost/lettresenlumiere](http://localhost/lettresenlumiere) sur le poste serveur pour vérifier que tout fonctionne correctement.
 
 Pour les postes dans les salles de classe, ouvrir un navigateur internet (edge, firefox ou chrome) et aller sur http://adresse\_ip\_noté\_précédemment/lettresenlumiere.
 
