@@ -74,10 +74,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(CouleurCrudController::class, 'Couleur', 'fa fa-palette');
 
         // Ajoutez un nouvel élément de menu pour l'exportation globale
-        yield MenuItem::linkToRoute('Export Global', 'fa fa-download', 'admin_global_export');
+        //yield MenuItem::linkToRoute('Export Global', 'fa fa-download', 'admin_global_export');
 
         // Dans la méthode configureMenuItems()
-        yield MenuItem::linkToRoute('Import Global', 'fa fa-upload', 'admin_global_import');
+        //yield MenuItem::linkToRoute('Import Global', 'fa fa-upload', 'admin_global_import');
 
         yield MenuItem::linkToRoute('MAJ modèle', 'fa fa-up-long', 'admin_maj_site_page');
 
