@@ -22,7 +22,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: SequenceRepository::class)]
 class Sequence
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -38,6 +37,10 @@ class Sequence
     #[ORM\JoinColumn(name: "etape_id", referencedColumnName: "id", nullable: false)]
     #[Groups(['sequence:read'])]
     private ?Etape $etape = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['sequence:read', 'sequence:write', 'etape:read'])]
+    private ?int $ordre = null;
 
     #[ORM\OneToMany(mappedBy: "sequence", targetEntity: Exercice::class)]
     #[Groups(['sequence:read', 'exercice:read'])]
@@ -83,6 +86,18 @@ class Sequence
     public function setEtape(?Etape $etape): static
     {
         $this->etape = $etape;
+
+        return $this;
+    }
+
+    public function getOrdre(): ?int
+    {
+        return $this->ordre;
+    }
+
+    public function setOrdre(?int $ordre): static
+    {
+        $this->ordre = $ordre;
 
         return $this;
     }

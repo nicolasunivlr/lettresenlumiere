@@ -1,0 +1,36 @@
+{% extends '@EasyAdmin/crud/index.html.twig' %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Masque le bouton « Filtres » classique */
+        .datagrid-filters,
+        .action-filters-button {
+            display: none !important;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    {% set currentEtape = app.request.query.all['filters']['etape']['value'] ?? '' %}
+
+    <div class="mb-3">
+        <select class="form-select w-auto" onchange="window.location.href = this.value">
+            <option value="{{ ea_url().unset('filters').unset('page').generateUrl() }}">
+                Toutes les étapes
+            </option>
+            {% for etape in etapes %}
+                <option
+                        value="{{ ea_url()
+                            .unset('page')
+                            .set('filters', {etape: {comparison: '=', value: etape.id}})
+                            .generateUrl() }}"
+                        {{ currentEtape == etape.id ? 'selected' }}>
+                    {{ etape }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    {{ parent() }}
+{% endblock %}

@@ -37,6 +37,7 @@ class Etape
 
     #[ORM\OneToMany(mappedBy: 'etape', targetEntity: Sequence::class)]
     #[Groups(['etape:read'])]
+    #[ORM\OrderBy(['ordre' => 'ASC', 'id' => 'ASC'])]
     private $sequences;
 
     public function getId(): ?int
