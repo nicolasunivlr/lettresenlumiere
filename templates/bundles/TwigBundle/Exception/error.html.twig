@@ -1,0 +1,6 @@
+{% extends 'errors/layout.html.twig' %}
+
+{% block title %}Erreur {{ status_code }}{% endblock %}
+{% block code %}{{ status_code }}{% endblock %}
+{% block heading %}Une erreur est survenue{% endblock %}
+{% block message %}{{ status_text|default('Une erreur inattendue est survenue. Merci de réessayer plus tard.') }}{% endblock %}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Erreur{% endblock %} — Lettres en lumière</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+        <style>
+            :root {
+                --noir: #151414;
+                --blanc: #f2f2f2;
+                --blanc-max: #ffffff;
+                --rouge: #b91c1c;
+                --orange: #f18910;
+                --kepel: #439bab;
+                --gris: #d8dade;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+
+            body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                background-color: rgba(78, 137, 143, 0.28);
+                font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+                color: var(--noir);
+                padding: 1.5rem;
+            }
+
+            .error-card {
+                background: var(--blanc-max);
+                border-radius: 1rem;
+                box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.25);
+                max-width: 32rem;
+                width: 100%;
+                padding: 2.5rem 2.5rem 2rem;
+                text-align: center;
+            }
+
+            .error-code {
+                font-size: 4.5rem;
+                font-weight: 800;
+                line-height: 1;
+                color: var(--orange);
+                margin: 0 0 0.5rem;
+            }
+
+            .error-heading {
+                font-size: 1.5rem;
+                font-weight: 700;
+                margin: 0 0 1rem;
+                color: var(--noir);
+            }
+
+            .error-message {
+                font-size: 1rem;
+                color: #4a4a4a;
+                margin: 0 0 2rem;
+                line-height: 1.5;
+            }
+
+            .error-link {
+                display: inline-block;
+                background: var(--kepel);
+                color: var(--blanc-max);
+                text-decoration: none;
+                font-weight: 600;
+                padding: 0.75rem 1.75rem;
+                border-radius: 0.5rem;
+                transition: opacity 0.15s ease-in-out;
+            }
+
+            .error-link:hover {
+                opacity: 0.85;
+            }
+        </style>
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        <div class="error-card">
+            <p class="error-code">{% block code %}{% endblock %}</p>
+            <h1 class="error-heading">{% block heading %}Une erreur est survenue{% endblock %}</h1>
+            <p class="error-message">{% block message %}Veuillez réessayer ultérieurement.{% endblock %}</p>
+            <a class="error-link" href="{{ path('app_default') }}">Retour à l'accueil</a>
+        </div>
+    </body>
+</html>
