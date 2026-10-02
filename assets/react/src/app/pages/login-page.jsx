@@ -6,9 +6,14 @@ import React from "react";
 import { Alert } from "../../shared/ui/alert";
 
 export const LoginPage = () => {
-  const { isAuthenticated, login, isLoading, errorMessage, errors } = useAuth();
+  const { isAuthenticated, login, isLoading, errorMessage, errors, clearErrors } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Réinitialise les erreurs laissées par une autre page (ex: inscription) à l'arrivée sur le login.
+  React.useEffect(() => {
+    clearErrors();
+  }, [clearErrors]);
 
   React.useEffect(() => {
     if (errorMessage) {
