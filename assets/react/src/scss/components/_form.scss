@@ -1,3 +1,5 @@
+@use '../base/variables' as v;
+
 .form-container {
   background-color: white;
   width: 40%;
@@ -102,6 +104,33 @@
       border-color: #d1d5db;
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
     }
+  }
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+
+  &__wrapper {
+    &--error {
+      .form__input,
+      .input-password {
+        border-color: v.$rouge;
+
+        &:focus,
+        &:focus-within {
+          border-color: v.$rouge;
+          box-shadow: 0 0 0 2px rgba(185, 28, 28, 0.2);
+        }
+      }
+    }
+  }
+
+  &__error {
+    margin: 4px 0 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: v.$rouge;
   }
 }
 

@@ -6,6 +6,7 @@ use App\Dto\RegistrationDto;
 use App\Entity\AccountProfile;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Service\DemoModeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -111,8 +112,18 @@ final class ApiSecurityController extends AbstractController
     }
 
     #[Route('/api/register', name: 'api_register', methods: ['POST'])]
-    public function register(Request $request, UserPasswordHasherInterface $hasher, ValidatorInterface $validator, EntityManagerInterface $em, UserRepository $userRepo, Security $security): Response
+    public function register(Request $request, UserPasswordHasherInterface $hasher, ValidatorInterface $validator, EntityManagerInterface $em, UserRepository $userRepo, Security $security, DemoModeService $demoModeService): Response
     {
+        if ($demoModeService->isEnabled()) {
+            return $this->json(
+                [
+                    'success' => false,
+                    'message' => "La création de compte est désactivée : l'application est en mode démo."
+                ],
+                Response::HTTP_FORBIDDEN
+            );
+        }
+
         // Obtention des données envoyées dans le corps de la requête (en traitant l'erreur de désérialisation JSON)
         try {
             $registrationData = $request->toArray();
@@ -156,7 +167,7 @@ final class ApiSecurityController extends AbstractController
             return $this->json(
                 [
                     'success' => false,
-                    'message' => 'Validation errors occurred.',
+                    'message' => 'Problème lors de la création du compte utilisateur.',
                     'errors' => $validationErrors,
                 ],
                 Response::HTTP_BAD_REQUEST

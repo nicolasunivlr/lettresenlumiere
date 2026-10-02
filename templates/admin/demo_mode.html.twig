@@ -1,0 +1,47 @@
+{# templates/admin/demo_mode.html.twig #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    Mode démo
+{% endblock %}
+
+{% block main %}
+    <div class="content-body">
+        <p>
+            Le mode démo permet d'exposer l'application (par exemple lors d'une présentation) sans risquer
+            la création de comptes utilisateur indésirables via l'inscription publique.
+        </p>
+        <p>
+            <strong>Lorsqu'il est activé, la création de nouveaux comptes via l'API d'inscription (<code>/api/register</code>) est bloquée.</strong>
+            La création de comptes depuis le backoffice reste possible, celle-ci étant déjà réservée aux administrateurs connectés.
+        </p>
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                    {{ message|raw }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <form method="POST" action="{{ path('admin_demo_mode_toggle') }}" id="demo-mode-form">
+            <input type="hidden" name="_token" value="{{ csrf_token('toggle_demo_mode') }}">
+
+            <div class="form-check form-switch" style="padding-left: 3.5em;">
+                <input
+                    class="form-check-input"
+                    type="checkbox"
+                    role="switch"
+                    id="demo-mode-switch"
+                    style="width: 3em; height: 1.5em;"
+                    {{ demoModeEnabled ? 'checked' : '' }}
+                    onchange="document.getElementById('demo-mode-form').submit();"
+                >
+                <label class="form-check-label" for="demo-mode-switch">
+                    Mode démo {{ demoModeEnabled ? 'activé' : 'désactivé' }}
+                </label>
+            </div>
+        </form>
+    </div>
+{% endblock %}
