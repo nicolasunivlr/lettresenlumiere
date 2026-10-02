@@ -8,52 +8,14 @@ Il peut fonctionner sans connexion internet.
 
 ## Installation
 
-### Prérequis
-
-L'installation a été testée sur les systèmes suivants :
-*  Windows 7 avec Wamp 3.3.0
-*  Windows 11 avec Wamp 3.3.7
-
-Vous trouverez ci-dessous les logiciels requis pour faire fonctionner l'application :
-
-Site pour les Visual C++ Redistributable Runtimes :
-https://github.com/abbodi1406/vcredist
-
-Documentation à jour de Wamp :
-http://forum.wampserver.com/read.php?1,137154
-
-### Étapes d'installation
-
-1. **Copie des fichiers :**
-   * Pour davantage de rapidité, vous devez copier les fichiers d'installation de votre clé USB vers le disque dur.
-
-2. **Installation des prérequis :**
-   * Installez tous les Microsoft Visual C++ Redistributable Runtimes
-
-3. **Installez Wamp :**
-   * Choisissez la version adéquate :
-     * 3.3.0 pour Windows 7/8
-     * 3.3.7 pour Windows 10/11
-    
-4. **Téléchargez le zip du projet :**
-Le zip du projet est disponible dans la partie "Releases" du dépôt GitHub.
-   * Téléchargez la dernière version stable de l'application Lettres en lumière.
-   * Le fichier sera nommé `lettresenlumiere.zip`.
-
-5. **Extraire le zip dans le dossier C:\wamp64\www\lettresenlumiere :**
-
-6. **Configuration de l'application :**
-    * Lancez Wamp et assurez-vous qu'il est en ligne (icône verte dans la barre des tâches).
-    * Pour Windows 7, passez Php en version 8.2 (clic droit sur l'icône Wamp dans la barre des tâches, sélectionnez "PHP" puis "Version" et choisissez 8.2).
-    * Lancez `installation.bat` dans `C:\wamp\www\lettresenlumiere\` (double clic)
-        * Il ne doit pas avoir de message d'erreur. À la fin, vous pouvez voir l'adresse IP de votre serveur local.
-    * Relancez les services Wamp (clic sur l'icône Wamp dans la barre des tâches et sélectionnez "Redémarrer tous les services").
+Voir la [documentation](doc/installation.md).
 
 ## Utilisation
 
 Pour une utilisation optimale de l'application, nous vous recommandons les navigateurs suivants :
 * Edge
 * Chrome
+* Firefox
 
 1. **Accéder à l'application :**
     * Sur le poste où l'application est installée, ouvrez votre navigateur et allez à l'URL configurée `http://localhost/lettresenlumiere'.
@@ -91,16 +53,6 @@ Ici, toujours, `emp` sera coloré et en **gras** quand le mot apparaîtra dans l
 
 Vous pouvez aussi assigner une **image** ou un **son** associé au contenu si c'est pertinent. **Tous les exercices ne prennent pas en charge ces fonctionnalités**.
 
-## Mise à jour de l'application
-
-Pour mettre à jour l'application, suivez ces étapes :
-1. **Récupération de la dernière version sur github :**
-   * Supprimez le dossier `C:\wamp64\www\lettresenlumiere`.
-   * Téléchargez la dernière version stable de l'application Lettres en lumière depuis la partie "Releases" du dépôt GitHub.
-   * Le fichier sera nommé `lettresenlumiere.zip`.
-   * Extrayez le zip dans le dossier `C:\wamp64\www\lettresenlumiere`.
-   * Lancez `installation.bat` dans `C:\wamp64\www\lettresenlumiere\` (double clic).
-
 ## Partie Technique
 
 ### Technologies Utilisées
@@ -119,3 +71,28 @@ Pour mettre à jour l'application, suivez ces étapes :
 const BASE_ROUTE = ''; // Remplacer par /dossier_installation si l'application est dans un sous-dossier
 export default BASE_ROUTE;
 ```
+
+### Crédits
+
+Ce projet est issu d'une initiative de Camille Burr, professeur des écoles spécialisé, et a été développé par des étudiants de la licence professionnelle MIAW de La Rochelle Université sur trois années.
+Merci à eux pour leur travail et leur engagement sans faille dans ce projet.
+- La première année a permis de faire un POC (Proof of Concept) de l'application et de définir toute la charte graphique et l'ergonomie de l'application.
+  - Victoria TANDAMBA
+  - Marilyne Delia TSENE
+  - Clarence NOIROT
+  - Loane SENE
+- La deuxième année a permis de développer l'application et de la mettre en production.
+  - Baptiste Pereira
+  - Maxence Hirault
+  - Raphaël Benmimoune
+  - Johan Canevet-Danois
+  - Angelo Palmino
+- La troisième année a permis de faire évoluer l'application avec la création de compte utilisateur et le suivi des progressions pédagogiques.
+  - Maxime Chasles
+  - Jules Bossis-Guyon
+  - Mathis Gaudré
+  - Lisa Weermeer
+
+Je continue de travailler sur cette application de manière bénévole pour l'améliorer et la faire évoluer.
+
+Je suis ouvert à toute collaboration et contribution pour améliorer l'application et la rendre plus accessible à un public plus large.
