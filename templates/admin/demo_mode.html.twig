@@ -2,18 +2,20 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block content_title %}
-    Mode démo
+    Mode restreint
 {% endblock %}
 
 {% block main %}
     <div class="content-body">
         <p>
-            Le mode démo permet d'exposer l'application (par exemple lors d'une présentation) sans risquer
-            la création de comptes utilisateur indésirables via l'inscription publique.
+            Le mode restreint empêche la création de nouveaux comptes via la page de connexion.
         </p>
         <p>
-            <strong>Lorsqu'il est activé, la création de nouveaux comptes via l'API d'inscription (<code>/api/register</code>) est bloquée.</strong>
-            La création de comptes depuis le backoffice reste possible, celle-ci étant déjà réservée aux administrateurs connectés.
+            <strong>Lorsqu'il est activé, la création de nouveaux comptes via la page de connexion est bloquée.</strong>
+            La création de comptes depuis le menu <strong>Utilisateurs</strong> reste possible, celle-ci étant déjà réservée aux administrateurs connectés.
+        </p>
+        <p>
+            Dans ce mode, seul l'administrateur peut créer des comptes et les affecter aux apprenants.
         </p>
 
         {% for label, messages in app.flashes %}
@@ -39,7 +41,7 @@
                     onchange="document.getElementById('demo-mode-form').submit();"
                 >
                 <label class="form-check-label" for="demo-mode-switch">
-                    Mode démo {{ demoModeEnabled ? 'activé' : 'désactivé' }}
+                    Mode restreint {{ demoModeEnabled ? 'activé' : 'désactivé' }}
                 </label>
             </div>
         </form>
