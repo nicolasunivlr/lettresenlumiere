@@ -155,6 +155,7 @@ final class UpdateGitAndDatabaseController extends AbstractController
         $commandData[] = '--no-create-info'; // Ne pas exporter la structure (déjà fait)
         $commandData[] = '--skip-triggers'; // Ne pas exporter les triggers
         $commandData[] = '--ignore-table=' . $dbName . '.user'; // Ignorer la table user pour les données
+        $commandData[] = '--ignore-table=' . $dbName . '.account_profile'; // Ignorer la table account_profile pour les données
         $commandData[] = '--ignore-table=' . $dbName . '.db_state'; // Ignorer la table db_state pour les données
         $commandData[] = $dbName;
 
@@ -170,8 +171,8 @@ final class UpdateGitAndDatabaseController extends AbstractController
         $dataDump = preg_replace('/\A[^\r\n]*sandbox[^\r\n]*\R?/', '', $dataDump, 1);
 
         // ajout d'un utilisateur admin par défaut pour la version hors ligne.
-        $userDump = "\nINSERT INTO `user` (`username`, `roles`, `password`) VALUES ('admin', '[\"ROLE_ADMIN\"]', '\$2y\$13\$gDMytbgk8VWA8H0Sz4GvXOgnwsFQ90S.8yf78LRNTRJQuMaHy7.IG')";
-
+        $userDump = "\nINSERT INTO `user` (`username`, `roles`, `password`) VALUES ('admin', '[\"ROLE_ADMIN\"]', '\$2y\$13\$gDMytbgk8VWA8H0Sz4GvXOgnwsFQ90S.8yf78LRNTRJQuMaHy7.IG');";
+        $userDump .= "\nINSERT INTO `account_profile` (`firstname`, `lastname`, `user_id`) VALUES ('Super', 'Admin', 1);\n";
         $sqlDump = $structureDump . $dataDump . $userDump;
 
         // Écrire la structure puis les données dans le fichier de sauvegarde
