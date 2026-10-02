@@ -124,10 +124,14 @@ export const AuthProvider = ({ children }) => {
     } catch (e) {
       let errors = null;
 
-      if (e.errors) {
+      if (e.errors && e.errors.length > 0) {
         errors = {};
         e.errors.forEach((error) => {
-          errors[error.property] = error.message;
+          // Concatène les messages lorsque plusieurs erreurs concernent la même propriété
+          // afin de ne pas perdre d'information (ex: confirmPassword vide ET différent du mot de passe).
+          errors[error.property] = errors[error.property]
+            ? `${errors[error.property]} ${error.message}`
+            : error.message;
         });
       }
       console.debug("[auth:register:error]", e.message, errors);
@@ -141,6 +145,10 @@ export const AuthProvider = ({ children }) => {
       return false;
     }
   };
+
+  const clearErrors = React.useCallback(() => {
+    dispatch({ type: AuthActions.CLEAR_ERRORS });
+  }, []);
 
   React.useEffect(() => {
     const checkAuth = async () => {
@@ -176,7 +184,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ ...state, login, logout, register }}>
+    <AuthContext.Provider value={{ ...state, login, logout, register, clearErrors }}>
       {children}
     </AuthContext.Provider>
   );

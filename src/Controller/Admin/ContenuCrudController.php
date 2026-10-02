@@ -110,7 +110,7 @@ class ContenuCrudController extends AbstractCrudController
             ])
             ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]');
 
-
+        // voir pour passer par FileField depuis easyadmin 5
         yield ImageField::new('audioUrl')
             ->setFormType(FileUploadType::class)
             ->setLabel('Fichier Audio')

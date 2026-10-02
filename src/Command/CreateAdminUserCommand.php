@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\AccountProfile;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -39,9 +40,11 @@ class CreateAdminUserCommand extends Command
             $io->note(sprintf('Un utilisateur avec le nom d\'utilisateur "%s" existe déjà.', $username));
             $user = $existingUser;
         } else {
-            $io->note(sprintf('Créaqtion d\'un utilisateur avec le nom "%s".', $username));
+            $io->note(sprintf('Création d\'un utilisateur avec le nom "%s".', $username));
             $user = new User();
             $user->setUsername($username);
+            $accountProfile = new AccountProfile();
+            $accountProfile->setUser($user);
         }
         $user->setRoles(['ROLE_ADMIN']);
         $hashedPassword = $this->passwordHasher->hashPassword(
@@ -50,6 +53,7 @@ class CreateAdminUserCommand extends Command
         );
         $user->setPassword($hashedPassword);
 
+        $this->entityManager->persist($accountProfile);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 

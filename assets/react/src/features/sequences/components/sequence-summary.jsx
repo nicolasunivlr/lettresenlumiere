@@ -85,10 +85,7 @@ const SequenceSummary = ({ context, circleOnClick, progress }) => {
   // ---------------------------------------------------------------------------
 
   const handleOnClick = () => {
-    navigate({
-      pathname: "/etapes",
-      search: `?id=${etapeId}`,
-    });
+    navigate(`/etapes/${etapeId}`);
   };
 
   const { scoreAvg, medalSrc, bgc } = showScore();

@@ -81,6 +81,8 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::linkToRoute('MAJ modèle', 'fa fa-up-long', 'admin_maj_site_page');
 
+        yield MenuItem::linkToRoute('Mode démo', 'fa fa-toggle-on', 'admin_demo_mode_page');
+
         yield MenuItem::linkToRoute('Retour au site', 'fa fa-arrow-left', 'app_default');
     }
 
