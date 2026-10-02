@@ -37,7 +37,7 @@ class Exercice
     private ?string $type_exercice = null;
 
     #[ORM\ManyToOne(targetEntity: Sequence::class, inversedBy: 'exercices')]
-    #[ORM\JoinColumn(name: "sequence_id", referencedColumnName: "id", nullable: false)]
+    #[ORM\JoinColumn(name: "sequence_id", referencedColumnName: "id")]
     #[Groups(['exercice:read', 'exercice:write', "progression:read"])]
     private ?Sequence $sequence = null;
 
