@@ -3,13 +3,13 @@ name: Create GitHub Release
 on:
   push:
     tags:
-      - '*' # Se déclenche pour n'importe quel tag. Adaptez si vous avez un format spécifique (ex: 'v*.*.*')
+      - 'v*' # Se déclenche pour les tags v*
 
 env:
   RELEASE_BUILD_DIR: "release_payload"
   # PHP_VERSION et NODE_VERSION peuvent être ajustés selon les besoins de votre projet
-  PHP_VERSION: '8.2'
-  NODE_VERSION: '20'
+  PHP_VERSION: '8.5'
+  NODE_VERSION: '24'
 
 jobs:
   build_and_archive:
@@ -45,8 +45,8 @@ jobs:
           extensions: mbstring, xml, zip, ctype, json, phar # Extensions PHP courantes
           tools: composer # Installe Composer
 
-      - name: Install OS dependencies (zip)
-        run: sudo apt-get update -y && sudo apt-get install -y zip
+      - name: Install OS dependencies (zip, pandoc)
+        run: sudo apt-get update -y && sudo apt-get install -y zip pandoc wkhtmltopdf
 
       - name: Verify installations
         run: |
@@ -56,6 +56,7 @@ jobs:
           echo "NPM version: $(npm -v)"
           echo "Git version: $(git --version)"
           echo "Zip version: $(zip --version)"
+          echo "Pandoc version: $(pandoc --version | head -n 1)"
           echo "Tag to process: ${{ steps.set_archive_vars.outputs.TAG_NAME }}"
           echo "Archive will be: ${{ steps.set_archive_vars.outputs.ARCHIVE_FILENAME }}"
 
@@ -99,8 +100,21 @@ jobs:
             echo "[4/5] package.json not found. Skipping NPM dependencies and asset build."
           fi
 
-          # 5. Créer l'archive ZIP
-          echo "[5/5] Creating ZIP archive: $ARCHIVE_FILENAME_ENV"
+          # 5. Compiler la documentation (Markdown + images) en PDF, placé à la racine de l'archive
+          if [ -f "${{ env.RELEASE_BUILD_DIR }}/doc/installation.md" ]; then
+            echo "[5/6] Compiling documentation to PDF..."
+            (
+              cd "${{ env.RELEASE_BUILD_DIR }}/doc"
+              pandoc installation.md -o ../installation.pdf \
+                --pdf-engine=wkhtmltopdf \
+                --metadata title="Documentation d'installation - Lettres en lumière"
+            )
+          else
+            echo "[5/6] doc/installation.md not found. Skipping PDF compilation."
+          fi
+
+          # 6. Créer l'archive ZIP
+          echo "[6/6] Creating ZIP archive: $ARCHIVE_FILENAME_ENV"
           cd "${{ env.RELEASE_BUILD_DIR }}"
           # L'archive est créée dans le répertoire parent (racine du workspace)
           zip -r "../$ARCHIVE_FILENAME_ENV" . -x ".git/*" ".github/*" "node_modules/*" "assets/*" "migrations/*"
@@ -138,8 +152,10 @@ jobs:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }} # Utilise le tag qui a déclenché le workflow
           body: |
-            Automated release for ${{ github.repository }} version ${{ github.ref_name }}.
-            Includes application code, vendor dependencies, and built frontend assets.
+            Version automatique pour ${{ github.repository }} version ${{ github.ref_name }}.
+            Cela inclut le code de l'application, les dépendances vendor, et les assets frontend compilés.
+            Les données au format sql sont présentes.
+            Mais également la documentation d'installation en PDF.
           # draft: false # Décommentez et mettez à true pour créer un brouillon de release
           # prerelease: false # Décommentez et mettez à true si c'est une pré-release
         env:
